@@ -1,0 +1,109 @@
+{   
+  "email": "Email", 
+
+  "name": "Name",
+  "password": "Password",
+  "fName": " First Name",
+  "lName": " Last Name",
+  "phone": "Phone",
+  "age": "Age",
+  "rePassword": "rePassword",
+  "update": "update ",
+  "function": "Function",
+  "more": "More ",
+  "showAll": "Show All ",
+ "logOut": "Log Out",
+ "create": "Create",  
+  "delete"   :"Delete", 
+  "createSuccess":   "Successfully created !! ", 
+  "updateSuccess":   "Successfully updated !! ", 
+  "deleteSuccess":  "Successfully deleted !! ", 
+  "rooms": {
+    "create":"Create Room",
+    "update":"Update Room",
+    "title":"Rooms",
+    "id": "ID",
+    "beds": "Beds",
+    "type": "Type",
+    "degree": "Degree",
+    "companionNo": "Companion No",
+    "status": "Status",
+    "roomNo": "Room No"
+  },
+  "users": {
+    "title":"Users",
+    "create":"   Create User",
+    "update":"Edit User",
+    "name": "Name",
+    "userName": "User Name",
+    "role": "Role",
+    "nationalId": "National ID"
+  },
+  "login": {
+    "title": "Login "
+  },
+  "register": {
+    "title": "Sign Up "
+  },
+  "profile": {
+    "title": "Profile ", 
+    "photo": "Change Photo"
+
+  },
+  "changePassword": {
+    "title": "Change Password ",
+    "oldPassword": "Old Password",
+    "rePassword": "Confirm New Password",
+    "newPassword": "New Password",
+    "change": "Change Password "
+  }, 
+  "navbar": {
+    "home": "Home",
+    "section": "Work fields",
+    "activity": "Activity", 
+    "contact": "Contact US",
+    "profile": "Profile",
+    "about": "About US",
+    "admin": "Admin Page",
+    "application": " Volunteering and jobs"
+  },
+  "about": {
+    "title": "About Us",
+    "qualification": "Qualification",
+    "experience": "Experience",
+    "course": "Courses"
+
+  }, 
+  "home": { 
+    "welcome": "welcomes you"
+  },  
+  "contact": { 
+    "contactUs": "Contact Us",
+    "tel": " telephones ",
+    "address": " Address", 
+    "timeTable": "  Time Table ",
+    "timeTable1": "   9:00 am - 9:00 pm "
+  },
+  "application": {
+    "title": " Volunteering and jobs ",
+    "email": "Email",
+    "name": "Name",
+    "phone": "Phone",
+    "message": "Message",
+    "submit": "submit"
+  },
+  "footer": { 
+    "academy": "Academy",
+    "institution": "Institution",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "twitter": "Twitter",
+    "phone": "Phone"
+  },
+  "404": {
+    "title": "404",
+    "subtitle": "Page Not Found",
+    "message": "Sorry, the page you're looking for does not exist.",
+    "button": "Go to Home"
+  }
+}

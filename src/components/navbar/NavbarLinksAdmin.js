@@ -43,6 +43,8 @@ export default function HeaderLinks(props) {
     '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
   );
   const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+
+
   return (
     <Flex
       w={{ sm: '100%', md: 'auto' }}
@@ -54,7 +56,7 @@ export default function HeaderLinks(props) {
       borderRadius="30px"
       boxShadow={shadow}
     >
-      <SearchBar
+      {/* <SearchBar
         mb={() => {
           if (secondary) {
             return { base: '10px', md: 'unset' };
@@ -63,7 +65,7 @@ export default function HeaderLinks(props) {
         }}
         me="10px"
         borderRadius="30px"
-      />
+      /> */}
       <Flex
         bg={ethBg}
         display={secondary ? 'flex' : 'none'}
@@ -158,80 +160,40 @@ export default function HeaderLinks(props) {
         </MenuList>
       </Menu>
 
-      <Menu>
-        <MenuButton p="0px">
-          <Icon
-            mt="6px"
-            as={MdInfoOutline}
-            color={navbarIcon}
-            w="18px"
-            h="18px"
-            me="10px"
-          />
-        </MenuButton>
-        <MenuList
-          boxShadow={shadow}
-          p="20px"
-          me={{ base: '30px', md: 'unset' }}
-          borderRadius="20px"
-          bg={menuBg}
-          border="none"
-          mt="22px"
-          minW={{ base: 'unset' }}
-          maxW={{ base: '360px', md: 'unset' }}
-        >
-          <Image src={navImage} borderRadius="16px" mb="28px" />
-          <Flex flexDirection="column">
-            <Link w="100%" href="https://horizon-ui.com/pro">
-              <Button w="100%" h="44px" mb="10px" variant="brand">
-                Buy Horizon UI PRO
-              </Button>
-            </Link>
-            <Link
-              w="100%"
-              href="https://horizon-ui.com/documentation/docs/introduction"
-            >
-              <Button
-                w="100%"
-                h="44px"
-                mb="10px"
-                border="1px solid"
-                bg="transparent"
-                borderColor={borderButton}
-              >
-                See Documentation
-              </Button>
-            </Link>
-            <Link
-              w="100%"
-              href="https://github.com/horizon-ui/horizon-ui-chakra-ts"
-            >
-              <Button
-                w="100%"
-                h="44px"
-                variant="no-hover"
-                color={textColor}
-                bg="transparent"
-              >
-                Try Horizon Free
-              </Button>
-            </Link>
-          </Flex>
-        </MenuList>
-      </Menu>
-
       <Button
         variant="no-hover"
-        bg="transparent"
-        p="0px"
+        bg={ethBg}
+        p="16px"
         minW="unset"
+        mx="2"
         minH="unset"
         h="18px"
         w="max-content"
         onClick={toggleColorMode}
       >
+        {colorMode === 'light' ? "Dark" : "Light"}
         <Icon
-          me="10px"
+          mx="8px"
+          h="18px"
+          w="18px"
+          color={navbarIcon}
+          as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
+        />
+      </Button>
+      <Button
+        variant="no-hover"
+        bg={ethBg}
+        p="16px"
+        minW="unset"
+        mx="2"
+        minH="unset"
+        h="18px"
+        w="max-content"
+        onClick={toggleColorMode}
+      >
+        {colorMode === 'light' ? "Dark" : "Light"}
+        <Icon
+          mx="8px"
           h="18px"
           w="18px"
           color={navbarIcon}
