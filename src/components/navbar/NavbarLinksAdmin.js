@@ -16,7 +16,6 @@ import {
 } from '@chakra-ui/react';
 // Custom Components
 import { ItemContent } from 'components/menu/ItemContent';
-import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -26,9 +25,15 @@ import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
+import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 export default function HeaderLinks(props) {
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+
   // Chakra Color Mode
   const navbarIcon = useColorModeValue('gray.400', 'white');
   let menuBg = useColorModeValue('white', 'navy.800');
@@ -43,7 +48,19 @@ export default function HeaderLinks(props) {
     '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
   );
   const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+  const { i18n, t } = useTranslation()
 
+  function toggleLang() {
+    if (i18n.language == "en") {
+      i18n.changeLanguage("ar")
+      navigate("/rtl" + pathname)
+    } else {
+      i18n.changeLanguage("en")
+      let ltrPath = pathname.includes("rtl") ? pathname.split("/rtl") : pathname
+      ltrPath = ltrPath[ltrPath.length - 1]
+      navigate(ltrPath)
+    }
+  }
 
   return (
     <Flex
@@ -189,16 +206,16 @@ export default function HeaderLinks(props) {
         minH="unset"
         h="18px"
         w="max-content"
-        onClick={toggleColorMode}
+        onClick={toggleLang}
       >
-        {colorMode === 'light' ? "Dark" : "Light"}
-        <Icon
+        {i18n.language == 'en' ? "Ar" : "En"}
+        {/* <Icon
           mx="8px"
           h="18px"
           w="18px"
           color={navbarIcon}
           as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
-        />
+        /> */}
       </Button>
       <Menu>
         <MenuButton p="0px">
