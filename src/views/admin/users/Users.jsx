@@ -5,9 +5,9 @@ const Users = () => {
   const colorMode = useColorModeValue("gray", "gray.400")
 
   return (
-    <Container maxW='100%' mt={"5rem"}>
+    <Container maxW='100%' >
       <HStack>
-        <Input placeholder='Search' maxW={"160px"} mb={"12px"} borderColor={"main"} />
+        <Input placeholder='Search' maxW={"160px"} mb={"12px"} />
       </HStack>
       <TableContainer>
         <Table variant='striped' colorScheme={colorMode}>

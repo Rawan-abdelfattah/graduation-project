@@ -109,7 +109,6 @@ export default function Dashboard(props) {
   return (
     <ChakraProvider theme={currentTheme}>
       <Box>
-
         <Box>
           <SidebarContext.Provider
             value={{
@@ -153,6 +152,7 @@ export default function Dashboard(props) {
                   pe="20px"
                   minH="100vh"
                   pt="50px"
+                  mt={{ base: "7rem" }}
                 >
                   <Routes>
                     {getRoutes(routes)}
