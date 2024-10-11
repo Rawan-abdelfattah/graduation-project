@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 // Chakra imports
 import {
   Box,
@@ -28,7 +28,9 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 import Api from "config/api";
 import { useDispatch } from "react-redux";
-import { Login } from "redux/slices/logedUserSlice";
+import { Login } from "./../../../redux/slices/logedUserSlice";
+import { notifyError } from "./../../../utils/Toastify";
+import { notifySuccess } from './../../../utils/Toastify';
 
 function SignIn() {
   // Chakra color mode
@@ -49,17 +51,26 @@ function SignIn() {
   );
   const dispatch=useDispatch()
   const [show, setShow] = React.useState(false);
+  const navigate=useNavigate()
   const handleClick = () => setShow(!show);
 const handleSubmit=async(e)=>{
       e.preventDefault();
       const formData = new FormData(e.target);
       const username = formData.get('username');
       const password = formData.get('password');
-      const data = await Api.post('/auth/login', { username, password });
-      dispatch(Login(data.data))
+      try{
+        
+        const data = await Api.post('/auth/login', { username, password });
+        dispatch(Login(data.data))
+        console.log('data.data', data.data);
+        notifySuccess("Login successful")
+        navigate('/admin/default');
+        e.target.reset();
+      }catch(e){
+        notifyError(e)
+      }
 
 
-      e.target.reset();
 
 }
   return (

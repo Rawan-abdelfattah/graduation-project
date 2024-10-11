@@ -1,8 +1,19 @@
 import { Container, HStack, Input, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useColorMode, useColorModeValue, VStack } from '@chakra-ui/react'
-import React from 'react'
+import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react'
+import { GetUsers } from './api';
 
 const Users = () => {
   const colorMode = useColorModeValue("gray", "gray.400")
+  const [page,setPage]=useState(1)
+  const { data, isLoading } = useQuery({
+    queryKey: ['user', { page }],
+    queryFn: () => GetUsers(page),
+    onError:(e)=>{
+      console.log(e)
+    }
+  
+  });
 
   return (
     <Container maxW="100%">
@@ -29,46 +40,14 @@ const Users = () => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td textAlign={'center'}>inches</Td>
-              <Td textAlign={'center'}>millimetres (mm)</Td>
-              <Td textAlign={'center'} isNumeric>
-                25.4
-              </Td>
-              <Td textAlign={'center'} isNumeric>
-                25.4
-              </Td>
-            </Tr>
-            <Tr>
-              <Td textAlign={'center'}>inches</Td>
-              <Td textAlign={'center'}>millimetres (mm)</Td>
-              <Td textAlign={'center'} isNumeric>
-                25.4
-              </Td>
-              <Td textAlign={'center'} isNumeric>
-                25.4
-              </Td>
-            </Tr>
-            <Tr>
-              <Td textAlign={'center'}>inches</Td>
-              <Td textAlign={'center'}>millimetres (mm)</Td>
-              <Td textAlign={'center'} isNumeric>
-                25.4
-              </Td>
-              <Td textAlign={'center'} isNumeric>
-                25.4
-              </Td>
-            </Tr>
-            <Tr>
-              <Td textAlign={'center'}>inches</Td>
-              <Td textAlign={'center'}>millimetres (mm)</Td>
-              <Td textAlign={'center'} isNumeric>
-                25.4
-              </Td>
-              <Td textAlign={'center'} isNumeric>
-                25.4
-              </Td>
-            </Tr>
+            {data?.data.map((row) => (
+              <Tr>
+                <Td textAlign={'center'}>{row?.id}</Td>
+                <Td textAlign={'center'}>{row?.username}</Td>
+                <Td textAlign={'center'}>25.4</Td>
+                <Td textAlign={'center'}>{row?.nationalId}</Td>
+              </Tr>
+            ))}
           </Tbody>
           <Tfoot>
             {/* <PaginationRoot count={20} pageSize={2} defaultPage={1}>
