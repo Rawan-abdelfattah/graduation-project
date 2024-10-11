@@ -27,6 +27,8 @@ import { FcGoogle } from "react-icons/fc";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 import Api from "config/api";
+import { useDispatch } from "react-redux";
+import { Login } from "redux/slices/logedUserSlice";
 
 function SignIn() {
   // Chakra color mode
@@ -45,14 +47,17 @@ function SignIn() {
     { bg: "secondaryGray.300" },
     { bg: "whiteAlpha.200" }
   );
+  const dispatch=useDispatch()
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 const handleSubmit=async(e)=>{
       e.preventDefault();
       const formData = new FormData(e.target);
-      const email = formData.get('email');
+      const username = formData.get('username');
       const password = formData.get('password');
-      // const data = await Api.post('/auth/login', { email, password });
+      const data = await Api.post('/auth/login', { username, password });
+      dispatch(Login(data.data))
+
 
       e.target.reset();
 
@@ -112,19 +117,19 @@ const handleSubmit=async(e)=>{
                 color={textColor}
                 mb="8px"
               >
-                Email<Text color={brandStars}>*</Text>
+                Username<Text color={brandStars}>*</Text>
               </FormLabel>
               <Input
                 isRequired={true}
                 variant="auth"
                 fontSize="sm"
                 ms={{ base: '0px', md: '0px' }}
-                type="email"
-                placeholder="mail@simmmple.com"
+                type="text"
+                placeholder="abdelrahman"
                 mb="24px"
                 fontWeight="500"
                 size="lg"
-                name="email"
+                name="username"
               />
               <FormLabel
                 ms="4px"
