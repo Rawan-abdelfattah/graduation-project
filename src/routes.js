@@ -1,13 +1,8 @@
 import React from 'react';
 
 import { Icon } from '@chakra-ui/react';
-import {
-  MdBarChart,
-  MdPerson,
-  MdHome,
-  MdLock,
-  MdOutlineShoppingCart,
-} from 'react-icons/md';
+import { MdBarChart, MdPerson, MdHome, MdLock, MdOutlineShoppingCart, } from 'react-icons/md';
+import { FaUsers } from "react-icons/fa";
 
 // Admin Imports
 import MainDashboard from 'views/admin/default';
@@ -17,6 +12,7 @@ import RTL from 'views/admin/rtl';
 
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
+import Users from 'views/admin/users/Users';
 
 const routes = [
   {
@@ -25,6 +21,13 @@ const routes = [
     path: '/default',
     icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
     component: <MainDashboard />,
+  },
+  {
+    name: 'Users',
+    layout: '/admin',
+    path: '/users',
+    icon: <Icon as={FaUsers} width="20px" height="20px" color="inherit" />,
+    component: <Users />,
   },
   {
     name: 'Data Tables',

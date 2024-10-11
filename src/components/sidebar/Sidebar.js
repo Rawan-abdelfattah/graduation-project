@@ -20,6 +20,7 @@ import {
   renderView,
 } from "components/scrollbar/Scrollbar";
 import { Scrollbars } from "react-custom-scrollbars-2";
+import { IoMenuOutline } from "react-icons/io5";
 
 function Sidebar(props) {
   const { routes } = props;
@@ -71,7 +72,7 @@ export function SidebarResponsive(props) {
 
   return (
     <Flex display={{ sm: "flex", xl: "none" }} alignItems='center'>
-      {/* <Flex ref={btnRef} w='max-content' h='max-content' onClick={onOpen}>
+      <Flex ref={btnRef} w='max-content' h='max-content' onClick={onOpen}>
         <Icon
           as={IoMenuOutline}
           color={menuColor}
@@ -81,8 +82,8 @@ export function SidebarResponsive(props) {
           me='10px'
           _hover={{ cursor: "pointer" }}
         />
-      </Flex> */}
-      {/* <Drawer
+      </Flex>
+      <Drawer
         isOpen={isOpen}
         onClose={onClose}
         placement={document.documentElement.dir === "rtl" ? "right" : "left"}
@@ -105,7 +106,7 @@ export function SidebarResponsive(props) {
             </Scrollbars>
           </DrawerBody>
         </DrawerContent>
-      </Drawer> */}
+      </Drawer>
     </Flex>
   );
 }

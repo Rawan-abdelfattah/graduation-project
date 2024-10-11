@@ -9,7 +9,6 @@ export default function AdminNavbar(props) {
 
 	useEffect(() => {
 		window.addEventListener('scroll', changeNavbar);
-
 		return () => {
 			window.removeEventListener('scroll', changeNavbar);
 		};
