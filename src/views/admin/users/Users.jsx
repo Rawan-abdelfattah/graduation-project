@@ -2,6 +2,8 @@ import { Container, HStack, Input, Table, TableCaption, TableContainer, Tbody, T
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import { GetUsers } from './api';
+import UserModel from "../default/components/Models/UserModel"
+import DeleteModel from '../default/components/Models/DeleteModel';
 
 const Users = () => {
   const colorMode = useColorModeValue("gray", "gray.400")
@@ -17,12 +19,13 @@ const Users = () => {
 
   return (
     <Container maxW="100%">
-      <HStack>
+      <HStack display="flex" alignItems="center" justifyContent="space-between">
         <Input placeholder="Search" maxW={'160px'} mb={'12px'} />
+        <UserModel/>
+        {/* <DeleteModel/> */}
       </HStack>
       <TableContainer>
         <Table variant="striped" colorScheme={colorMode}>
-          <TableCaption>Imperial to metric conversion factors</TableCaption>
           <Thead bg="main">
             <Tr textAlign={'center'} bg="main">
               <Th textAlign={'center'} color="#fff">
