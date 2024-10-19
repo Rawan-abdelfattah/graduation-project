@@ -21,8 +21,7 @@ const Users = () => {
     <Container maxW="100%">
       <HStack display="flex" alignItems="center" justifyContent="space-between">
         <Input placeholder="Search" maxW={'160px'} mb={'12px'} />
-        <UserModel/>
-        {/* <DeleteModel/> */}
+        <UserModel action="Add"/>
       </HStack>
       <TableContainer>
         <Table variant="striped" colorScheme={colorMode}>
@@ -40,6 +39,12 @@ const Users = () => {
               <Th textAlign={'center'} color="#fff">
                 National ID
               </Th>
+              <Th textAlign={'center'} color="#fff">
+                Edit
+              </Th>
+              <Th textAlign={'center'} color="#fff">
+                Delete
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -49,6 +54,11 @@ const Users = () => {
                 <Td textAlign={'center'}>{row?.username}</Td>
                 <Td textAlign={'center'}>25.4</Td>
                 <Td textAlign={'center'}>{row?.nationalId}</Td>
+                <Td textAlign={'center'}><UserModel action="Update" /></Td>
+
+                <Td textAlign={'center'} color="#fff">
+                  <DeleteModel />
+                </Td>
               </Tr>
             ))}
           </Tbody>

@@ -1,5 +1,6 @@
 import {
   Button,
+  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,12 +12,14 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import trash from '../../../../../assets/img/dashboards/bin_14119274 1.svg';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { MdDeleteOutline } from 'react-icons/md';
 export default function DeleteModel() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button onClick={onOpen}>Open Modal</Button>
+      <IconButton onClick={onOpen} backgroundColor="transparent"><MdDeleteOutline color='red' fontSize="25px"/></IconButton>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
         <ModalOverlay />
