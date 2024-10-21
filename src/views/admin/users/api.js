@@ -14,7 +14,8 @@ export const AddUser = async (data) => {
   const res = await Api.post('/auth/register', data);
   return res.data;
 };
-export const UpdateUser = async (id,data) => {
+export const UpdateUser = async ({id,data}) => {
+  console.log('data', id,data);
   const res = await Api.patch(`/users/${id}`,data);
   return res.data;
 };

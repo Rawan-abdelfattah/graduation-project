@@ -68,19 +68,21 @@ useEffect(()=>{
        onClose();
      },
    });
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if(action=="Add"){
-
-      mutateAdd({
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const userData = {
         ...formData,
         nationalId: parseInt(formData.nationalId),
         roleId: parseInt(formData.roleId),
-      });
-    }else{
-      mutateUpdate(id,formData)
-    }
-  };
+      };
+
+      if (action === 'Add') {
+        mutateAdd(userData);
+      } else {
+        mutateUpdate({id,data:userData});
+      }
+    };
 
   return (
     <>
