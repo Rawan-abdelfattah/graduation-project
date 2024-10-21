@@ -14,8 +14,26 @@ import {
 import trash from '../../../../../assets/img/dashboards/bin_14119274 1.svg';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { MdDeleteOutline } from 'react-icons/md';
-export default function DeleteModel() {
+import { DeleteUser } from 'views/admin/users/api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { notifySuccess } from 'utils/Toastify';
+export default function DeleteModel({id}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+    const queryClient = useQueryClient();
+    const { mutate: mutateDelte } = useMutation({
+      mutationFn: DeleteUser,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ['user'],
+        });
+        notifySuccess('user has been deleted');
+        onClose();
+      },
+    });
+    const handleDelete=()=>{
+      mutateDelte(id)
+    }
+
 
   return (
     <>
@@ -53,6 +71,7 @@ export default function DeleteModel() {
               backgroundColor="main"
               colorScheme="blue"
               mr={3}
+              onClick={handleDelete}
             >
               Delete
             </Button>
