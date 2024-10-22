@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   FormControl,
   FormLabel,
   Grid,
   Heading,
+  IconButton,
   Input,
   Modal,
   ModalBody,
@@ -21,54 +22,84 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AddUser } from 'views/admin/users/api';
 import { GetRole } from 'views/admin/users/api';
 import { FaRegEdit } from 'react-icons/fa';
+import { notifySuccess } from 'utils/Toastify';
+import { UpdateUser } from 'views/admin/users/api';
 
-export default function UserModel({action}) {
+export default function UserModel({ action ,id,inputs}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-    const [formData, setFormData] = useState({
-      name: '',
-      username: '',
-      password: '',
-      confirmPassword: '',
-      nationalId: '',
-      roleId: '',
+  const [formData, setFormData] = useState(inputs);
+useEffect(()=>{
+  setFormData(inputs)
+},[])
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
-
-    const handleChange = (e) => {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-      });
-    };
-     const { data:RoleData, isLoading } = useQuery({
-       queryKey: ['role'],
-       queryFn: () => GetRole(),
-       onError: (e) => {
-         console.log(e);
-       },
-     });
-    const queryClient = useQueryClient();
+  };
+  const { data: RoleData, isLoading } = useQuery({
+    queryKey: ['role'],
+    queryFn: () => GetRole(),
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+  const queryClient = useQueryClient();
   const { mutate: mutateAdd } = useMutation({
     mutationFn: AddUser,
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ["user"],
+        queryKey: ['user'],
       });
-},
-  })
- const handleSubmit = (e) => {
-   e.preventDefault();
-   mutateAdd(formData)
- 
- };
+      notifySuccess('user has been added');
+      onClose()
+    },
+  });
+   const { mutate: mutateUpdate } = useMutation({
+     mutationFn: UpdateUser,
+     onSuccess: (data) => {
+       queryClient.invalidateQueries({
+         queryKey: ['user'],
+       });
+       notifySuccess('user has been update');
+       onClose();
+     },
+   });
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const userData = {
+        ...formData,
+        nationalId: parseInt(formData.nationalId),
+        roleId: parseInt(formData.roleId),
+      };
+
+      if (action === 'Add') {
+        mutateAdd(userData);
+      } else {
+        mutateUpdate({id,data:userData});
+      }
+    };
 
   return (
     <>
-      <Button backgroundColor="main" color="white" onClick={onOpen}>
-        {action == 'Add' ? 'Add' : <FaRegEdit/>}
-      </Button>
+      {action == 'Add' ? (
+        <Button backgroundColor="main" color="white" onClick={onOpen}>
+          Add
+        </Button>
+      ) : (
+        <IconButton
+          onClick={onOpen}
+          color="main"
+          backgroundColor="transparent"
+          fontSize="20px"
+        >
+          <FaRegEdit />
+        </IconButton>
+      )}
 
       <Modal
         initialFocusRef={initialRef}
@@ -89,24 +120,26 @@ export default function UserModel({action}) {
             gap="5px"
             fontSize="30px"
             fontWeight="bold"
+            
           >
-            <IoPersonAddOutline color="main" />
-            {action == 'Add' ? 'Add' : 'Update'}
-            User
+            <IoPersonAddOutline style={{color:"green"}}  />
+            {action == 'Add' ? 'Add' : 'Edit'}
+       
           </ModalHeader>
           {/* <ModalCloseButton /> */}
           <form onSubmit={handleSubmit}>
             <ModalBody pb={6}>
-       {"Update"==action&&       <Heading
-                color="main"
-                as="h6"
-                size="lg"
-                marginBottom="10px"
-                noOfLines={1}
-              >
-                User data
-              </Heading>
-}
+              {'Update' == action && (
+                <Heading
+                  color="main"
+                  as="h6"
+                  size="lg"
+                  marginBottom="10px"
+                  noOfLines={1}
+                >
+                  User data
+                </Heading>
+              )}
               <Grid
                 templateColumns={{
                   base: '1fr',
@@ -135,6 +168,8 @@ export default function UserModel({action}) {
                     placeholder="Username"
                   />
                 </FormControl>
+                 {action == 'Add' && (
+                  <>
                 <FormControl>
                   <FormLabel>Password</FormLabel>
                   <Input
@@ -157,6 +192,8 @@ export default function UserModel({action}) {
                     placeholder="Confirm Password"
                   />
                 </FormControl>
+                </>
+                )}
                 <FormControl>
                   <FormLabel>National Id</FormLabel>
                   <Input
@@ -183,59 +220,63 @@ export default function UserModel({action}) {
               </Grid>
             </ModalBody>
 
-              {action=="Update"&& 
-            <ModalBody pb={6}>
-              <Heading
-                color="main"
-                as="h6"
-                size="lg"
-                marginBottom="10px"
-                noOfLines={1}
+            {action == 'Update' && (
+              <ModalBody pb={6}>
+                <Heading
+                  color="main"
+                  as="h6"
+                  size="lg"
+                  marginBottom="10px"
+                  noOfLines={1}
                 >
-                Password
-              </Heading>
+                  Password
+                </Heading>
 
-              <Grid
-                templateColumns={{
-                  base: '1fr',
-                  md: 'repeat(2, 1fr)',
-                  lg: 'repeat(3, 1fr)',
-                }}
-                gap={4}
-              >
-                <FormControl>
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    name="modalPassword"
-                    type="password"
-                    value={formData.modalPassword}
-                    onChange={handleChange}
-                    placeholder="Password"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <Input
-                    name="modalConfirmPassword1"
-                    type="password"
-                    value={formData.modalConfirmPassword1}
-                    onChange={handleChange}
-                    placeholder="Confirm Password"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <Input
-                    name="modalConfirmPassword2"
-                    type="password"
-                    value={formData.modalConfirmPassword2}
-                    onChange={handleChange}
-                    placeholder="Confirm Password"
-                  />
-                </FormControl>
-              </Grid>
-           </ModalBody>
-              }
+                <Grid
+                  templateColumns={{
+                    base: '1fr',
+                    md: 'repeat(2, 1fr)',
+                    lg: 'repeat(3, 1fr)',
+                  }}
+                  gap={4}
+                >
+                 
+                    <>
+                      <FormControl>
+                        <FormLabel>old Password</FormLabel>
+                        <Input
+                          name="modalPassword"
+                          type="password"
+                          value={formData.modalPassword}
+                          onChange={handleChange}
+                          placeholder="Password"
+                        />
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel>New Password</FormLabel>
+                        <Input
+                          name="modalConfirmPassword1"
+                          type="password"
+                          value={formData.modalConfirmPassword1}
+                          onChange={handleChange}
+                          placeholder="Confirm Password"
+                        />
+                      </FormControl>{' '}
+                    </>
+            
+                  <FormControl>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <Input
+                      name="modalConfirmPassword2"
+                      type="password"
+                      value={formData.modalConfirmPassword2}
+                      onChange={handleChange}
+                      placeholder="Confirm Password"
+                    />
+                  </FormControl>
+                </Grid>
+              </ModalBody>
+            )}
             <ModalFooter>
               <Button
                 backgroundColor="main"
