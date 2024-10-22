@@ -8,10 +8,7 @@ export function SidebarLinks(props) {
   //   Chakra color mode
   let location = useLocation();
   let activeColor = useColorModeValue("main", "main");
-  let inactiveColor = useColorModeValue(
-    "secondaryGray.600",
-    "secondaryGray.600"
-  );
+  let inactiveColor = useColorModeValue("secondaryGray.600","secondaryGray.600");
   let activeIcon = useColorModeValue("main", "main");
   let textColor = useColorModeValue("secondaryGray.500", "white");
   let brandColor = useColorModeValue("main", "main");
@@ -34,10 +31,7 @@ export function SidebarLinks(props) {
               color={activeColor}
               fontWeight='bold'
               mx='auto'
-              ps={{
-                sm: "10px",
-                xl: "16px",
-              }}
+              ps={{sm: "10px",xl: "16px",}}
               pt='18px'
               pb='12px'
               key={index}>

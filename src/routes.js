@@ -1,8 +1,8 @@
 import React from 'react';
-
 import { Icon } from '@chakra-ui/react';
-import { MdBarChart, MdPerson, MdHome, MdLock, MdOutlineShoppingCart, } from 'react-icons/md';
+import { MdBarChart, MdPerson, MdHome, MdLock, } from 'react-icons/md';
 import { FaUsers } from "react-icons/fa";
+import { TbCategoryPlus } from "react-icons/tb";
 
 // Admin Imports
 import MainDashboard from 'views/admin/default';
@@ -13,6 +13,7 @@ import RTL from 'views/admin/rtl';
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
 import Users from 'views/admin/users/Users';
+import ScreenCategory from 'views/admin/screen-category/ScreenCategory';
 
 const routes = [
   {
@@ -28,6 +29,13 @@ const routes = [
     path: '/users',
     icon: <Icon as={FaUsers} width="20px" height="20px" color="inherit" />,
     component: <Users />,
+  },
+  {
+    name: 'ScreenCategory',
+    layout: '/admin',
+    path: '/screen-category',
+    icon: <Icon as={TbCategoryPlus } width="20px" height="20px" color="inherit" />,
+    component: <ScreenCategory />,
   },
   {
     name: 'Data Tables',

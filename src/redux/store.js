@@ -1,7 +1,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 // import userSlice from './slices/userSlice';
-// import roomSlice from './slices/roomSlice';
+import screenCategorySlice from './slices/screenCategorySlice';
 import modeSlice from './slices/modeSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -31,6 +31,7 @@ const store = configureStore({
     // roomSlice,
     // modeSlice: persistedModeSlice,
     logedUserSlice: persistedLogedUserSlice,
+    screenCategory : screenCategorySlice
   },
 });
 

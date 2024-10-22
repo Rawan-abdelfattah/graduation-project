@@ -94,8 +94,7 @@ const roomSlice = createSlice({
       })
       .addCase(deleteRoom.fulfilled, (state, action) => {
         state.loading = false;
-        state.all = state.all.filter(room => room.id !== action.payload);
-        notifySuccess('Room deleted successfully'); // Notify success
+         notifySuccess('Room deleted successfully'); // Notify success
       })
       .addCase(deleteRoom.rejected, (state, action) => {
         state.loading = false;
@@ -107,8 +106,7 @@ const roomSlice = createSlice({
       })
       .addCase(createRoom.fulfilled, (state, action) => {
         state.loading = false;
-        state.all = [action.payload, ...state.all];
-        notifySuccess('Room created successfully'); // Notify success
+         notifySuccess('Room created successfully'); // Notify success
       })
       .addCase(createRoom.rejected, (state, action) => {
         state.loading = false;
@@ -120,9 +118,6 @@ const roomSlice = createSlice({
       })
       .addCase(updateRoom.fulfilled, (state, action) => {
         state.loading = false;
-        state.all = state.all.map(room => 
-          room.id === action.payload.id ? action.payload : room
-        );
         notifySuccess('Room updated successfully'); // Notify success
       })
       .addCase(updateRoom.rejected, (state, action) => {
