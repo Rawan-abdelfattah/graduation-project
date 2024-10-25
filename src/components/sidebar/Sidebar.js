@@ -36,7 +36,7 @@ function Sidebar(props) {
 
   // SIDEBAR
   return (
-    <Box display={{ sm: "none", xl: "block" }} w="100%" position='fixed' minH='100%'>
+    <Box display={{ base: "none", xl: "block" }}  w="100%" position='fixed' minH='100%'>
       <Box
         bg={sidebarBg}
         transition={variantChange}
@@ -71,7 +71,7 @@ export function SidebarResponsive(props) {
   //  BRAND
 
   return (
-    <Flex display={{ sm: "flex", xl: "none" }} alignItems='center'>
+    <Flex display={{ base: "flex", xl: "none" }}alignItems='center'>
       <Flex ref={btnRef} w='max-content' h='max-content' onClick={onOpen}>
         <Icon
           as={IoMenuOutline}

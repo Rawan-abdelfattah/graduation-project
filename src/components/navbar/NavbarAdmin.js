@@ -81,9 +81,10 @@ export default function AdminNavbar(props) {
 			<Flex
 				w='100%'
 				flexDirection={{
-					sm: 'column',
+					base: 'column',
 					md: 'row'
 				}}
+				gap={"2px"}
 				alignItems={{ xl: 'center' }}
 				mb={gap}>
 				<Box mb={{ sm: '8px', md: '0px' }}>
