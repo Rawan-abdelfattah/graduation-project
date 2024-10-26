@@ -5,20 +5,24 @@ import {
   FormLabel,
   Grid,
   Heading,
+  IconButton,
   Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay, 
+  ModalOverlay,
   useDisclosure,
 } from '@chakra-ui/react';
 import { IoPersonAddOutline } from 'react-icons/io5';
 import { useDispatch } from 'react-redux';
 import { FaRegEdit } from 'react-icons/fa';
-import { updateScreenCategory , createScreenCategory , fetchAllScreenCategoryData} from '../../../../../redux/slices/screenCategorySlice';
-
+import {
+  updateScreenCategory,
+  createScreenCategory,
+  fetchAllScreenCategoryData,
+} from '../../../../../redux/slices/screenCategorySlice';
 
 export default function ScreenCategoryModel({ action, categoryData }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -28,7 +32,7 @@ export default function ScreenCategoryModel({ action, categoryData }) {
   const finalRef = React.useRef(null);
   const [formData, setFormData] = useState({
     name: categoryData ? categoryData.name : '',
-    id: categoryData ? categoryData.id : null, 
+    id: categoryData ? categoryData.id : null,
   });
 
   const handleChange = (e) => {
@@ -36,31 +40,51 @@ export default function ScreenCategoryModel({ action, categoryData }) {
       ...formData,
       [e.target.name]: e.target.value,
     });
-  }; 
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     if (action === 'Add') {
-      dispatch(createScreenCategory({ name: formData.name })).unwrap().then(()=>{
-        dispatch(fetchAllScreenCategoryData({ page : 1}));
-        onClose();
-     }).catch((e)=>{console.log(e)});
-   } else if (action === 'Update') {
-      dispatch(updateScreenCategory({id : categoryData?.id  , data : formData})).unwrap().then(()=>{
-        dispatch(fetchAllScreenCategoryData({ page : 1}));
+      dispatch(createScreenCategory({ name: formData.name }))
+        .unwrap()
+        .then(() => {
+          dispatch(fetchAllScreenCategoryData({ page: 1 }));
+          onClose();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else if (action === 'Update') {
+      dispatch(updateScreenCategory({ id: categoryData?.id, data: formData }))
+        .unwrap()
+        .then(() => {
+          dispatch(fetchAllScreenCategoryData({ page: 1 }));
 
-         onClose();
-      }).catch((e)=>{console.log(e)})
-    } 
-   
+          onClose();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   };
 
   return (
     <>
-      <Button backgroundColor="main" color="white" onClick={onOpen}>
-        {action === 'Add' ? 'Add' : <FaRegEdit />}
-      </Button>
+      {action == 'Add' ? (
+        <Button backgroundColor="main" color="white" onClick={onOpen}>
+          + Add
+        </Button>
+      ) : (
+        <IconButton
+          onClick={onOpen}
+          color="main"
+          backgroundColor="transparent"
+          fontSize="20px"
+        >
+          <FaRegEdit />
+        </IconButton>
+      )}
 
       <Modal
         initialFocusRef={initialRef}
@@ -100,9 +124,7 @@ export default function ScreenCategoryModel({ action, categoryData }) {
               )}
               <Grid
                 templateColumns={{
-                  base: '1fr',
-                  md: 'repeat(2, 1fr)',
-                  lg: 'repeat(3, 1fr)',
+                  base: 'repeat(1, 1fr)',
                 }}
                 gap={4}
               >
@@ -115,10 +137,10 @@ export default function ScreenCategoryModel({ action, categoryData }) {
                     required
                     placeholder="Name"
                   />
-                </FormControl>     
+                </FormControl>
               </Grid>
             </ModalBody>
- 
+
             <ModalFooter>
               <Button
                 backgroundColor="main"

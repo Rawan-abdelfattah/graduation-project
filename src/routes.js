@@ -13,7 +13,7 @@ import RTL from 'views/admin/rtl';
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
 import Users from 'views/admin/users/Users';
-import ScreenCategory from 'views/admin/screen-category/ScreenCategory';
+import ScreenTaps from 'views/admin/screen/ScreenTaps';
 
 const routes = [
   {
@@ -31,11 +31,11 @@ const routes = [
     component: <Users />,
   },
   {
-    name: 'ScreenCategory',
+    name: 'Screen',
     layout: '/admin',
-    path: '/screen-category',
+    path: '/screen',
     icon: <Icon as={TbCategoryPlus } width="20px" height="20px" color="inherit" />,
-    component: <ScreenCategory />,
+    component: <ScreenTaps />,
   },
   {
     name: 'Data Tables',
