@@ -3,7 +3,7 @@ import { Icon } from '@chakra-ui/react';
 import { MdBarChart, MdPerson, MdHome, MdLock, } from 'react-icons/md';
 import { FaUsers } from "react-icons/fa";
 import { TbCategoryPlus } from "react-icons/tb";
-
+import { RiHealthBookLine } from 'react-icons/ri';
 // Admin Imports
 import MainDashboard from 'views/admin/default';
 import Profile from 'views/admin/profile';
@@ -46,7 +46,7 @@ const routes = [
     layout: '/admin',
     path: '/specialization',
     icon: (
-      <Icon as={TbCategoryPlus} width="20px" height="20px" color="inherit" />
+      <Icon as={RiHealthBookLine} width="20px" height="20px" color="inherit" />
     ),
     component: <Specialization />,
   },
