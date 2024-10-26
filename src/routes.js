@@ -14,6 +14,8 @@ import RTL from 'views/admin/rtl';
 import SignInCentered from 'views/auth/signIn';
 import Users from 'views/admin/users/Users';
 import ScreenTaps from 'views/admin/screen/ScreenTaps';
+import UserTabs from 'views/admin/users/UserTabs';
+import Specialization from 'views/admin/specialization/Specialization';
 
 const routes = [
   {
@@ -28,14 +30,25 @@ const routes = [
     layout: '/admin',
     path: '/users',
     icon: <Icon as={FaUsers} width="20px" height="20px" color="inherit" />,
-    component: <Users />,
+    component: <UserTabs />,
   },
   {
     name: 'Screen',
     layout: '/admin',
     path: '/screen',
-    icon: <Icon as={TbCategoryPlus } width="20px" height="20px" color="inherit" />,
+    icon: (
+      <Icon as={TbCategoryPlus} width="20px" height="20px" color="inherit" />
+    ),
     component: <ScreenTaps />,
+  },
+  {
+    name: 'Specialization',
+    layout: '/admin',
+    path: '/specialization',
+    icon: (
+      <Icon as={TbCategoryPlus} width="20px" height="20px" color="inherit" />
+    ),
+    component: <Specialization />,
   },
   {
     name: 'Data Tables',

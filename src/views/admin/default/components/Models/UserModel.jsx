@@ -24,6 +24,7 @@ import { GetRole } from 'views/admin/users/api';
 import { FaRegEdit } from 'react-icons/fa';
 import { notifySuccess } from 'utils/Toastify';
 import { UpdateUser } from 'views/admin/users/api';
+import { notifyError } from 'utils/Toastify';
 
 export default function UserModel({ action ,id,inputs}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -57,6 +58,12 @@ useEffect(()=>{
       notifySuccess('user has been added');
       onClose()
     },
+    onError: (e) => {
+      e?.response?.data?.message?.forEach(error=>{
+
+        notifyError(error);
+      })
+    }
   });
    const { mutate: mutateUpdate } = useMutation({
      mutationFn: UpdateUser,
@@ -66,6 +73,11 @@ useEffect(()=>{
        });
        notifySuccess('user has been update');
        onClose();
+     },
+     onError: (e) => {
+       e?.response?.data?.message?.forEach((error) => {
+         notifyError(error);
+       });
      },
    });
   
@@ -217,6 +229,7 @@ useEffect(()=>{
                     ))}
                   </Select>
                 </FormControl>
+
               </Grid>
             </ModalBody>
 

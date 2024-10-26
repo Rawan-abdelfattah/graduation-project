@@ -16,21 +16,22 @@ import {
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { DeleteUser, GetUsers } from './api';
-import UserModel from '../default/components/Models/UserModel';
+import { DeleteRole, GetRoles, GetUsers } from './api';
+
 import DeleteModel from '../default/components/Models/DeleteModel';
 import ReactPaginate from 'react-paginate';
 import { SearchIcon } from '@chakra-ui/icons';
+import RolesModel from '../default/components/Models/RolesModel';
 
-const Users = () => {
+const Roles = () => {
   const colorMode = useColorModeValue('gray', 'gray.400');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
 
   const { data, isLoading } = useQuery({
-    queryKey: ['user', { page, query }],
-    queryFn: () => GetUsers(page, query),
+    queryKey: ['role', { page, query }],
+    queryFn: () => GetRoles(page, query),
     onError: (e) => {
       console.error(e);
     },
@@ -78,15 +79,10 @@ const Users = () => {
             <SearchIcon />
           </IconButton>
         </Flex>
-        <UserModel
+        <RolesModel
           action="Add"
           inputs={{
             name: '',
-            username: '',
-            password: '',
-            confirmPassword: '',
-            nationalId: '',
-            roleId: '',
           }}
         />
       </HStack>
@@ -98,18 +94,9 @@ const Users = () => {
                 ID
               </Th>
               <Th textAlign={'center'} color="#fff">
-                Username
-              </Th>
-              <Th textAlign={'center'} color="#fff">
                 Name
               </Th>
-              <Th textAlign={'center'} color="#fff">
-                National ID
-              </Th>
-              <Th textAlign={'center'} color="#fff">
-                Role
-              </Th>
-
+              
               <Th textAlign={'center'} color="#fff">
                 Edit
               </Th>
@@ -119,30 +106,22 @@ const Users = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.data.map((row) => (
+            {data?.map((row) => (
               <Tr key={row.id}>
                 <Td textAlign={'center'}>{row?.id}</Td>
-                <Td textAlign={'center'}>{row?.username}</Td>
                 <Td textAlign={'center'}>{row?.name}</Td>
-                <Td textAlign={'center'}>{row?.nationalId}</Td>
-                <Td textAlign={'center'}>{row?.role?.name}</Td>
-
                 <Td textAlign={'center'}>
-                  <UserModel
+                  <RolesModel
                     action="Update"
                     id={row?.id}
                     inputs={{
                       name: row?.name,
-                      username: row?.username,
-                      password: '',
-                      confirmPassword: '',
-                      nationalId: row?.nationalId,
-                      roleId: row?.role.id,
+                     
                     }}
                   />
                 </Td>
                 <Td textAlign={'center'}>
-                  <DeleteModel id={row?.id} fun={DeleteUser} name={'user'} />
+                  <DeleteModel id={row?.id} fun={DeleteRole} name='role'/>
                 </Td>
               </Tr>
             ))}
@@ -206,4 +185,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Roles;
