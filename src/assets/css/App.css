@@ -6,3 +6,6 @@ body {
 option {
   color: black;
 }
+.css-1mbanyi[aria-selected=true], .css-1mbanyi[data-selected] {
+  color: #3B8F4F !important;
+}
