@@ -3,12 +3,12 @@ import Api from "config/api";
 import { notifyError } from "utils/Toastify";
 import { notifySuccess } from "utils/Toastify";
   
-// Thunk for fetching screenCategory data
-export const fetchAllScreenCategoryData = createAsyncThunk(
-  "screenCategory/fetchAllScreenCategoryData",
+// Thunk for fetching screen data
+export const fetchAllScreenData = createAsyncThunk(
+  "screen/fetchAllScreenData",
   async ({page,query}, thunkAPI) => {
     try {
-      const response = await Api.get(`/screen-category/${page}?${query? "query=" + query:""}`, {
+      const response = await Api.get(`/screen/${page}?${query? "query=" + query:""}`, {
         withCredentials: true,
       });
       return response.data;
@@ -18,42 +18,42 @@ export const fetchAllScreenCategoryData = createAsyncThunk(
   }
 );
 
-// Thunk for deleting a screenCategory
-export const deleteScreenCategory = createAsyncThunk(
-  "screenCategory/deleteScreenCategory",
+// Thunk for deleting a screen
+export const deleteScreen = createAsyncThunk(
+  "screen/deleteScreen",
   async (id, thunkAPI) => {
     try {
-      await Api.delete(`/screen-category/${id}`, {
+      await Api.delete(`/screen/${id}`, {
         withCredentials: true,
       });
-      return id; // Return the id of the deleted screenCategory for removal from state
+      return id; // Return the id of the deleted screen for removal from state
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
 
-// Thunk for creating a screenCategory
-export const createScreenCategory = createAsyncThunk(
-  "screenCategory/createScreenCategory",
+// Thunk for creating a screen
+export const createScreen = createAsyncThunk(
+  "screen/createScreen",
   async (data, thunkAPI) => {
     try {
-      const response = await Api.post(`/screen-category`, data, {
+      const response = await Api.post(`/screen`, data, {
         withCredentials: true,
       });
-      return response.data; // Return the created screenCategory data
+      return response.data; // Return the created screen data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
 
-// Thunk for updating a screenCategory
-export const updateScreenCategory = createAsyncThunk(
-  'screenCategory/updateScreenCategory',
+// Thunk for updating a screen
+export const updateScreen = createAsyncThunk(
+  'screen/updateScreen',
   async ({ id, data }, thunkAPI) => {
     try {
-      const response = await Api.put(`/screen-category/${id}`, data, { withCredentials: true });
+      const response = await Api.put(`/screen/${id}`, data, { withCredentials: true });
       return response.data;  
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -61,9 +61,9 @@ export const updateScreenCategory = createAsyncThunk(
   }
 );
 
-// ScreenCategory slice
+// screen slice
 const screenCategorySlice = createSlice({
-  name: "screenCategory",
+  name: "screen",
   initialState: {
     data: [],
     page: 1,
@@ -77,52 +77,52 @@ const screenCategorySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllScreenCategoryData.pending, (state) => {
+      .addCase(fetchAllScreenData.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAllScreenCategoryData.fulfilled, (state, action) => {
+      .addCase(fetchAllScreenData.fulfilled, (state, action) => {
         state.loading = false;
         state.data= action.payload
 
        })
-      .addCase(fetchAllScreenCategoryData.rejected, (state, action) => {
+      .addCase(fetchAllScreenData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(deleteScreenCategory.pending, (state) => {
+      .addCase(deleteScreen.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteScreenCategory.fulfilled, (state, action) => {
+      .addCase(deleteScreen.fulfilled, (state, action) => {
         state.loading = false;
-         notifySuccess('ScreenCategory deleted successfully'); // Notify success
+         notifySuccess('screen deleted successfully'); // Notify success
       })
-      .addCase(deleteScreenCategory.rejected, (state, action) => {
+      .addCase(deleteScreen.rejected, (state, action) => {
         state.loading = false;
         notifyError(action.payload); // Show error from backend in notifyError
       })
-      .addCase(createScreenCategory.pending, (state) => {
+      .addCase(createScreen.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(createScreenCategory.fulfilled, (state, action) => {
+      .addCase(createScreen.fulfilled, (state, action) => {
         state.loading = false;
-         notifySuccess('ScreenCategory created successfully'); // Notify success
+         notifySuccess('screen created successfully'); // Notify success
       })
-      .addCase(createScreenCategory.rejected, (state, action) => {
+      .addCase(createScreen.rejected, (state, action) => {
         state.loading = false;
         notifyError(action.payload); // Show error from backend in notifyError
       })
-      .addCase(updateScreenCategory.pending, (state) => {
+      .addCase(updateScreen.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateScreenCategory.fulfilled, (state, action) => {
+      .addCase(updateScreen.fulfilled, (state, action) => {
         state.loading = false;
-        notifySuccess('ScreenCategory updated successfully'); // Notify success
+        notifySuccess('screen updated successfully'); // Notify success
       })
-      .addCase(updateScreenCategory.rejected, (state, action) => {
+      .addCase(updateScreen.rejected, (state, action) => {
         state.loading = false;
         notifyError(action.payload); // Show error from backend in notifyError
       });

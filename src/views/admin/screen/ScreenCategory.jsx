@@ -12,7 +12,7 @@ import {
   Tr,
   useColorModeValue,
   Flex,
-  IconButton,
+  IconButton, 
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import ScreenCategoryModel from '../default/components/Models/ScreenCategoryModel';
@@ -23,15 +23,18 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import ConfirmDeleteModel from '../default/components/Models/ConfirmDeleteModel';
 import { MdDeleteOutline } from 'react-icons/md';
+import ReactPaginate from 'react-paginate';
+import Loader from 'components/loader/loader';
 
 const ScreenCategory = () => {
+
   const dispatch = useDispatch();
-  const { data, status } = useSelector((state) => state.screenCategory);
+  const { data, loading } = useSelector((state) => state.screenCategory);
   const colorMode = useColorModeValue('gray', 'gray.400');
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false); // For controlling modal visibility
-  const [categoryIdToDelete, setCategoryIdToDelete] = useState(null); // Store ID of category to delete
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categoryIdToDelete, setCategoryIdToDelete] = useState(null);
 
   useEffect(() => {
     dispatch(fetchAllScreenCategoryData({ page, query }));
@@ -51,9 +54,13 @@ const ScreenCategory = () => {
         .catch((e) => {
           console.log(e);
         });
-      setIsModalOpen(false); // Close the modal after deletion
-      setCategoryIdToDelete(null); // Reset the category ID
+      setIsModalOpen(false);
+      setCategoryIdToDelete(null);
     }
+  };
+
+  const handlePageChange = (selected) => {
+    setPage(selected.selected + 1);
   };
 
   return (
@@ -82,8 +89,7 @@ const ScreenCategory = () => {
           </Flex>
           <ScreenCategoryModel action="Add" />
         </HStack>
-        {status === 'loading' && <p>Loading...</p>}
-        {status === 'failed' && <p>Error loading data...</p>}
+
         <TableContainer>
           <Table variant="striped" colorScheme={colorMode}>
             <Thead bg="main">
@@ -103,32 +109,60 @@ const ScreenCategory = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {data?.map((row) => (
-                <Tr key={row?.id}>
-                  <Td textAlign={'center'}>{row?.id}</Td>
-                  <Td textAlign={'center'}>{row?.name}</Td>
-                  <Td textAlign={'center'}>
-                    <ScreenCategoryModel action="Update" categoryData={row} />
-                  </Td>
-                  <Td textAlign={'center'}>
-                    <IconButton
-                      aria-label="Delete"
-                      color="red"
-                      onClick={() => {
-                        setCategoryIdToDelete(row?.id); // Set the ID of the category to delete
-                        setIsModalOpen(true); // Open the modal
-                      }}
-                    > 
-                      <IconButton backgroundColor="transparent">
-                        <MdDeleteOutline color="red" fontSize="25px" />
-                      </IconButton>
-                    </IconButton>
+              {loading ? (
+                <Tr>
+                  <Td colSpan={4} textAlign="center">
+                    <Loader active={loading} />
                   </Td>
                 </Tr>
-              ))}
+              ) : (
+                data?.data?.map((row) => (
+                  <Tr key={row?.id}>
+                    <Td textAlign={'center'}>{row?.id}</Td>
+                    <Td textAlign={'center'}>{row?.name}</Td>
+                    <Td textAlign={'center'}>
+                      <ScreenCategoryModel action="Update" categoryData={row} />
+                    </Td>
+                    <Td textAlign={'center'}>
+                      <IconButton
+                        aria-label="Delete"
+                        color="red"
+                        onClick={() => {
+                          setCategoryIdToDelete(row?.id);
+                          setIsModalOpen(true);
+                        }}
+                      >
+                        <MdDeleteOutline fontSize="25px" />
+                      </IconButton>
+                    </Td>
+                  </Tr>
+                ))
+              )}
             </Tbody>
           </Table>
-        </TableContainer> 
+        </TableContainer>
+
+        {/* Pagination Controls */}
+        <Flex justifyContent="center" mt={4}>
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            onPageChange={handlePageChange}
+            pageRangeDisplayed={5}
+            pageCount={data?.count}
+            previousLabel="<"
+            containerClassName="pagination"
+            activeClassName="active"
+            previousClassName="previous"
+            nextClassName="next"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousLinkClassName="previous-link"
+            nextLinkClassName="next-link"
+            breakLinkClassName="break-link"
+          />
+        </Flex>
+
         <ConfirmDeleteModel
           isOpen={isModalOpen}
           onOpen={() => setIsModalOpen(true)}
