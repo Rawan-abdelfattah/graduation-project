@@ -95,7 +95,7 @@ const ScreenCategory = () => {
             <Thead bg="main">
               <Tr textAlign={'center'} bg="main">
                 <Th textAlign={'center'} color="#fff">
-                  ID
+                  #
                 </Th>
                 <Th textAlign={'center'} color="#fff">
                   Name
@@ -116,9 +116,9 @@ const ScreenCategory = () => {
                   </Td>
                 </Tr>
               ) : (
-                data?.data?.map((row) => (
+                data?.data?.map((row, index) => (
                   <Tr key={row?.id}>
-                    <Td textAlign={'center'}>{row?.id}</Td>
+                    <Td textAlign={'center'}>{index+1}</Td>
                     <Td textAlign={'center'}>{row?.name}</Td>
                     <Td textAlign={'center'}>
                       <ScreenCategoryModel action="Update" categoryData={row} />
@@ -142,27 +142,25 @@ const ScreenCategory = () => {
           </Table>
         </TableContainer>
 
-        {/* Pagination Controls */}
         <Flex justifyContent="center" mt={4}>
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel=">"
-            onPageChange={handlePageChange}
-            pageRangeDisplayed={5}
-            pageCount={data?.count}
-            previousLabel="<"
-            containerClassName="pagination"
-            activeClassName="active"
-            previousClassName="previous"
-            nextClassName="next"
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousLinkClassName="previous-link"
-            nextLinkClassName="next-link"
-            breakLinkClassName="break-link"
-          />
-        </Flex>
-
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handlePageChange}
+              pageRangeDisplayed={5}
+              pageCount={Math.ceil(data?.count / 10)} 
+              previousLabel="<"
+              containerClassName="pagination"
+              activeClassName="active"
+              previousClassName="previous"
+              nextClassName="next"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousLinkClassName="previous-link"
+              nextLinkClassName="next-link"
+              breakLinkClassName="break-link"
+            />
+          </Flex>
         <ConfirmDeleteModel
           isOpen={isModalOpen}
           onOpen={() => setIsModalOpen(true)}

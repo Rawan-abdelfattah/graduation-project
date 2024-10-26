@@ -32,8 +32,8 @@ const Screen = () => {
   const colorMode = useColorModeValue('gray', 'gray.400');
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false); // For controlling modal visibility
-  const [categoryIdToDelete, setCategoryIdToDelete] = useState(null); // Store ID of category to delete
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categoryIdToDelete, setCategoryIdToDelete] = useState(null);
 
   useEffect(() => {
     dispatch(fetchAllScreenData({ page, query }));
@@ -53,20 +53,16 @@ const Screen = () => {
         .catch((e) => {
           console.log(e);
         });
-      setIsModalOpen(false);  
-      setCategoryIdToDelete(null); 
+      setIsModalOpen(false);
+      setCategoryIdToDelete(null);
     }
   };
   const handlePageChange = (selected) => {
     setPage(selected.selected + 1);
-  };
-  console.log(loading);
-  
-
+  }; 
 
   return (
     <>
-    
       <Container maxW="100%">
         <HStack
           display="flex"
@@ -91,16 +87,19 @@ const Screen = () => {
           </Flex>
           <ScreenModel action="Add" />
         </HStack>
-    
+
         <TableContainer>
           <Table variant="striped" colorScheme={colorMode}>
             <Thead bg="main">
               <Tr textAlign={'center'} bg="main">
                 <Th textAlign={'center'} color="#fff">
-                  ID
+                  #
                 </Th>
                 <Th textAlign={'center'} color="#fff">
                   Name
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Route
                 </Th>
                 <Th textAlign={'center'} color="#fff">
                   Update
@@ -111,58 +110,58 @@ const Screen = () => {
               </Tr>
             </Thead>
             <Tbody>
-  {loading ? ( // Check if data is still loading
-    <Tr>
-      <Td colSpan={4} textAlign="center">
-        <Loader active={loading} />
-      </Td>
-    </Tr>
-  ) : (
-    data?.data?.map((row) => (
-      <Tr key={row?.id}>
-        <Td textAlign={'center'}>{row?.id}</Td>
-        <Td textAlign={'center'}>{row?.name}</Td>
-        <Td textAlign={'center'}>
-          <ScreenModel action="Update" categoryData={row} />
-        </Td>
-        <Td textAlign={'center'}>
-          <IconButton
-            aria-label="Delete"
-            color="red"
-            onClick={() => {
-              setCategoryIdToDelete(row?.id); // Set the ID of the category to delete
-              setIsModalOpen(true); // Open the modal
-            }}
-          >
-            <MdDeleteOutline fontSize="25px" />
-          </IconButton>
-        </Td>
-      </Tr>
-    ))
-  )}
-</Tbody>
-
+              {loading ? ( // Check if data is still loading
+                <Tr>
+                  <Td colSpan={4} textAlign="center">
+                    <Loader active={loading} />
+                  </Td>
+                </Tr>
+              ) : (
+                data?.data?.map((row , index) => (
+                  <Tr key={row?.id}>
+                    <Td textAlign={'center'}>{index+1}</Td>
+                    <Td textAlign={'center'}># {row?.screenCategoryId} <br/>{row?.name}</Td>
+                    <Td textAlign={'center'}>{row?.route}</Td>
+                    <Td textAlign={'center'}>
+                      <ScreenModel action="Update" categoryData={row} />
+                    </Td>
+                    <Td textAlign={'center'}>
+                      <IconButton
+                        aria-label="Delete"
+                        color="red"
+                        onClick={() => {
+                          setCategoryIdToDelete(row?.id); // Set the ID of the category to delete
+                          setIsModalOpen(true); // Open the modal
+                        }}
+                      >
+                        <MdDeleteOutline fontSize="25px" />
+                      </IconButton>
+                    </Td>
+                  </Tr>
+                ))
+              )}
+            </Tbody>
           </Table>
           <Flex justifyContent="center" mt={4}>
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel=">"
-            onPageChange={handlePageChange}
-            pageRangeDisplayed={5}
-            pageCount={data?.count}
-            previousLabel="<"
-            containerClassName="pagination"
-            activeClassName="active"
-            previousClassName="previous"
-            nextClassName="next"
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousLinkClassName="previous-link"
-            nextLinkClassName="next-link"
-            breakLinkClassName="break-link"
-          />
-        </Flex>
-        </TableContainer> 
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handlePageChange}
+              pageRangeDisplayed={5}
+              pageCount={Math.ceil(data?.count / 10)} 
+              previousLabel="<"
+              containerClassName="pagination"
+              activeClassName="active"
+              previousClassName="previous"
+              nextClassName="next"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousLinkClassName="previous-link"
+              nextLinkClassName="next-link"
+              breakLinkClassName="break-link"
+            />
+          </Flex>
+        </TableContainer>
         <ConfirmDeleteModel
           isOpen={isModalOpen}
           onOpen={() => setIsModalOpen(true)}
