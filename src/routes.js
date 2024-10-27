@@ -50,6 +50,9 @@ const routes = [
     path: '/rooms',
     icon: <Icon as={MdBedroomParent  } width="20px" height="20px" color="inherit" />,
     component: <Rooms />,
+
+  },
+  {
     name: 'Specialization',
     layout: '/admin',
     path: '/specialization',
