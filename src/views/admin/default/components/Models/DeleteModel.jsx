@@ -17,16 +17,16 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { DeleteUser } from 'views/admin/users/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { notifySuccess } from 'utils/Toastify';
-export default function DeleteModel({id}) {
+export default function DeleteModel({id,fun,name}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
     const queryClient = useQueryClient();
     const { mutate: mutateDelte } = useMutation({
-      mutationFn: DeleteUser,
+      mutationFn: fun,
       onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: ['user'],
+          queryKey: [name],
         });
-        notifySuccess('user has been deleted');
+        notifySuccess(`${name} has been deleted`);
         onClose();
       },
     });

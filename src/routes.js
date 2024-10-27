@@ -5,6 +5,7 @@ import { FaUsers } from "react-icons/fa";
 import { TbCategoryPlus } from "react-icons/tb";
 import { MdBedroomParent } from "react-icons/md";
 
+import { RiHealthBookLine } from 'react-icons/ri';
 // Admin Imports
 import MainDashboard from 'views/admin/default';
 import Profile from 'views/admin/profile';
@@ -16,6 +17,8 @@ import SignInCentered from 'views/auth/signIn';
 import Users from 'views/admin/users/Users';
 import ScreenTaps from 'views/admin/screen/ScreenTaps';
 import Rooms from 'views/admin/rooms/Rooms';
+import UserTabs from 'views/admin/users/UserTabs';
+import Specialization from 'views/admin/specialization/Specialization';
 
 const routes = [
   {
@@ -30,13 +33,15 @@ const routes = [
     layout: '/admin',
     path: '/users',
     icon: <Icon as={FaUsers} width="20px" height="20px" color="inherit" />,
-    component: <Users />,
+    component: <UserTabs />,
   },
   {
     name: 'Screen',
     layout: '/admin',
     path: '/screen',
-    icon: <Icon as={TbCategoryPlus } width="20px" height="20px" color="inherit" />,
+    icon: (
+      <Icon as={TbCategoryPlus} width="20px" height="20px" color="inherit" />
+    ),
     component: <ScreenTaps />,
   },
   {
@@ -45,6 +50,13 @@ const routes = [
     path: '/rooms',
     icon: <Icon as={MdBedroomParent  } width="20px" height="20px" color="inherit" />,
     component: <Rooms />,
+    name: 'Specialization',
+    layout: '/admin',
+    path: '/specialization',
+    icon: (
+      <Icon as={RiHealthBookLine} width="20px" height="20px" color="inherit" />
+    ),
+    component: <Specialization />,
   },
   {
     name: 'Data Tables',
