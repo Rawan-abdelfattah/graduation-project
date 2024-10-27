@@ -28,7 +28,7 @@ import {
   fetchAllScreenData,
 } from '../../../../../redux/slices/screenSlice';
 
-export default function ScreenModel({ action, categoryData }) {
+export default function ScreenModel({ action, screen }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
    
@@ -53,7 +53,7 @@ export default function ScreenModel({ action, categoryData }) {
         .catch((e) => console.log(e))
         .finally(() => setSubmitting(false));
     } else if (action === 'Update') {
-      dispatch(updateScreen({ id: categoryData?.id, data: payload }))
+      dispatch(updateScreen({ id: screen?.id, data: payload }))
         .unwrap()
         .then(() => {
           dispatch(fetchAllScreenData({ page: 1 }));
@@ -107,9 +107,9 @@ export default function ScreenModel({ action, categoryData }) {
           
           <Formik
             initialValues={{
-              name: categoryData ? categoryData.name : '',
+              name: screen ? screen.name : '',
               route: 'admin/Screen',
-              screenCategoryId: categoryData ? categoryData.id : 2,
+              screenCategoryId: screen ? screen.id : 2,
               actions: ["ADD", "UPDATE", "DELETE"],
             }}
             onSubmit={handleSubmit}

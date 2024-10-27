@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import Api from "@/config/api"; // Keep all imports at the top
-import { notifyError, notifySuccess } from "@/components/toastify/toastify";
-
-// Thunk for fetching room data
+import Api from "config/api";
+import { notifyError } from "utils/Toastify";
+import { notifySuccess } from "utils/Toastify";
+  
+// Thunk for fetching rooms data
 export const fetchAllRoomsData = createAsyncThunk(
-  "room/fetchAllRoomsData",
+  "rooms/fetchAllRoomsData",
   async ({page,query}, thunkAPI) => {
     try {
-      const response = await Api.get(`/rooms/all/${page}?${query? "query=" + query:""}`, {
+      const response = await Api.get(`/rooms/${page}?${query? "query=" + query:""}`, {
         withCredentials: true,
       });
       return response.data;
@@ -17,42 +18,42 @@ export const fetchAllRoomsData = createAsyncThunk(
   }
 );
 
-// Thunk for deleting a room
-export const deleteRoom = createAsyncThunk(
-  "room/deleteRoom",
+// Thunk for deleting a rooms
+export const deleteRooms = createAsyncThunk(
+  "rooms/deleteRooms",
   async (id, thunkAPI) => {
     try {
       await Api.delete(`/rooms/${id}`, {
         withCredentials: true,
       });
-      return id; // Return the id of the deleted room for removal from state
+      return id; // Return the id of the deleted rooms for removal from state
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
 
-// Thunk for creating a room
-export const createRoom = createAsyncThunk(
-  "room/createRoom",
+// Thunk for creating a rooms
+export const createRooms = createAsyncThunk(
+  "rooms/createRooms",
   async (data, thunkAPI) => {
     try {
       const response = await Api.post(`/rooms`, data, {
         withCredentials: true,
       });
-      return response.data; // Return the created room data
+      return response.data; // Return the created rooms data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
 
-// Thunk for updating a room
-export const updateRoom = createAsyncThunk(
-  'room/updateRoom',
+// Thunk for updating a rooms
+export const updateRooms = createAsyncThunk(
+  'rooms/updateRooms',
   async ({ id, data }, thunkAPI) => {
     try {
-      const response = await Api.patch(`/rooms/${id}`, data, { withCredentials: true });
+      const response = await Api.put(`/rooms/${id}`, data, { withCredentials: true });
       return response.data;  
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -60,11 +61,11 @@ export const updateRoom = createAsyncThunk(
   }
 );
 
-// Room slice
-const roomSlice = createSlice({
-  name: "room",
+// Rooms slice
+const roomsSlice = createSlice({
+  name: "rooms",
   initialState: {
-    all: [],
+    data: [],
     page: 1,
     loading: false,
     error: null
@@ -82,50 +83,51 @@ const roomSlice = createSlice({
       })
       .addCase(fetchAllRoomsData.fulfilled, (state, action) => {
         state.loading = false;
-        state.all = action.payload;
-      })
+        state.data= action.payload
+
+       })
       .addCase(fetchAllRoomsData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(deleteRoom.pending, (state) => {
+      .addCase(deleteRooms.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteRoom.fulfilled, (state, action) => {
+      .addCase(deleteRooms.fulfilled, (state, action) => {
         state.loading = false;
-         notifySuccess('Room deleted successfully'); // Notify success
+         notifySuccess('Rooms deleted successfully'); // Notify success
       })
-      .addCase(deleteRoom.rejected, (state, action) => {
+      .addCase(deleteRooms.rejected, (state, action) => {
         state.loading = false;
         notifyError(action.payload); // Show error from backend in notifyError
       })
-      .addCase(createRoom.pending, (state) => {
+      .addCase(createRooms.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(createRoom.fulfilled, (state, action) => {
+      .addCase(createRooms.fulfilled, (state, action) => {
         state.loading = false;
-         notifySuccess('Room created successfully'); // Notify success
+         notifySuccess('Rooms created successfully'); // Notify success
       })
-      .addCase(createRoom.rejected, (state, action) => {
+      .addCase(createRooms.rejected, (state, action) => {
         state.loading = false;
         notifyError(action.payload); // Show error from backend in notifyError
       })
-      .addCase(updateRoom.pending, (state) => {
+      .addCase(updateRooms.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateRoom.fulfilled, (state, action) => {
+      .addCase(updateRooms.fulfilled, (state, action) => {
         state.loading = false;
-        notifySuccess('Room updated successfully'); // Notify success
+        notifySuccess('Rooms updated successfully'); // Notify success
       })
-      .addCase(updateRoom.rejected, (state, action) => {
+      .addCase(updateRooms.rejected, (state, action) => {
         state.loading = false;
         notifyError(action.payload); // Show error from backend in notifyError
       });
   },
 });
 
-export const { setPage } = roomSlice.actions;
-export default roomSlice.reducer;
+export const { setPage } = roomsSlice.actions;
+export default roomsSlice.reducer;

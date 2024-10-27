@@ -15,54 +15,60 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import ScreenModel from '../default/components/Models/ScreenModel';
+import RoomsModel from '../default/components/Models/RoomsModel';
 import {
-  fetchAllScreenData,
-  deleteScreen,
-} from '../../../redux/slices/screenSlice';
+  fetchAllRoomsData,
+  deleteRooms,
+} from '../../../redux/slices/roomsSlice';
 import { SearchIcon } from '@chakra-ui/icons';
 import ConfirmDeleteModel from '../default/components/Models/ConfirmDeleteModel';
 import { MdDeleteOutline } from 'react-icons/md';
 import ReactPaginate from 'react-paginate';
 import Loader from 'components/loader/loader';
+import { Helmet } from 'react-helmet';
 
-const Screen = () => {
+const Rooms = () => {
   const dispatch = useDispatch();
-  const { data, loading } = useSelector((state) => state.screen);
+  const { data, loading } = useSelector((state) => state.rooms);
   const colorMode = useColorModeValue('gray', 'gray.400');
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [categoryIdToDelete, setScreenIdToDelete] = useState(null);
+  const [categoryIdToDelete, setRoomIdToDelete] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAllScreenData({ page, query }));
+    dispatch(fetchAllRoomsData({ page, query }));
   }, [dispatch, page, query]);
 
   const handleSearchChange = (e) => {
     setQuery(e.target.value);
   };
 
-  const handleDeleteScreen = () => {
+  const handleDeleteRoom = () => {
     if (categoryIdToDelete) {
-      dispatch(deleteScreen(categoryIdToDelete))
+      dispatch(deleteRooms(categoryIdToDelete))
         .unwrap()
         .then(() => {
-          dispatch(fetchAllScreenData({ page: 1 }));
+          dispatch(fetchAllRoomsData({ page: 1 }));
         })
         .catch((e) => {
           console.log(e);
         });
       setIsModalOpen(false);
-      setScreenIdToDelete(null);
+      setRoomIdToDelete(null);
     }
   };
+
   const handlePageChange = (selected) => {
     setPage(selected.selected + 1);
-  };
+  }; 
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Rooms</title>
+      </Helmet>
       <Container maxW="100%">
         <HStack
           display="flex"
@@ -85,37 +91,28 @@ const Screen = () => {
               <SearchIcon />
             </IconButton>
           </Flex>
-          <ScreenModel action="Add" />
+          <RoomsModel action="Add" />
         </HStack>
 
         <TableContainer>
           <Table variant="striped" colorScheme={colorMode}>
             <Thead bg="main">
-              <Tr textAlign={'center'} bg="main">
-                <Th textAlign={'center'} color="#fff">
-                  #
-                </Th>
-                <Th textAlign={'center'} color="#fff">
-                  Name
-                </Th>
-                <Th textAlign={'center'} color="#fff">
-                  Route
-                </Th>
-                <Th textAlign={'center'} color="#fff">
-                  Actions
-                </Th>
-                <Th textAlign={'center'} color="#fff">
-                  Update
-                </Th>
-                <Th textAlign={'center'} color="#fff">
-                  Delete
-                </Th>
+              <Tr textAlign={'center'}>
+                <Th textAlign={'center'} color="#fff">#</Th>
+                <Th textAlign={'center'} color="#fff">Room No</Th>
+                <Th textAlign={'center'} color="#fff">Type</Th>
+                <Th textAlign={'center'} color="#fff">Status</Th>
+                <Th textAlign={'center'} color="#fff">Beds</Th>
+                <Th textAlign={'center'} color="#fff">Companion No</Th>
+                <Th textAlign={'center'} color="#fff">Degree</Th>
+                <Th textAlign={'center'} color="#fff">Update</Th>
+                <Th textAlign={'center'} color="#fff">Delete</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {loading ? ( // Check if data is still loading
+              {loading ? (
                 <Tr>
-                  <Td colSpan={6} textAlign="center">
+                  <Td colSpan={9} textAlign="center">
                     <Loader active={loading} />
                   </Td>
                 </Tr>
@@ -123,28 +120,22 @@ const Screen = () => {
                 data?.data?.map((row, index) => (
                   <Tr key={row?.id}>
                     <Td textAlign={'center'}>{index + 1}</Td>
+                    <Td textAlign={'center'}>{row.roomNo}</Td>
+                    <Td textAlign={'center'}>{row.type}</Td>
+                    <Td textAlign={'center'}>{row.status}</Td>
+                    <Td textAlign={'center'}>{row.beds}</Td>
+                    <Td textAlign={'center'}>{row.companionNo}</Td>
+                    <Td textAlign={'center'}>{row.degree}</Td>
                     <Td textAlign={'center'}>
-                      # {row?.screenCategoryId} <br />
-                      {row?.name}
-                    </Td>
-                    <Td textAlign={'center'}>{row?.route}</Td>
-                    <Td textAlign="center">
-                      {row?.actions?.map((action) => (
-                        <span padding={'30px'} key={action.name}>
-                          ({action.name}){' '}
-                        </span>
-                      ))}
-                    </Td>
-                    <Td textAlign={'center'}>
-                      <ScreenModel action="Update" screen={row} />
+                      <RoomsModel action="Update" rooms={row} />
                     </Td>
                     <Td textAlign={'center'}>
                       <IconButton
                         aria-label="Delete"
                         color="red"
                         onClick={() => {
-                          setScreenIdToDelete(row?.id); // Set the ID of the category to delete
-                          setIsModalOpen(true); // Open the modal
+                          setRoomIdToDelete(row?.id);
+                          setIsModalOpen(true);
                         }}
                       >
                         <MdDeleteOutline fontSize="25px" />
@@ -161,17 +152,10 @@ const Screen = () => {
               nextLabel=">"
               onPageChange={handlePageChange}
               pageRangeDisplayed={5}
-              pageCount={Math.ceil(data?.count / 10)}
+              pageCount={Math.ceil(data?.count / 10)} 
               previousLabel="<"
               containerClassName="pagination"
               activeClassName="active"
-              previousClassName="previous"
-              nextClassName="next"
-              pageClassName="page-item"
-              pageLinkClassName="page-link"
-              previousLinkClassName="previous-link"
-              nextLinkClassName="next-link"
-              breakLinkClassName="break-link"
             />
           </Flex>
         </TableContainer>
@@ -179,11 +163,11 @@ const Screen = () => {
           isOpen={isModalOpen}
           onOpen={() => setIsModalOpen(true)}
           onClose={() => setIsModalOpen(false)}
-          action={handleDeleteScreen}
+          action={handleDeleteRoom}
         />
       </Container>
     </>
   );
 };
 
-export default Screen;
+export default Rooms;
