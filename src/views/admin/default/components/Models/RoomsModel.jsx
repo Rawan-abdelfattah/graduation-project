@@ -125,7 +125,7 @@ export default function RoomsModel({ action, rooms }) {
                       <FormLabel>Type</FormLabel>
                       <Field
                         as={Select}
-                        name="type" 
+                        name="type"     
                       >
                         <option value="Operations">Operations</option>
                         <option value="ICU">ICU</option>

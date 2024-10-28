@@ -31,7 +31,7 @@ import {
 export default function ScreenModel({ action, screen }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
-   
+
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
@@ -104,13 +104,13 @@ export default function ScreenModel({ action, screen }) {
             <IoPersonAddOutline color="main" />
             {action === 'Add' ? 'Add' : 'Update'} Screen Category
           </ModalHeader>
-          
+
           <Formik
             initialValues={{
               name: screen ? screen.name : '',
               route: 'admin/Screen',
               screenCategoryId: screen ? screen.id : 2,
-              actions: ["ADD", "UPDATE", "DELETE"],
+              actions: ['ADD', 'UPDATE', 'DELETE'],
             }}
             onSubmit={handleSubmit}
           >
@@ -159,7 +159,10 @@ export default function ScreenModel({ action, screen }) {
                     </FormControl>
                     <FormControl>
                       <FormLabel>Actions</FormLabel>
-                      <CheckboxGroup colorScheme="green" defaultValue={["ADD", "UPDATE", "DELETE"]}>
+                      <CheckboxGroup
+                        colorScheme="green"
+                        defaultValue={['ADD', 'UPDATE', 'DELETE']}
+                      >
                         <Stack spacing={5} direction="row">
                           <Field as={Checkbox} name="actions" value="ADD">
                             Add

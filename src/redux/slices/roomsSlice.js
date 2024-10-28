@@ -47,7 +47,7 @@ export const createRooms = createAsyncThunk(
     }
   }
 );
-
+   
 // Thunk for updating a rooms
 export const updateRooms = createAsyncThunk(
   'rooms/updateRooms',

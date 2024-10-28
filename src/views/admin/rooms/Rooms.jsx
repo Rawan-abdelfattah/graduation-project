@@ -26,6 +26,7 @@ import { MdDeleteOutline } from 'react-icons/md';
 import ReactPaginate from 'react-paginate';
 import Loader from 'components/loader/loader';
 import { Helmet } from 'react-helmet';
+import { Pagination } from 'components/pagination/Pagination';
 
 const Rooms = () => {
   const dispatch = useDispatch();
@@ -58,10 +59,6 @@ const Rooms = () => {
       setRoomIdToDelete(null);
     }
   };
-
-  const handlePageChange = (selected) => {
-    setPage(selected.selected + 1);
-  }; 
 
   return (
     <>
@@ -98,15 +95,33 @@ const Rooms = () => {
           <Table variant="striped" colorScheme={colorMode}>
             <Thead bg="main">
               <Tr textAlign={'center'}>
-                <Th textAlign={'center'} color="#fff">#</Th>
-                <Th textAlign={'center'} color="#fff">Room No</Th>
-                <Th textAlign={'center'} color="#fff">Type</Th>
-                <Th textAlign={'center'} color="#fff">Status</Th>
-                <Th textAlign={'center'} color="#fff">Beds</Th>
-                <Th textAlign={'center'} color="#fff">Companion No</Th>
-                <Th textAlign={'center'} color="#fff">Degree</Th>
-                <Th textAlign={'center'} color="#fff">Update</Th>
-                <Th textAlign={'center'} color="#fff">Delete</Th>
+                <Th textAlign={'center'} color="#fff">
+                  #
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Room No
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Type
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Status
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Beds
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Companion No
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Degree
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Update
+                </Th>
+                <Th textAlign={'center'} color="#fff">
+                  Delete
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -146,18 +161,7 @@ const Rooms = () => {
               )}
             </Tbody>
           </Table>
-          <Flex justifyContent="center" mt={4}>
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel=">"
-              onPageChange={handlePageChange}
-              pageRangeDisplayed={5}
-              pageCount={Math.ceil(data?.count / 10)} 
-              previousLabel="<"
-              containerClassName="pagination"
-              activeClassName="active"
-            />
-          </Flex>
+          <Pagination data={data} onPageChange={(page) => setPage(page)} />
         </TableContainer>
         <ConfirmDeleteModel
           isOpen={isModalOpen}

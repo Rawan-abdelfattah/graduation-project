@@ -15,52 +15,57 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import ScreenModel from '../default/components/Models/ScreenModel';
+import OperationsModel from '../default/components/Models/OperationsModel';
 import {
-  fetchAllScreenData,
-  deleteScreen,
-} from '../../../redux/slices/screenSlice';
+  fetchAllOperationsData,
+  deleteOperations,
+} from '../../../redux/slices/operationsSlice';
 import { SearchIcon } from '@chakra-ui/icons';
 import ConfirmDeleteModel from '../default/components/Models/ConfirmDeleteModel';
 import { MdDeleteOutline } from 'react-icons/md';
 import ReactPaginate from 'react-paginate';
 import Loader from 'components/loader/loader';
+import { Helmet } from 'react-helmet';
 import { Pagination } from 'components/pagination/Pagination';
 
-const Screen = () => {
+const Operations = () => {
   const dispatch = useDispatch();
-  const { data, loading } = useSelector((state) => state.screen);
+  const { data, loading } = useSelector((state) => state.operations);
   const colorMode = useColorModeValue('gray', 'gray.400');
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [categoryIdToDelete, setScreenIdToDelete] = useState(null);
+  const [categoryIdToDelete, setRoomIdToDelete] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAllScreenData({ page, query }));
+    dispatch(fetchAllOperationsData({ page, query }));
   }, [dispatch, page, query]);
 
   const handleSearchChange = (e) => {
     setQuery(e.target.value);
   };
 
-  const handleDeleteScreen = () => {
+  const handleDeleteRoom = () => {
     if (categoryIdToDelete) {
-      dispatch(deleteScreen(categoryIdToDelete))
+      dispatch(deleteOperations(categoryIdToDelete))
         .unwrap()
         .then(() => {
-          dispatch(fetchAllScreenData({ page: 1 }));
+          dispatch(fetchAllOperationsData({ page: 1 }));
         })
         .catch((e) => {
           console.log(e);
         });
       setIsModalOpen(false);
-      setScreenIdToDelete(null);
+      setRoomIdToDelete(null);
     }
   };
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Operations</title>
+      </Helmet>
       <Container maxW="100%">
         <HStack
           display="flex"
@@ -83,35 +88,35 @@ const Screen = () => {
               <SearchIcon />
             </IconButton>
           </Flex>
-          <ScreenModel action="Add" />
+          <OperationsModel action="Add" />
         </HStack>
 
         <TableContainer>
           <Table variant="striped" colorScheme={colorMode}>
             <Thead bg="main">
-              <Tr textAlign={'center'} bg="main">
-                <Th textAlign={'center'} color="#fff">
+              <Tr>
+                <Th textAlign="center" color="#fff">
                   #
                 </Th>
-                <Th textAlign={'center'} color="#fff">
+                <Th textAlign="center" color="#fff">
                   Name
                 </Th>
-                <Th textAlign={'center'} color="#fff">
-                  Route
+                <Th textAlign="center" color="#fff">
+                  Arabic Name
                 </Th>
-                <Th textAlign={'center'} color="#fff">
-                  Actions
+                <Th textAlign="center" color="#fff">
+                  Specialization
                 </Th>
-                <Th textAlign={'center'} color="#fff">
+                <Th textAlign="center" color="#fff">
                   Update
                 </Th>
-                <Th textAlign={'center'} color="#fff">
+                <Th textAlign="center" color="#fff">
                   Delete
                 </Th>
               </Tr>
             </Thead>
             <Tbody>
-              {loading ? ( // Check if data is still loading
+              {loading ? (
                 <Tr>
                   <Td colSpan={6} textAlign="center">
                     <Loader active={loading} />
@@ -120,50 +125,43 @@ const Screen = () => {
               ) : (
                 data?.data?.map((row, index) => (
                   <Tr key={row?.id}>
-                    <Td textAlign={'center'}>{index + 1}</Td>
-                    <Td textAlign={'center'}>
-                      # {row?.screenCategoryId} <br />
-                      {row?.name}
-                    </Td>
-                    <Td textAlign={'center'}>{row?.route}</Td>
+                    <Td textAlign="center">{index + 1}</Td>
+                    <Td textAlign="center">{row.name}</Td>
+                    <Td textAlign="center">{row.arName}</Td>
+                    <Td textAlign="center">{row.specialization}</Td>
                     <Td textAlign="center">
-                      {row?.actions?.map((action) => (
-                        <span padding={'30px'} key={action.name}>
-                          ({action.name}){' '}
-                        </span>
-                      ))}
+                      <OperationsModel action="Update" operations={row} />
                     </Td>
-                    <Td textAlign={'center'}>
-                      <ScreenModel action="Update" screen={row} />
-                    </Td>
-                    <Td textAlign={'center'}>
+                    <Td textAlign="center">
                       <IconButton
                         aria-label="Delete"
                         color="red"
                         onClick={() => {
-                          setScreenIdToDelete(row?.id); // Set the ID of the category to delete
-                          setIsModalOpen(true); // Open the modal
+                          setRoomIdToDelete(row?.id);
+                          setIsModalOpen(true);
                         }}
-                      >
-                        <MdDeleteOutline fontSize="25px" />
-                      </IconButton>
+                        icon={<MdDeleteOutline fontSize="25px" />}
+                      />
                     </Td>
                   </Tr>
                 ))
               )}
             </Tbody>
           </Table>
+
+          {/* Pagination */}
           <Pagination data={data} onPageChange={(page) => setPage(page)} />
         </TableContainer>
+
         <ConfirmDeleteModel
           isOpen={isModalOpen}
           onOpen={() => setIsModalOpen(true)}
           onClose={() => setIsModalOpen(false)}
-          action={handleDeleteScreen}
+          action={handleDeleteRoom}
         />
       </Container>
     </>
   );
 };
 
-export default Screen;
+export default Operations;

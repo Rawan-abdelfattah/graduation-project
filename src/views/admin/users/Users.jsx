@@ -23,6 +23,7 @@ import ReactPaginate from 'react-paginate';
 import { SearchIcon } from '@chakra-ui/icons';
 
 const Users = () => {
+  
   const colorMode = useColorModeValue('gray', 'gray.400');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');

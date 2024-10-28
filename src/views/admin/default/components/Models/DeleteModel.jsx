@@ -18,6 +18,7 @@ import { DeleteUser } from 'views/admin/users/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { notifySuccess } from 'utils/Toastify';
 export default function DeleteModel({id,fun,name}) {
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
     const queryClient = useQueryClient();
     const { mutate: mutateDelte } = useMutation({
