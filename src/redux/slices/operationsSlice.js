@@ -8,7 +8,7 @@ export const fetchAllOperationsData = createAsyncThunk(
   "operations/fetchAllOperationsData",
   async ({page,query}, thunkAPI) => {    
     try {
-      const response = await Api.get(`/operations/${page}?${query? "query=" + query:""}`, {
+      const response = await Api.get(`/operation/${page}?${query? "query=" + query:""}`, {
         withCredentials: true,
       });
       return response.data;
@@ -23,7 +23,7 @@ export const deleteOperations = createAsyncThunk(
   "operations/deleteOperations",
   async (id, thunkAPI) => {
     try {
-      await Api.delete(`/operations/${id}`, {
+      await Api.delete(`/operation/${id}`, {
         withCredentials: true,
       });
       return id; // Return the id of the deleted operations for removal from state
@@ -38,7 +38,7 @@ export const createOperations = createAsyncThunk(
   "operations/createOperations",
   async (data, thunkAPI) => {
     try {
-      const response = await Api.post(`/operations`, data, {
+      const response = await Api.post(`/operation`, data, {
         withCredentials: true,
       });
       return response.data; // Return the created operations data
@@ -53,7 +53,7 @@ export const updateOperations = createAsyncThunk(
   'operations/updateOperations',
   async ({ id, data }, thunkAPI) => {
     try {
-      const response = await Api.put(`/operations/${id}`, data, { withCredentials: true });
+      const response = await Api.patch(`/operation/${id}`, data, { withCredentials: true });
       return response.data;  
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);

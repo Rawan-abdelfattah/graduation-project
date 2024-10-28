@@ -50,7 +50,7 @@ export default function OperationsModel({ action, operations }) {
     const payload = {
       arName: values.arName,
       name: values.name,
-      specializationId: values.specializationId,
+      specializationId: parseInt(values.specializationId),
     };
 
     if (action === 'Add') {
@@ -110,7 +110,7 @@ export default function OperationsModel({ action, operations }) {
             initialValues={{
               arName: operations?.arName || '',
               name: operations?.name || '',
-              specializationId: operations?.specializationId || '',
+              specializationId: operations?.specializationId || 0,
             }}
             onSubmit={handleSubmit}
           >
@@ -139,9 +139,9 @@ export default function OperationsModel({ action, operations }) {
 
                     <FormControl>
                       <FormLabel>Specialization</FormLabel>
-                      <Field as={Select} name="specializationId" placeholder="Select specialization">
+                      <Field as={Select} name="specializationId"  placeholder="Select specialization">
                         {specializations?.data?.map((spec) => (
-                          <option key={spec.id} value={spec.id}>
+                          <option key={spec.id}  value={spec.id}>
                             {spec.name}
                           </option>
                         ))}

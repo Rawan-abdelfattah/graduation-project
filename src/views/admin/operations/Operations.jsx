@@ -23,7 +23,6 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import ConfirmDeleteModel from '../default/components/Models/ConfirmDeleteModel';
 import { MdDeleteOutline } from 'react-icons/md';
-import ReactPaginate from 'react-paginate';
 import Loader from 'components/loader/loader';
 import { Helmet } from 'react-helmet';
 import { Pagination } from 'components/pagination/Pagination';
@@ -126,9 +125,9 @@ const Operations = () => {
                 data?.data?.map((row, index) => (
                   <Tr key={row?.id}>
                     <Td textAlign="center">{index + 1}</Td>
-                    <Td textAlign="center">{row.name}</Td>
-                    <Td textAlign="center">{row.arName}</Td>
-                    <Td textAlign="center">{row.specialization}</Td>
+                    <Td textAlign="center">{row?.name}</Td>
+                    <Td textAlign="center">{row?.arName}</Td>
+                    <Td textAlign="center">{row?.specialization?.name}</Td>
                     <Td textAlign="center">
                       <OperationsModel action="Update" operations={row} />
                     </Td>
