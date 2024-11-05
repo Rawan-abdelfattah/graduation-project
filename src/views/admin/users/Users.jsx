@@ -24,6 +24,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 import PermissionModel from '../default/components/Models/PermissionModel';
 
 const Users = () => {
+  
   const colorMode = useColorModeValue('gray', 'gray.400');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');

@@ -3,6 +3,9 @@ import { Icon } from '@chakra-ui/react';
 import { MdBarChart, MdPerson, MdHome, MdLock, } from 'react-icons/md';
 import { FaUsers } from "react-icons/fa";
 import { TbCategoryPlus } from "react-icons/tb";
+import { MdOutlineSick } from "react-icons/md";
+import { MdBedroomParent } from "react-icons/md";
+
 import { RiHealthBookLine } from 'react-icons/ri';
 // Admin Imports
 import MainDashboard from 'views/admin/default';
@@ -14,8 +17,10 @@ import RTL from 'views/admin/rtl';
 import SignInCentered from 'views/auth/signIn';
 import Users from 'views/admin/users/Users';
 import ScreenTaps from 'views/admin/screen/ScreenTaps';
+import Rooms from 'views/admin/rooms/Rooms';
 import UserTabs from 'views/admin/users/UserTabs';
 import Specialization from 'views/admin/specialization/Specialization';
+import Operations from 'views/admin/operations/Operations';
 
 const routes = [
   {
@@ -40,6 +45,22 @@ const routes = [
       <Icon as={TbCategoryPlus} width="20px" height="20px" color="inherit" />
     ),
     component: <ScreenTaps />,
+  },
+  {
+    name: 'Rooms',
+    layout: '/admin',
+    path: '/rooms',
+    icon: <Icon as={MdBedroomParent  } width="20px" height="20px" color="inherit" />,
+    component: <Rooms />,
+
+  },
+  {
+    name: 'Operations',
+    layout: '/admin',
+    path: '/operation',
+    icon: <Icon as={MdOutlineSick  } width="20px" height="20px" color="inherit" />,
+    component: <Operations />,
+
   },
   {
     name: 'Specialization',

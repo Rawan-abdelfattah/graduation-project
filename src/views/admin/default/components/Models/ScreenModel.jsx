@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -16,10 +16,11 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  Select,
   useDisclosure,
 } from '@chakra-ui/react';
 import { IoPersonAddOutline } from 'react-icons/io5';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaRegEdit } from 'react-icons/fa';
 import { Formik, Form, Field } from 'formik';
 import {
@@ -27,20 +28,35 @@ import {
   createScreen,
   fetchAllScreenData,
 } from '../../../../../redux/slices/screenSlice';
+import { fetchAllScreenCategoryData } from '../../../../../redux/slices/screenCategorySlice';
 
-export default function ScreenModel({ action, categoryData }) {
+export default function ScreenModel({ action, screen }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
-   
+  const screenCategories = useSelector((state) => state.screenCategory.data);
+
+  // Map screen actions to extract only the action names for initial state
+  const [selectedActions, setSelectedActions] = useState(
+    screen ? screen.actions.map(action => action.name) : []
+  );
+
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+
+  useEffect(() => {
+    dispatch(fetchAllScreenCategoryData({ page: 1, query: '' }));
+  }, [dispatch]);
+
+  const handleActionChange = (value) => {
+    setSelectedActions(value);
+  };
 
   const handleSubmit = (values, { setSubmitting }) => {
     const payload = {
       route: values.route,
       name: values.name,
       screenCategoryId: parseInt(values.screenCategoryId),
-      actions: values.actions,
+      actions: selectedActions,
     };
 
     if (action === 'Add') {
@@ -53,7 +69,7 @@ export default function ScreenModel({ action, categoryData }) {
         .catch((e) => console.log(e))
         .finally(() => setSubmitting(false));
     } else if (action === 'Update') {
-      dispatch(updateScreen({ id: categoryData?.id, data: payload }))
+      dispatch(updateScreen({ id: screen?.id, data: payload }))
         .unwrap()
         .then(() => {
           dispatch(fetchAllScreenData({ page: 1 }));
@@ -63,6 +79,7 @@ export default function ScreenModel({ action, categoryData }) {
         .finally(() => setSubmitting(false));
     }
   };
+
 
   return (
     <>
@@ -104,17 +121,17 @@ export default function ScreenModel({ action, categoryData }) {
             <IoPersonAddOutline color="main" />
             {action === 'Add' ? 'Add' : 'Update'} Screen Category
           </ModalHeader>
-          
+
           <Formik
             initialValues={{
-              name: categoryData ? categoryData.name : '',
+              name: screen ? screen.name : '',
               route: 'admin/Screen',
-              screenCategoryId: categoryData ? categoryData.id : 2,
-              actions: ["ADD", "UPDATE", "DELETE"],
+              screenCategoryId: screen ? screen.screenCategoryId : '',
+              actions: screen ? screen.actions.map(action => action.name) : [],
             }}
             onSubmit={handleSubmit}
           >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, setFieldValue }) => (
               <Form>
                 <ModalBody pb={6}>
                   {action === 'Update' && (
@@ -131,45 +148,53 @@ export default function ScreenModel({ action, categoryData }) {
                   <Grid templateColumns="repeat(1, 1fr)" gap={4}>
                     <FormControl>
                       <FormLabel>Name</FormLabel>
-                      <Field
-                        as={Input}
-                        name="name"
-                        placeholder="Name"
-                        required
-                      />
+                      <Field as={Input} name="name" placeholder="Name" required />
                     </FormControl>
                     <FormControl>
                       <FormLabel>Route</FormLabel>
-                      <Field
-                        as={Input}
-                        name="route"
-                        placeholder="Route"
-                        required
-                      />
+                      <Field as={Input} name="route" placeholder="Route" required />
                     </FormControl>
                     <FormControl>
                       <FormLabel>Screen Category ID</FormLabel>
                       <Field
-                        as={Input}
-                        type="number"
+                        as={Select}
                         name="screenCategoryId"
-                        placeholder="Screen Category ID"
-                        required
-                      />
+                        onChange={(e) => {
+                          setFieldValue('screenCategoryId', e.target.value);
+                        }}
+                      // value={screen ? screen.screenCategoryId : ''}
+                      >
+                        {screenCategories?.data?.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </Field>
                     </FormControl>
+
                     <FormControl>
                       <FormLabel>Actions</FormLabel>
-                      <CheckboxGroup colorScheme="green" defaultValue={["ADD", "UPDATE", "DELETE"]}>
+                      <CheckboxGroup
+                        colorScheme="green"
+                        value={selectedActions}
+                        onChange={(value) => {
+                          handleActionChange(value);
+                          setFieldValue("actions", value);
+                        }}
+                      >
                         <Stack spacing={5} direction="row">
-                          <Field as={Checkbox} name="actions" value="ADD">
+                          <Checkbox value="ADD" isChecked={selectedActions.includes('ADD')}>
                             Add
-                          </Field>
-                          <Field as={Checkbox} name="actions" value="UPDATE">
+                          </Checkbox>
+                          <Checkbox value="UPDATE" isChecked={selectedActions.includes('UPDATE')}>
                             Update
-                          </Field>
-                          <Field as={Checkbox} name="actions" value="DELETE">
+                          </Checkbox>
+                          <Checkbox value="DELETE" isChecked={selectedActions.includes('DELETE')}>
                             Delete
-                          </Field>
+                          </Checkbox>
+                          <Checkbox value="VIEW" isChecked={selectedActions.includes('VIEW')}>
+                            View
+                          </Checkbox>
                         </Stack>
                       </CheckboxGroup>
                     </FormControl>

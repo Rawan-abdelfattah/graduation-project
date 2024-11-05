@@ -12,7 +12,7 @@ import {
   Tr,
   useColorModeValue,
   Flex,
-  IconButton, 
+  IconButton,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import ScreenCategoryModel from '../default/components/Models/ScreenCategoryModel';
@@ -25,9 +25,9 @@ import ConfirmDeleteModel from '../default/components/Models/ConfirmDeleteModel'
 import { MdDeleteOutline } from 'react-icons/md';
 import ReactPaginate from 'react-paginate';
 import Loader from 'components/loader/loader';
+import { Pagination } from 'components/pagination/Pagination';
 
 const ScreenCategory = () => {
-
   const dispatch = useDispatch();
   const { data, loading } = useSelector((state) => state.screenCategory);
   const colorMode = useColorModeValue('gray', 'gray.400');
@@ -57,10 +57,6 @@ const ScreenCategory = () => {
       setIsModalOpen(false);
       setCategoryIdToDelete(null);
     }
-  };
-
-  const handlePageChange = (selected) => {
-    setPage(selected.selected + 1);
   };
 
   return (
@@ -118,7 +114,7 @@ const ScreenCategory = () => {
               ) : (
                 data?.data?.map((row, index) => (
                   <Tr key={row?.id}>
-                    <Td textAlign={'center'}>{index+1}</Td>
+                    <Td textAlign={'center'}>{index + 1}</Td>
                     <Td textAlign={'center'}>{row?.name}</Td>
                     <Td textAlign={'center'}>
                       <ScreenCategoryModel action="Update" categoryData={row} />
@@ -142,25 +138,8 @@ const ScreenCategory = () => {
           </Table>
         </TableContainer>
 
-        <Flex justifyContent="center" mt={4}>
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel=">"
-              onPageChange={handlePageChange}
-              pageRangeDisplayed={5}
-              pageCount={Math.ceil(data?.count / 10)} 
-              previousLabel="<"
-              containerClassName="pagination"
-              activeClassName="active"
-              previousClassName="previous"
-              nextClassName="next"
-              pageClassName="page-item"
-              pageLinkClassName="page-link"
-              previousLinkClassName="previous-link"
-              nextLinkClassName="next-link"
-              breakLinkClassName="break-link"
-            />
-          </Flex>
+        <Pagination data={data} onPageChange={(page) => setPage(page)} />
+
         <ConfirmDeleteModel
           isOpen={isModalOpen}
           onOpen={() => setIsModalOpen(true)}

@@ -18,6 +18,7 @@ export default function ConfirmDeleteModel({
   action,
 }) {
   const handleAction = () => {
+    
     if (action) {
       action();
     }
