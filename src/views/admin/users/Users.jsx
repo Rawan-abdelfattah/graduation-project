@@ -21,6 +21,7 @@ import UserModel from '../default/components/Models/UserModel';
 import DeleteModel from '../default/components/Models/DeleteModel';
 import ReactPaginate from 'react-paginate';
 import { SearchIcon } from '@chakra-ui/icons';
+import PermissionModel from '../default/components/Models/PermissionModel';
 
 const Users = () => {
   const colorMode = useColorModeValue('gray', 'gray.400');
@@ -111,6 +112,9 @@ const Users = () => {
               </Th>
 
               <Th textAlign={'center'} color="#fff">
+                Permission
+              </Th>
+              <Th textAlign={'center'} color="#fff">
                 Edit
               </Th>
               <Th textAlign={'center'} color="#fff">
@@ -126,6 +130,7 @@ const Users = () => {
                 <Td textAlign={'center'}>{row?.name}</Td>
                 <Td textAlign={'center'}>{row?.nationalId}</Td>
                 <Td textAlign={'center'}>{row?.role?.name}</Td>
+                <Td textAlign={'center'}><PermissionModel id={row?.id}/></Td>
 
                 <Td textAlign={'center'}>
                   <UserModel
