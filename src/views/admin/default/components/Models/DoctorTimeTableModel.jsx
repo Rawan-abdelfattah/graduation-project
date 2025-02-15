@@ -101,7 +101,7 @@ export default function DoctorTimeTableModel({ action, doctorTimeTable }) {
               doctorId: doctorTimeTable?.doctorId || '',
               schedule: [
                 {
-                  day: doctorTimeTable?.day || '',
+                  day: doctorTimeTable?.day || 'Monday',
                   startTime: doctorTimeTable?.startTime || '',
                   endTime: doctorTimeTable?.endTime || '',
                 },
