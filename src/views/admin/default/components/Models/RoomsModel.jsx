@@ -126,42 +126,49 @@ export default function RoomsModel({ action, rooms }) {
                       <Field
                         as={Select}
                         name="type"     
+                        placeholder='Type'
                       >
-                        <option value="Operations">Operations</option>
+                        <option value="OPERATIONS">Operations</option>
                         <option value="ICU">ICU</option>
-                        <option value="Regular">Regular</option>
+                        <option value="REGULAR">Regular</option>
                         <option value="VIP">VIP</option>
                       </Field>
                     </FormControl>
 
                     <FormControl>
                       <FormLabel>Status</FormLabel>
-                      <Field as={Select} name="status">
-                        <option value="empty">Empty</option>
-                        <option value="maintenance">Maintenance</option>
-                        <option value="reserved">Reserved</option>
-                        <option value="service">Service</option>
-                        <option value="busy">Busy</option>
+                      <Field as={Select} name="status" placeholder='Status'>
+                        <option value="EMPTY">Empty</option>
+                        <option value="MAINTENANCE">Maintenance</option>
+                        <option value="RESERVED">Reserved</option>
+                        <option value="SERVICE">Service</option>
+                        <option value="BUSY">Busy</option>
                       </Field>
                     </FormControl>
 
                     <FormControl>
-                      <FormLabel>Beds</FormLabel>
-                      <Field as={NumberInput} name="beds" min={1}>
-                        <NumberInputField placeholder="Beds" />
-                      </Field>
+                      <FormLabel >Beds</FormLabel> 
+                      <Field
+                        as={Input}
+                        name="beds"
+                        type="number"
+                        placeholder="Beds"
+                      />     
                     </FormControl>
 
                     <FormControl>
-                      <FormLabel>Companion No</FormLabel>
-                      <Field as={NumberInput} name="companionNo" min={0}>
-                        <NumberInputField placeholder="Companion No" />
-                      </Field>
+                      <FormLabel>Companion No</FormLabel> 
+                      <Field
+                        as={Input}
+                        name="companionNo"
+                        type="number"
+                        placeholder="Companion Number"
+                      />                            
                     </FormControl>
 
                     <FormControl>
                       <FormLabel>Degree</FormLabel>
-                      <Field as={Select} name="degree">
+                      <Field as={Select} placeholder='Degree' name="degree">
                         <option value="First">First</option>
                         <option value="Second">Second</option>
                         <option value="Third">Third</option>

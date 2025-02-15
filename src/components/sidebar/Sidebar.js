@@ -1,6 +1,5 @@
 import React from "react";
-
-// chakra imports
+ 
 import {
   Box,
   Flex,
@@ -57,19 +56,16 @@ function Sidebar(props) {
     </Box>
   );
 }
-
-// FUNCTIONS
+ 
 export function SidebarResponsive(props) {
   let sidebarBackgroundColor = useColorModeValue("white", "navy.800");
   let menuColor = useColorModeValue("gray.400", "white");
-  // // SIDEBAR
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
   const { routes } = props;
-  // let isWindows = navigator.platform.startsWith("Win");
-  //  BRAND
-
+ 
   return (
     <Flex display={{ base: "flex", xl: "none" }}alignItems='center'>
       <Flex ref={btnRef} w='max-content' h='max-content' onClick={onOpen}>

@@ -21,6 +21,8 @@ import Rooms from 'views/admin/rooms/Rooms';
 import UserTabs from 'views/admin/users/UserTabs';
 import Specialization from 'views/admin/specialization/Specialization';
 import Operations from 'views/admin/operations/Operations';
+import { FaUserDoctor } from "react-icons/fa6";
+import DoctorTimeTables from 'views/admin/doctorTimeTable/DoctorTimeTable';
 
 const routes = [
   {
@@ -36,6 +38,13 @@ const routes = [
     path: '/users',
     icon: <Icon as={FaUsers} width="20px" height="20px" color="inherit" />,
     component: <UserTabs />,
+  },
+  {
+    name: 'Doctors Time Table',
+    layout: '/admin',
+    path: '/doctor-time-table',
+    icon: <Icon as={FaUserDoctor } width="20px" height="20px" color="inherit" />,
+    component: <DoctorTimeTables />,
   },
   {
     name: 'Screen',
