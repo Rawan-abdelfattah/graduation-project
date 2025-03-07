@@ -19,6 +19,12 @@ export const GetRole = async () => {
   const res = await Api.get(`/roles/1`);
   return res.data;
 };
+
+export const GetSpectialization  = async () => {
+  const res = await Api.get(`/spatialization/all/1`);
+  return res.data?.data;
+};
+
 export const AddUser = async (data) => {
 
   const res = await Api.post('/auth/register', data);
