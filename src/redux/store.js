@@ -2,6 +2,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 // import userSlice from './slices/userSlice';
 import screenCategorySlice from './slices/screenCategorySlice';
+import doctorTimeTableSlice from './slices/doctorTimeTableSlice';
 import screenSlice from './slices/screenSlice';
 import roomsSlice from './slices/roomsSlice';
 import operationsSlice from './slices/operationsSlice';
@@ -34,6 +35,7 @@ const store = configureStore({
     // modeSlice: persistedModeSlice,
     logedUserSlice: persistedLogedUserSlice,
     screenCategory : screenCategorySlice , 
+    doctorTimeTable : doctorTimeTableSlice , 
     screen : screenSlice,
     rooms : roomsSlice,
     operations : operationsSlice,

@@ -125,7 +125,7 @@ export default function ScreenModel({ action, screen }) {
           <Formik
             initialValues={{
               name: screen ? screen.name : '',
-              route: 'admin/Screen',
+              route: 'admin/rooms',
               screenCategoryId: screen ? screen.screenCategoryId : '',
               actions: screen ? screen.actions.map(action => action.name) : [],
             }}
@@ -163,6 +163,7 @@ export default function ScreenModel({ action, screen }) {
                           setFieldValue('screenCategoryId', e.target.value);
                         }}
                       // value={screen ? screen.screenCategoryId : ''}
+                      placeholder='screen Category'
                       >
                         {screenCategories?.data?.map((category) => (
                           <option key={category.id} value={category.id}>
