@@ -5,8 +5,8 @@ import Footer from 'components/footer/FooterAdmin.js';
 import Navbar from 'components/navbar/NavbarAdmin.js';
 import Sidebar from 'components/sidebar/Sidebar.js';
 import { SidebarContext } from 'contexts/SidebarContext';
-import React, { useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import routes from 'routes.js';
 import currentTheme from "../../theme/theme"
 
@@ -16,10 +16,17 @@ export default function Dashboard(props) {
   // states and functions
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
+  const [activeRoute , setActiveRoute] = useState();
+  let currentPath =useLocation().pathname;
+
+  useEffect(() => {
+    setActiveRoute(getActiveRoute(routes));
+  },[currentPath])
   // functions for changing the states from components
   const getRoute = () => {
     return window.location.pathname !== '/admin/full-screen-maps';
   };
+
   const getActiveRoute = (routes) => {
     let activeRoute = 'Default Brand Text';
     for (let i = 0; i < routes.length; i++) {
@@ -41,8 +48,10 @@ export default function Dashboard(props) {
         }
       }
     }
+    console.log("🚀 ~ getActiveRoute ~ activeRoute:", activeRoute)
     return activeRoute;
   };
+
   const getActiveNavbar = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
@@ -66,6 +75,7 @@ export default function Dashboard(props) {
     }
     return activeNavbar;
   };
+
   const getActiveNavbarText = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
@@ -89,6 +99,7 @@ export default function Dashboard(props) {
     }
     return activeNavbar;
   };
+
   const getRoutes = (routes) => {
     return routes.map((route, key) => {
       if (route.layout === '/admin') {
@@ -103,6 +114,7 @@ export default function Dashboard(props) {
       }
     });
   };
+
   document.documentElement.dir = 'ltr';
   const { onOpen } = useDisclosure();
   document.documentElement.dir = 'ltr';
@@ -136,7 +148,7 @@ export default function Dashboard(props) {
                   <Navbar
                     onOpen={onOpen}
                     logoText={'Horizon UI Dashboard PRO'}
-                    brandText={getActiveRoute(routes)}
+                    brandText={activeRoute}
                     secondary={getActiveNavbar(routes)}
                     message={getActiveNavbarText(routes)}
                     fixed={fixed}

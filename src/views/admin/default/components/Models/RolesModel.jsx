@@ -146,6 +146,14 @@ useEffect(()=>{
                     required
                     placeholder="Name"
                   />
+                  <Input
+                    name="arName"
+                    value={formData.arName}
+                    onChange={handleChange}
+                    required
+                    placeholder="arName"
+                    sx={{marginTop:"10px"}}
+                  />
                 </FormControl>
                 
               </Grid>

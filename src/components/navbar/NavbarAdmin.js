@@ -80,14 +80,15 @@ export default function AdminNavbar(props) {
 			}}>
 			<Flex
 				w='100%'
+				sx={{gap:{xs:"16px",md:"0px"} , marginBottom:{xs:"16px",md:"0px"}}}
 				flexDirection={{
-					base: 'column',
+					base: 'column-reverse',
 					md: 'row'
 				}}
 				gap={"2px"}
 				alignItems={{ xl: 'center' }}
 				mb={gap}>
-				<Box mb={{ sm: '8px', md: '0px' }}>
+				<Box mb={{ sm: '20px', md: '0px' }} >
 					<Breadcrumb>
 						<BreadcrumbItem color={secondaryText} fontSize='sm' mb='5px'>
 							<BreadcrumbLink href='#' color={secondaryText}>

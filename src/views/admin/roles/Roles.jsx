@@ -83,6 +83,7 @@ const Roles = () => {
           action="Add"
           inputs={{
             name: '',
+            arName: '',
           }}
         />
       </HStack>
@@ -96,7 +97,9 @@ const Roles = () => {
               <Th textAlign={'center'} color="#fff">
                 Name
               </Th>
-              
+              <Th textAlign={'center'} color="#fff">
+                arName
+              </Th>
               <Th textAlign={'center'} color="#fff">
                 Edit
               </Th>
@@ -110,13 +113,14 @@ const Roles = () => {
               <Tr key={row.id}>
                 <Td textAlign={'center'}>{row?.id}</Td>
                 <Td textAlign={'center'}>{row?.name}</Td>
+                <Td textAlign={'center'}>{row?.arName}</Td>
                 <Td textAlign={'center'}>
                   <RolesModel
                     action="Update"
                     id={row?.id}
                     inputs={{
                       name: row?.name,
-                     
+                      arName: row?.arName,
                     }}
                   />
                 </Td>
