@@ -30,16 +30,14 @@ export default function PermissionModel({ id }) {
   const finalRef = React.useRef(null);
 
   const [checked, setChecked] = useState([]);
-  
-console.log("checkes",checked)
+
   const [expanded, setExpanded] = useState([]);
   const [nodes, setNodes] = useState([]);
-  console.log("nodes",nodes)
   const { data: permissionData } = useQuery({
     queryKey: ['permission', { id }],
     queryFn: () => GetPermission(id),
-    onSuccess:(data)=>{
-        setChecked(data.map((ele) => `${ele?.screenId},${ele?.actionId},${ele?.action?.name}`));
+    onSuccess: (data) => {
+      setChecked(data.map((ele) => `${ele?.screenId},${ele?.actionId},${ele?.action?.name}`));
     },
 
     onError: (e) => {
@@ -56,63 +54,63 @@ console.log("checkes",checked)
       console.error(e);
     },
   });
-    const queryClient = useQueryClient();
-     const { mutate: mutateSave } = useMutation({
-       mutationFn: SavePermission,
-       onSuccess: (data) => {
-         queryClient.invalidateQueries({
-           queryKey: ['permission'],
-         });
-         notifySuccess('permission has been saved');
-         onClose();
-       },
-       onError: (e) => {
-         e?.response?.data?.message?.forEach((error) => {
-           notifyError(error);
-         });
-       },
-     });
+  const queryClient = useQueryClient();
+  const { mutate: mutateSave } = useMutation({
+    mutationFn: SavePermission,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ['permission'],
+      });
+      notifySuccess('permission has been saved');
+      onClose();
+    },
+    onError: (e) => {
+      e?.response?.data?.message?.forEach((error) => {
+        notifyError(error);
+      });
+    },
+  });
 
-const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-  const data = checked.reduce((prev, next) => {
-    const [screenid, actionid, name] = next.split(',');
-    const data = prev.find((ele) => ele.id === parseInt(screenid));
+    const data = checked.reduce((prev, next) => {
+      const [screenid, actionid, name] = next.split(',');
+      const data = prev.find((ele) => ele.id === parseInt(screenid));
 
-    if (data) {
-      // If the screen already exists, push the action to its actions array
-      data.actions.push({ id:parseInt(actionid), name: name });
-    } else {
-      // If the screen doesn't exist, create a new object with actions
-      prev.push({ id: parseInt(screenid), actions: [{ id: parseInt(actionid), name: name }] });
-    }
+      if (data) {
+        // If the screen already exists, push the action to its actions array
+        data.actions.push({ id: parseInt(actionid), name: name });
+      } else {
+        // If the screen doesn't exist, create a new object with actions
+        prev.push({ id: parseInt(screenid), actions: [{ id: parseInt(actionid), name: name }] });
+      }
 
-    return prev;
-  }, []);
-  console.log("data",data)
+      return prev;
+    }, []);
+    console.log("data", data)
 
-mutateSave({ id, screen :data});  
-};
-
-const TreeConstrute = (screen) => {
-  const treeData = {
-    value:`${screen.name}-${screen.id}`, // Use a unique combination for value
-    label: screen.name,
-    id: screen.id,
+    mutateSave({ id, screen: data });
   };
 
-  if (screen.screen) {
-    treeData['children'] = screen.screen.map((ele) => TreeConstrute(ele))
-  } else if (screen.actions) {
-    treeData['children'] = screen.actions.map((ele) => ({
-      value: [screen.id,ele.id,ele.name], // Make actions unique too
-      label: ele.name,
-      id: ele.id,
-    }));
-  }
+  const TreeConstrute = (screen) => {
+    const treeData = {
+      value: `${screen.name}-${screen.id}`, // Use a unique combination for value
+      label: screen.name,
+      id: screen.id,
+    };
 
-  return treeData;
-};
+    if (screen.screen) {
+      treeData['children'] = screen.screen.map((ele) => TreeConstrute(ele))
+    } else if (screen.actions) {
+      treeData['children'] = screen.actions.map((ele) => ({
+        value: [screen.id, ele.id, ele.name], // Make actions unique too
+        label: ele.name,
+        id: ele.id,
+      }));
+    }
+
+    return treeData;
+  };
   return (
     <>
       <IconButton

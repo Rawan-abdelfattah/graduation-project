@@ -16,13 +16,13 @@ import RTL from 'views/admin/rtl';
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
 import Users from 'views/admin/users/Users';
-import ScreenTaps from 'views/admin/screen/ScreenTaps';
+import ScreenTabs from 'views/admin/screen/ScreenTabs';
 import Rooms from 'views/admin/rooms/Rooms';
 import UserTabs from 'views/admin/users/UserTabs';
 import Specialization from 'views/admin/specialization/Specialization';
 import Operations from 'views/admin/operations/Operations';
-import { FaUserDoctor } from "react-icons/fa6";
-import DoctorTimeTables from 'views/admin/doctorTimeTable/DoctorTimeTable';
+import { FaUserDoctor } from "react-icons/fa6"; 
+import DoctorTabs from 'views/admin/doctor/DoctorTabs';
 
 const routes = [
   {
@@ -40,11 +40,11 @@ const routes = [
     component: <UserTabs />,
   },
   {
-    name: 'Doctors Time Table',
+    name: 'Doctors',
     layout: '/admin',
-    path: '/doctor-time-table',
+    path: '/doctor',
     icon: <Icon as={FaUserDoctor } width="20px" height="20px" color="inherit" />,
-    component: <DoctorTimeTables />,
+    component: <DoctorTabs />,
   },
   {
     name: 'Screen',
@@ -53,7 +53,7 @@ const routes = [
     icon: (
       <Icon as={TbCategoryPlus} width="20px" height="20px" color="inherit" />
     ),
-    component: <ScreenTaps />,
+    component: <ScreenTabs />,
   },
   {
     name: 'Rooms',
@@ -79,34 +79,6 @@ const routes = [
       <Icon as={RiHealthBookLine} width="20px" height="20px" color="inherit" />
     ),
     component: <Specialization />,
-  },
-  {
-    name: 'Data Tables',
-    layout: '/admin',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-    path: '/data-tables',
-    component: <DataTables />,
-  },
-  {
-    name: 'Profile',
-    layout: '/admin',
-    path: '/profile',
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-    component: <Profile />,
-  },
-  {
-    name: 'Sign In',
-    layout: '/auth',
-    path: '/sign-in',
-    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
-    component: <SignInCentered />,
-  },
-  {
-    name: 'RTL Admin',
-    layout: '/rtl',
-    path: '/rtl-default',
-    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
-    component: <RTL />,
   },
 ];
 

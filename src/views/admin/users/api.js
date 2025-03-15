@@ -1,21 +1,12 @@
 import Api from "./../../../config/api";
-import {
-  faCheckSquare,
-  faSquare,
-  faLock,
-  faLockOpen,
-  faMinusSquare,
-  faPlusSquare,
-  faFolder,
-  faFolderOpen,
-  faFile,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCheckSquare, faSquare, faLock, faLockOpen, faMinusSquare, faPlusSquare, faFile, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-export const GetUsers = async (page,search) => {
-    const res = await Api.get(`/users/all/${page}?query=${search}`);
-    return res.data;
-  
+
+export const GetUsers = async (page, search) => {
+  const res = await Api.get(`/users/all/${page}?query=${search}`);
+  return res.data;
 };
+
 export const GetPermission = async (id) => {
   const res = await Api.get(`/permissions/all-user-permission/${id}`);
   return res.data;
@@ -28,18 +19,24 @@ export const GetRole = async () => {
   const res = await Api.get(`/roles/1`);
   return res.data;
 };
+
+export const GetSpectialization  = async () => {
+  const res = await Api.get(`/spatialization/all/1`);
+  return res.data?.data;
+};
+
 export const AddUser = async (data) => {
- 
+
   const res = await Api.post('/auth/register', data);
   return res.data;
 };
 export const SavePermission = async (data) => {
-  const res = await Api.patch(`/permissions/${data.id}`,data);
+  const res = await Api.patch(`/permissions/${data.id}`, data);
   return res.data;
 };
-export const UpdateUser = async ({id,data}) => {
-  console.log('data', id,data);
-  const res = await Api.patch(`/users/${id}`,data);
+export const UpdateUser = async ({ id, data }) => {
+  console.log('data', id, data);
+  const res = await Api.patch(`/users/${id}`, data);
   return res.data;
 };
 export const ChangeUserPassword = async (data) => {

@@ -37,7 +37,7 @@ export default function RolesModel({ action, id, inputs }) {
   useEffect(() => {
     setFormData(inputs);
   }, []);
-  
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -131,34 +131,29 @@ export default function RolesModel({ action, id, inputs }) {
           </ModalHeader>
           <form onSubmit={handleSubmit}>
             <ModalBody pb={6}>
-              <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={4}>
-                {/* Full-width Arabic Name */}
-                <GridItem>
-                  <FormControl>
-                    <FormLabel>Arabic Name</FormLabel>
-                    <Input
-                      name="arName"
-                      value={formData.arName}
-                      onChange={handleChange}
-                      required
-                      placeholder="Arabic Name"
-                    />
-                  </FormControl>
-                </GridItem>
-
-                {/* English Name */}
-                <GridItem>
-                  <FormControl>
-                    <FormLabel>English Name</FormLabel>
-                    <Input
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="English Name"
-                    />
-                  </FormControl>
-                </GridItem>
+             
+              <Grid
+              
+              >
+                <FormControl>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    placeholder="Name"
+                  />
+                  <Input
+                    name="arName"
+                    value={formData.arName}
+                    onChange={handleChange}
+                    required
+                    placeholder="arName"
+                    sx={{marginTop:"10px"}}
+                  />
+                </FormControl>
+                
               </Grid>
             </ModalBody>
 
