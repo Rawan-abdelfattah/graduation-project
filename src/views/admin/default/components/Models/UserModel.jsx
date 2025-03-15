@@ -98,7 +98,7 @@ useEffect(()=>{
 
   return (
     <>
-      {action == 'Add' ? (
+      {action === 'Add' ? (
         <Button backgroundColor="main" color="white" onClick={onOpen}>
           Add
         </Button>
@@ -135,13 +135,13 @@ useEffect(()=>{
             
           >
             <IoPersonAddOutline style={{color:"green"}}  />
-            {action == 'Add' ? 'Add' : 'Edit'}
+            {action === 'Add' ? 'Add' : 'Edit'}
        
           </ModalHeader>
           {/* <ModalCloseButton /> */}
           <form onSubmit={handleSubmit}>
             <ModalBody pb={6}>
-              {'Update' == action && (
+              {'Update' === action && (
                 <Heading
                   color="main"
                   as="h6"
@@ -180,7 +180,7 @@ useEffect(()=>{
                     placeholder="Username"
                   />
                 </FormControl>
-                 {action == 'Add' && (
+                 {action === 'Add' && (
                   <>
                 <FormControl>
                   <FormLabel>Password</FormLabel>
@@ -233,7 +233,7 @@ useEffect(()=>{
               </Grid>
             </ModalBody>
 
-            {action == 'Update' && (
+            {action === 'Update' && (
               <ModalBody pb={6}>
                 <Heading
                   color="main"

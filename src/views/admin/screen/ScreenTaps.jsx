@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import { LuCheckSquare, LuFolder, LuUser } from 'react-icons/lu';
+import { LuCheckSquare,  LuUser } from 'react-icons/lu';
 import Screen from './Screen';
 import ScreenCategory from './ScreenCategory';
 
