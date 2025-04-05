@@ -33,10 +33,10 @@ export default function UserModel({ action, id, inputs }) {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [formData, setFormData] = useState(inputs);
-  const [doctorId, setDoctorId] = useState()
+  const [doctorId, setDoctorId] = useState();
   useEffect(() => {
-    setFormData(inputs)
-  }, [])
+    setFormData(inputs);
+  }, []);
 
   const { data: RoleData, isLoading } = useQuery({
     queryKey: ['role'],
@@ -49,26 +49,31 @@ export default function UserModel({ action, id, inputs }) {
   useEffect(() => {
     RoleData?.map((ele) => {
       if (ele.name === 'doctor') {
-        setDoctorId(ele.id)
+        setDoctorId(ele.id);
       }
-    })
-  }, [RoleData])
+    });
+  }, [RoleData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     setFormData((prevData) => {
-      let updatedData = { ...prevData, [name]: value };
-  
-      if (name === "roleId" && value != doctorId) {
-        console.log("Running");
+      let updatedData = {
+        ...prevData,
+        [name]:
+          name === 'specializationId' || name === 'roleId'
+            ? Number(value)
+            : value,
+      };
+
+      if (name === 'roleId' && value !== doctorId) {
+        console.log('Running');
         updatedData.specializationId = null;
       }
-  
+
       return updatedData;
     });
   };
-  
 
   const { data: SpectializationData } = useQuery({
     queryKey: ['Spectialization'],
@@ -85,18 +90,17 @@ export default function UserModel({ action, id, inputs }) {
         queryKey: ['user'],
       });
       notifySuccess('user has been added');
-      onClose()
+      onClose();
     },
     onError: (e) => {
       const message = e?.response?.data?.message;
-    
+
       if (Array.isArray(message)) {
         message.forEach((error) => notifyError(error));
-      } else if (typeof message === "string") {
+      } else if (typeof message === 'string') {
         notifyError(message);
       }
-    }
-    
+    },
   });
   const { mutate: mutateUpdate } = useMutation({
     mutationFn: UpdateUser,
@@ -127,16 +131,13 @@ export default function UserModel({ action, id, inputs }) {
     } else {
       mutateUpdate({ id, data: userData });
     }
-
   };
 
   console.log(formData, doctorId);
 
-
-
   return (
     <>
-      {action == 'Add' ? (
+      {action === 'Add' ? (
         <Button backgroundColor="main" color="white" onClick={onOpen}>
           Add
         </Button>
@@ -170,16 +171,14 @@ export default function UserModel({ action, id, inputs }) {
             gap="5px"
             fontSize="30px"
             fontWeight="bold"
-
           >
-            <IoPersonAddOutline style={{ color: "green" }} />
-            {action == 'Add' ? 'Add' : 'Edit'}
-
+            <IoPersonAddOutline style={{ color: 'green' }} />
+            {action === 'Add' ? 'Add' : 'Edit'}
           </ModalHeader>
           {/* <ModalCloseButton /> */}
           <form onSubmit={handleSubmit}>
             <ModalBody pb={6}>
-              {'Update' == action && (
+              {'Update' === action && (
                 <Heading
                   color="main"
                   as="h6"
@@ -228,7 +227,7 @@ export default function UserModel({ action, id, inputs }) {
                     placeholder="National Id"
                   />
                 </FormControl>
-                {action == 'Add' && (
+                {action === 'Add' && (
                   <>
                     <FormControl>
                       <FormLabel>Password</FormLabel>
@@ -254,7 +253,7 @@ export default function UserModel({ action, id, inputs }) {
                     </FormControl>
                   </>
                 )}
-                
+
                 <FormControl>
                   <FormLabel>Roles</FormLabel>
                   <Select
@@ -264,27 +263,43 @@ export default function UserModel({ action, id, inputs }) {
                     placeholder="Select role"
                   >
                     {RoleData?.map((role) => (
-                      <option value={role?.id}>{role?.name}</option>
+                      <option key={role?.id} value={role?.id}>
+                        {role?.name}
+                      </option>
                     ))}
                   </Select>
                 </FormControl>
-                {doctorId == formData.roleId && <FormControl>
-                  <FormLabel>Sepcialization</FormLabel>
-                  <Select
-                    name="specializationId"
-                    value={formData.specializationId}
-                    onChange={handleChange}
-                    placeholder="Select Sepcialization"
-                  >
-                    {SpectializationData?.map((specialization) => (
-                      <option value={specialization?.id}>{specialization?.name}</option>
-                    ))}
-                  </Select>
-                </FormControl>}
+
+                {RoleData?.length &&
+                  RoleData.some(
+                    (role) =>
+                      role.name.toLowerCase() === 'doctor' && // Ensure case insensitivity
+                      role.id === (Number(formData.roleId) || 0), // Prevent NaN issues
+                  ) &&
+                  action === 'Add' && (
+                    <FormControl>
+                      <FormLabel>Specialization</FormLabel>
+                      <Select
+                        name="specializationId"
+                        value={Number(formData.specializationId) || ''}
+                        onChange={handleChange}
+                        placeholder="Select Specialization"
+                      >
+                        {SpectializationData?.map((specialization) => (
+                          <option
+                            key={specialization.id}
+                            value={Number(specialization.id)}
+                          >
+                            {specialization.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
               </Grid>
             </ModalBody>
 
-            {action == 'Update' && (
+            {action === 'Update' && (
               <ModalBody pb={6}>
                 <Heading
                   color="main"
@@ -304,7 +319,6 @@ export default function UserModel({ action, id, inputs }) {
                   }}
                   gap={4}
                 >
-
                   <>
                     <FormControl>
                       <FormLabel>old Password</FormLabel>

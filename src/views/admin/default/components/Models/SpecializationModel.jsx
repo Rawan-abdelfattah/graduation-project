@@ -3,8 +3,7 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Grid,
-  Heading,
+  Grid, 
   IconButton,
   Input,
   Modal,
@@ -12,19 +11,18 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
-  SimpleGrid,
+  ModalOverlay, 
   useDisclosure,
 } from '@chakra-ui/react';
-import { Select } from '@chakra-ui/react';
 import { IoPersonAddOutline } from 'react-icons/io5';
+import { Select } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AddUser } from 'views/admin/users/api';
 import { GetRole } from 'views/admin/users/api';
-import { FaRegEdit } from 'react-icons/fa';
-import { notifySuccess } from 'utils/Toastify';
 import { UpdateUser } from 'views/admin/users/api';
 import { AddRole } from 'views/admin/roles/api';
+import { FaRegEdit } from 'react-icons/fa';
+import { notifySuccess } from 'utils/Toastify';
 import { UpdateRole } from 'views/admin/roles/api';
 import { notifyError } from 'utils/Toastify';
 import { AddSpecialization } from 'views/admin/specialization/api';
@@ -92,7 +90,7 @@ useEffect(()=>{
 
   return (
     <>
-      {action == 'Add' ? (
+      {action === 'Add' ? (
         <Button backgroundColor="main" color="white" onClick={onOpen}>
           Add
         </Button>
@@ -128,7 +126,7 @@ useEffect(()=>{
             fontWeight="bold"
           >
             <IoPersonAddOutline style={{ color: 'green' }} />
-            {action == 'Add' ? 'Add' : 'Edit'}
+            {action === 'Add' ? 'Add' : 'Edit'}
           </ModalHeader>
           {/* <ModalCloseButton /> */}
           <form onSubmit={handleSubmit}>
@@ -142,24 +140,24 @@ useEffect(()=>{
                 gap={4}
               >
                 <FormControl>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>English Name</FormLabel>
                   <Input
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    placeholder="Name"
+                    placeholder="English Name"
                   />
                 </FormControl>
 
                 <FormControl>
-                  <FormLabel>arName</FormLabel>
+                  <FormLabel>Arabic Name</FormLabel>
                   <Input
                     name="arName"
                     value={formData.arName}
                     onChange={handleChange}
                     required
-                    placeholder="Name"
+                    placeholder="Arabic Name"
                   />
                 </FormControl>
               </Grid>

@@ -2,35 +2,36 @@ import React from 'react';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { LuCheckSquare,  LuUser } from 'react-icons/lu';
-import Users from './Users';
-import Roles from '../roles/Roles';
+import Screen from './Screen';
+import ScreenCategory from './ScreenCategory';
 
-
-const UserTabs = () => {
+const ScreenTabs = () => {
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Users </title>
+        <title>Screen </title>
       </Helmet>
       <Tabs defaultIndex={0} variant="enclosed">
-        <TabList  >
+        <TabList>
           <Tab>
-            <LuUser /> Users
+            <LuUser /> Screen
           </Tab>
           <Tab>
-            <LuCheckSquare /> Roles
+            <LuCheckSquare /> Screen Category
           </Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Users />
+            <Screen />
           </TabPanel>
-          <TabPanel><Roles/></TabPanel>
+          <TabPanel>
+            <ScreenCategory />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </>
   );
 };
 
-export default UserTabs;
+export default ScreenTabs;

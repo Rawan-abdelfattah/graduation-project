@@ -1,32 +1,33 @@
 import React from 'react';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import { LuCheckSquare, LuFolder, LuUser } from 'react-icons/lu';
-import Screen from './Screen';
-import ScreenCategory from './ScreenCategory';
+import { LuCheckSquare } from 'react-icons/lu';
+import DoctorTimeTable from './DoctorTimeTable';
+import { FaUserDoctor } from 'react-icons/fa6';
+import DoctorPricing from './DoctorPricing';
 
-const ScreenTaps = () => {
+const DoctorTabs = () => {
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Screen </title>
+        <title>Doctor </title>
       </Helmet>
       <Tabs defaultIndex={0} variant="enclosed">
         <TabList>
           <Tab>
-            <LuUser /> Screen
+            <FaUserDoctor /> Doctor Time Table
           </Tab>
           <Tab>
-            <LuCheckSquare /> Screen Category
+            <LuCheckSquare /> Doctor Pricing
           </Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Screen />
+            <DoctorTimeTable />
           </TabPanel>
           <TabPanel>
-            <ScreenCategory />
+            <DoctorPricing />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -34,4 +35,4 @@ const ScreenTaps = () => {
   );
 };
 
-export default ScreenTaps;
+export default DoctorTabs;

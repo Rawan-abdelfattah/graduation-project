@@ -40,7 +40,7 @@ export default function DoctorTimeTableModel({ action, doctorTimeTable }) {
     if (doctors.length === 0) {
       dispatch(fetchAllDoctors());
     }
-  }, [dispatch, doctors]);
+  }, [dispatch]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const payload = values.schedule.map(({ day, startTime, endTime }) => ({

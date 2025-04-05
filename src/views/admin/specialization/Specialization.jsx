@@ -96,10 +96,10 @@ const Specialization = () => {
                 ID
               </Th>
               <Th textAlign={'center'} color="#fff">
-                Name
+                English Name
               </Th>
               <Th textAlign={'center'} color="#fff">
-                arName
+                Arabic Name
               </Th>
 
               <Th textAlign={'center'} color="#fff">
