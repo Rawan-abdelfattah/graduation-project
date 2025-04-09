@@ -1,7 +1,8 @@
 import React from 'react';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import { LuCheckSquare,  LuUser } from 'react-icons/lu';
+import {  LuUser } from 'react-icons/lu';
+import { FiCheckSquare } from 'react-icons/fi';
 import Users from './Users';
 import Roles from '../roles/Roles';
 
@@ -19,7 +20,7 @@ const UserTabs = () => {
             <LuUser /> Users
           </Tab>
           <Tab>
-            <LuCheckSquare /> Roles
+            <FiCheckSquare /> Roles
           </Tab>
         </TabList>
         <TabPanels>

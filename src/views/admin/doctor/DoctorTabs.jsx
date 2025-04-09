@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import { LuCheckSquare } from 'react-icons/lu';
+import { FiCheckSquare } from 'react-icons/fi';
 import DoctorTimeTable from './DoctorTimeTable';
 import { FaUserDoctor } from 'react-icons/fa6';
 import DoctorPricing from './DoctorPricing';
@@ -19,7 +19,7 @@ const DoctorTabs = () => {
             <FaUserDoctor /> Doctor Time Table
           </Tab>
           <Tab>
-            <LuCheckSquare /> Doctor Pricing
+            <FiCheckSquare /> Doctor Pricing
           </Tab>
         </TabList>
         <TabPanels>
