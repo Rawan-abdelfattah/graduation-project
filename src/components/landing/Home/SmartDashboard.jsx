@@ -1,37 +1,43 @@
 import React from 'react';
 import smartDashboardImage from '../../../assets/img/landing/smart-dashboard.png';
+import bg from '../../../assets/img/landing/shape-bg.png';
 const SmartDashboard = () => {
   return (
-    <section className="py-16 md:py-24">
-    <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
-      
-      {/* Responsive Image Wrapper */}
-      <div className="w-full flex justify-center">
-        <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] rounded-full bg-green-200 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <img
-            src={smartDashboardImage}
-            alt="Doctor Bot Chat UI"
-            className="w-[80%] max-w-xs sm:max-w-sm md:max-w-md"
-          />
-        </div>
-      </div>
-  
-      {/* Text Content */}
-      <div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-green-700 mb-6">
-          Smart Dashboard
-        </h1>
-        <p className="text-base sm:text-lg text-gray-700 mb-8 leading-relaxed">
-          Effortlessly manage appointments and patient records. Stay organized
-          with real-time updates, easy search and smart insights that help you
-          streamline your workflow. Whether you're tracking bookings, viewing
-          patient history, or monitoring appointment trends, everything you
-          need is at your fingertips.
-        </p>
-      </div>
+<section className="py-20">
+  <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row justify-between items-center gap-12">
+
+    {/* Responsive Image Wrapper */}
+    <div
+  className="relative w-full max-w-[700px] min-h-[300px] sm:min-h-[400px] lg:min-h-[475px] 
+             flex justify-center items-center 
+             bg-no-repeat bg-center bg-contain sm:bg-cover"
+  style={{ backgroundImage: `url(${bg})` }}
+>
+  <img
+    src={smartDashboardImage}
+    alt="Doctor Bot Chat UI"
+    className="w-[250px] sm:w-[300px] md:w-[350px] lg:w-[400px] relative z-10"
+  />
+</div>
+
+
+    {/* Text Content */}
+    <div className="max-w-[600px] text-center lg:text-left">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-green-700 mb-6">
+        Smart Dashboard
+      </h1>
+      <p className="text-base sm:text-lg text-gray-700 mb-8 leading-relaxed">
+        Effortlessly manage appointments and patient records. Stay organized
+        with real-time updates, easy search and smart insights that help you
+        streamline your workflow. Whether you're tracking bookings, viewing
+        patient history, or monitoring appointment trends, everything you
+        need is at your fingertips.
+      </p>
     </div>
-  </section>
-  
+
+  </div>
+</section>
+
   );
 };
 

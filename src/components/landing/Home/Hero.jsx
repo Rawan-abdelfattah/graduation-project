@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar';
-import bg from '../../../assets/img/landing/hero-img1.png'
-import heroImage from '../../../assets/img/landing/hero-img2.png'
+import bg from '../../../assets/img/landing/hero-img1.png';
+import heroImage from '../../../assets/img/landing/hero-img2.png';
 const Hero = () => {
   return (
-<div
-  className="bg-cover bg-center"
-  style={{ backgroundImage: `url(${bg})` }}
->
-      <Navbar /> 
+    <div
+      className="bg-cover bg-center"
+      style={{ backgroundImage: `url(${bg})` }}
+    >
+      <Navbar />
       <section className=" py-5">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
           <div>
@@ -23,7 +23,7 @@ const Hero = () => {
             </p>
             <Link
               to="/chatbot"
-              className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-full transition duration-200"
+              className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold  px-12 py-3 rounded-full transition duration-200"
             >
               Speak to bot
             </Link>
@@ -34,7 +34,7 @@ const Hero = () => {
             className="w-[365px] max-w-[400px] mx-auto"
           />
         </div>
-      </section> 
+      </section>
     </div>
   );
 };
