@@ -27,8 +27,8 @@ export const Book = () => {
       <img
         src={book}
         alt="Doctor Bot Chat UI"
-        className="w-[250px] sm:w-[300px] md:w-[350px] max-w-full mx-auto"
-      />
+        className="w-[250px] sm:w-[300px] mx-auto relative z-10"
+        />
     </div>
   </section>
   
