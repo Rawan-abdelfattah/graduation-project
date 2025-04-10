@@ -137,7 +137,7 @@ const DoctorTimeTable = () => {
                   <Tr key={row?.id}>
                     <Td textAlign="center">{index + 1}</Td> 
                     <Td textAlign="center" fontWeight="bold">
-                      {row?.doctor.user.username}
+                      {row?.doctor.user?.name}
                     </Td>
                     <Td textAlign="center" >
                       {row?.doctor.specialization.name}
