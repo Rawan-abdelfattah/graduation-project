@@ -24,7 +24,7 @@ const Chatbot = () => {
         </div>
 
         <div
-          className="relative w-full max-w-[500px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[800px] flex justify-center items-center p-4
+          className="relative w-full max-w-[500px] sm:max-w-[600px] md:max-w-[700px] h-[480px]  lg:max-w-[800px] flex justify-center items-center p-4
              bg-no-repeat bg-center bg-contain sm:bg-cover"
           style={{ backgroundImage: `url(${bg})` }}
         >
