@@ -10,7 +10,7 @@ const Hero = () => {
   style={{ backgroundImage: `url(${bg})` }}
 >
       <Navbar /> 
-      <section className=" py-10">
+      <section className=" py-5">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
           <div>
             <h1 className="text-4xl md:text-5xl font-extrabold text-green-700 mb-6">
@@ -31,7 +31,7 @@ const Hero = () => {
           <img
             src={heroImage}
             alt="Doctor Bot Chat UI"
-            className="w-[600px] max-w-xs mx-auto"
+            className="w-[365px] max-w-[400px] mx-auto"
           />
         </div>
       </section> 
