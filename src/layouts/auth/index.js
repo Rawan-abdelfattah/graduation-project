@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import routes from 'routes.js';
+import AdminRoutes from 'routes/AdminRoutes';
 
 // Chakra imports
 import { Box, useColorModeValue } from '@chakra-ui/react';
@@ -16,8 +16,8 @@ export default function Auth() {
   const getRoute = () => {
     return window.location.pathname !== '/auth/full-screen-maps';
   };
-  const getRoutes = (routes) => {
-    return routes.map((route, key) => {
+  const getRoutes = (AdminRoutes) => {
+    return AdminRoutes.map((route, key) => {
       if (route.layout === '/auth') {
         return (
           <Route path={`${route.path}`} element={route.component} key={key} />
@@ -55,7 +55,7 @@ export default function Auth() {
           {getRoute() ? (
             <Box mx="auto" minH="100vh">
               <Routes>
-                {getRoutes(routes)}
+                {getRoutes(AdminRoutes)}
                 <Route
                   path="/"
                   element={<Navigate to="/auth/sign-in/default" replace />}

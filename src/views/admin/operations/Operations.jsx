@@ -23,9 +23,9 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import ConfirmDeleteModel from '../default/components/Models/ConfirmDeleteModel';
 import { MdDeleteOutline } from 'react-icons/md';
-import Loader from 'components/loader/loader';
+import Loader from 'components/admin/loader/loader';
 import { Helmet } from 'react-helmet';
-import { Pagination } from 'components/pagination/Pagination';
+import { Pagination } from 'components/admin/pagination/Pagination';
 
 const Operations = () => {
   const dispatch = useDispatch();

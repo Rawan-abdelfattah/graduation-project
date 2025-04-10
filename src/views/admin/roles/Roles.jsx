@@ -18,10 +18,10 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { DeleteRole, GetRoles, GetUsers } from './api';
 
-import DeleteModel from '../default/components/Models/DeleteModel';
-import ReactPaginate from 'react-paginate';
+ import ReactPaginate from 'react-paginate';
 import { SearchIcon } from '@chakra-ui/icons';
 import RolesModel from '../default/components/Models/RolesModel';
+import DeleteModel from '../default/components/Models/DeleteModel';
 
 const Roles = () => {
   const colorMode = useColorModeValue('gray', 'gray.400');

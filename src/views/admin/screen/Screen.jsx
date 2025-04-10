@@ -23,8 +23,8 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import ConfirmDeleteModel from '../default/components/Models/ConfirmDeleteModel';
 import { MdDeleteOutline } from 'react-icons/md';
-import Loader from 'components/loader/loader';
-import { Pagination } from 'components/pagination/Pagination';
+import Loader from 'components/admin/loader/loader';
+import { Pagination } from 'components/admin/pagination/Pagination';
 
 const Screen = () => {
   const dispatch = useDispatch();

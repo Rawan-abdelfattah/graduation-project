@@ -16,8 +16,8 @@ import {
   HStack,
 } from '@chakra-ui/react';
 // Custom Components
-import { ItemContent } from 'components/menu/ItemContent';
-import { SidebarResponsive } from 'components/sidebar/Sidebar';
+import { ItemContent } from 'components/admin/menu/ItemContent';
+import { SidebarResponsive } from 'components/admin/sidebar/Sidebar';
 import PropTypes from 'prop-types';
 import React from 'react';
 // Assets
@@ -25,11 +25,11 @@ import navImage from 'assets/img/layout/Navbar.png';
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
-import routes from 'routes';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import arImg from "../../assets/img/ar.jpg"
-import enImg from "../../assets/img/en.png"
+import arImg from "../../../assets/img/ar.jpg"
+import enImg from "../../../assets/img/en.png"
+import AdminRoutes from 'routes/AdminRoutes';
 
 export default function HeaderLinks(props) {
   const { secondary } = props;
@@ -121,7 +121,7 @@ export default function HeaderLinks(props) {
           </Text>
         </Text>
       </Flex> */}
-      <SidebarResponsive routes={routes} />
+      <SidebarResponsive AdminRoutes={AdminRoutes} />
       <HStack  spacing="4">
   <Menu>
     <MenuButton p="0px">

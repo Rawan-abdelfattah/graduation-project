@@ -13,7 +13,7 @@ export function SidebarLinks(props) {
   let textColor = useColorModeValue("secondaryGray.500", "white");
   let brandColor = useColorModeValue("main", "main");
 
-  const { routes } = props;
+  const { AdminRoutes } = props;
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -21,8 +21,8 @@ export function SidebarLinks(props) {
   };
 
   // this function creates the links from the secondary accordions (for example auth -> sign-in -> default)
-  const createLinks = (routes) => {
-    return routes.map((route, index) => {
+  const createLinks = (AdminRoutes) => {
+    return AdminRoutes.map((route, index) => {
       if (route.category) {
         return (
           <>
@@ -122,7 +122,7 @@ export function SidebarLinks(props) {
     });
   };
   //  BRAND
-  return createLinks(routes);
+  return createLinks(AdminRoutes);
 }
 
 export default SidebarLinks;

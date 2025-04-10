@@ -24,7 +24,7 @@ import Operations from 'views/admin/operations/Operations';
 import { FaUserDoctor } from "react-icons/fa6"; 
 import DoctorTabs from 'views/admin/doctor/DoctorTabs';
 
-const routes = [
+const AdminRoutes = [
   {
     name: 'Main Dashboard',
     layout: '/admin',
@@ -82,4 +82,4 @@ const routes = [
   },
 ];
 
-export default routes;
+export default AdminRoutes;

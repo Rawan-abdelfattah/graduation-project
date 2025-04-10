@@ -1,14 +1,14 @@
 // Chakra imports
 import { Portal, Box, useDisclosure } from '@chakra-ui/react';
-import Footer from 'components/footer/FooterAdmin.js';
+import Footer from 'components/admin/footer/FooterAdmin.js';
 // Layout components
-import Navbar from 'components/navbar/NavbarRTL.js';
-import Sidebar from 'components/sidebar/Sidebar.js';
-import { RtlProvider } from 'components/rtlProvider/RtlProvider.js';
+import Navbar from 'components/admin/navbar/NavbarRTL.js';
+import Sidebar from 'components/admin/sidebar/Sidebar.js';
+import { RtlProvider } from 'components/admin/rtlProvider/RtlProvider.js';
 import { SidebarContext } from 'contexts/SidebarContext';
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import routes from 'routes.js';
+import AdminRoutes from 'routes/AdminRoutes';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
@@ -20,77 +20,77 @@ export default function Dashboard(props) {
   const getRoute = () => {
     return window.location.pathname !== '/rtl/full-screen-maps';
   };
-  const getActiveRoute = (routes) => {
+  const getActiveRoute = (AdminRoutes) => {
     let activeRoute = 'Default Brand Text';
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveRoute = getActiveRoute(routes[i].items);
+    for (let i = 0; i < AdminRoutes.length; i++) {
+      if (AdminRoutes[i].collapse) {
+        let collapseActiveRoute = getActiveRoute(AdminRoutes[i].items);
         if (collapseActiveRoute !== activeRoute) {
           return collapseActiveRoute;
         }
-      } else if (routes[i].category) {
-        let categoryActiveRoute = getActiveRoute(routes[i].items);
+      } else if (AdminRoutes[i].category) {
+        let categoryActiveRoute = getActiveRoute(AdminRoutes[i].items);
         if (categoryActiveRoute !== activeRoute) {
           return categoryActiveRoute;
         }
       } else {
         if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          window.location.href.indexOf(AdminRoutes[i].layout + AdminRoutes[i].path) !== -1
         ) {
-          return routes[i].name;
+          return AdminRoutes[i].name;
         }
       }
     }
     return activeRoute;
   };
-  const getActiveNavbar = (routes) => {
+  const getActiveNavbar = (AdminRoutes) => {
     let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveNavbar = getActiveNavbar(routes[i].items);
+    for (let i = 0; i < AdminRoutes.length; i++) {
+      if (AdminRoutes[i].collapse) {
+        let collapseActiveNavbar = getActiveNavbar(AdminRoutes[i].items);
         if (collapseActiveNavbar !== activeNavbar) {
           return collapseActiveNavbar;
         }
-      } else if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbar(routes[i].items);
+      } else if (AdminRoutes[i].category) {
+        let categoryActiveNavbar = getActiveNavbar(AdminRoutes[i].items);
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
       } else {
         if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          window.location.href.indexOf(AdminRoutes[i].layout + AdminRoutes[i].path) !== -1
         ) {
-          return routes[i].secondary;
+          return AdminRoutes[i].secondary;
         }
       }
     }
     return activeNavbar;
   };
-  const getActiveNavbarText = (routes) => {
+  const getActiveNavbarText = (AdminRoutes) => {
     let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveNavbar = getActiveNavbarText(routes[i].items);
+    for (let i = 0; i < AdminRoutes.length; i++) {
+      if (AdminRoutes[i].collapse) {
+        let collapseActiveNavbar = getActiveNavbarText(AdminRoutes[i].items);
         if (collapseActiveNavbar !== activeNavbar) {
           return collapseActiveNavbar;
         }
-      } else if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbarText(routes[i].items);
+      } else if (AdminRoutes[i].category) {
+        let categoryActiveNavbar = getActiveNavbarText(AdminRoutes[i].items);
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
       } else {
         if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          window.location.href.indexOf(AdminRoutes[i].layout + AdminRoutes[i].path) !== -1
         ) {
-          return routes[i].messageNavbar;
+          return AdminRoutes[i].messageNavbar;
         }
       }
     }
     return activeNavbar;
   };
-  const getRoutes = (routes) => {
-    return routes.map((route, key) => {
+  const getRoutes = (AdminRoutes) => {
+    return AdminRoutes.map((route, key) => {
       if (route.layout === '/rtl') {
         return (
           <Route path={`${route.path}`} element={route.component} key={key} />
@@ -113,7 +113,7 @@ export default function Dashboard(props) {
           setToggleSidebar,
         }}
       >
-        <Sidebar routes={routes} display="none" {...rest} />
+        <Sidebar AdminRoutes={AdminRoutes} display="none" {...rest} />
         <Box
           float="left"
           minHeight="100vh"
@@ -133,9 +133,9 @@ export default function Dashboard(props) {
               <Navbar
                 onOpen={onOpen}
                 logoText={'Horizon UI Dashboard'}
-                brandText={getActiveRoute(routes)}
-                secondary={getActiveNavbar(routes)}
-                message={getActiveNavbarText(routes)}
+                brandText={getActiveRoute(AdminRoutes)}
+                secondary={getActiveNavbar(AdminRoutes)}
+                message={getActiveNavbarText(AdminRoutes)}
                 fixed={fixed}
                 {...rest}
               />
@@ -151,7 +151,7 @@ export default function Dashboard(props) {
               pt="50px"
             >
               <Routes>
-                {getRoutes(routes)}
+                {getRoutes(AdminRoutes)}
                 <Route
                   path="/"
                   element={<Navigate to="/rtl/default" replace />}

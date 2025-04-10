@@ -22,14 +22,14 @@ import {
 } from "@chakra-ui/react";
 
 // Custom components
-import IconBox from "components/icons/IconBox";
-import { HorizonLogo } from "components/icons/Icons";
-import { SidebarResponsive } from "components/sidebar/Sidebar";
+import IconBox from "components/admin/icons/IconBox";
+import { HorizonLogo } from "components/admin/icons/Icons";
+import { SidebarResponsive } from "components/admin/sidebar/Sidebar";
 import { SidebarContext } from "contexts/SidebarContext";
 
 // Assets
 import { GoChevronDown, GoChevronRight } from "react-icons/go";
-import routes from "routes.js";
+import AdminRoutes from "routes/AdminRoutes";
 
 export default function AuthNavbar(props) {
   const { logo, logoText, secondary, sidebarWidth, ...rest } = props;
@@ -57,14 +57,14 @@ export default function AuthNavbar(props) {
   } = useDisclosure();
   // Menus
   function getLinks(routeName) {
-    let foundRoute = routes.filter(function (route) {
+    let foundRoute = AdminRoutes.filter(function (route) {
       return route.items && route.name === routeName;
     });
     console.log(foundRoute);
     return foundRoute[0].items;
   }
   function getLinksCollapse(routeName) {
-    let foundRoute = routes.filter(function (route) {
+    let foundRoute = AdminRoutes.filter(function (route) {
       return route.items && route.name === routeName;
     });
 
@@ -133,8 +133,8 @@ export default function AuthNavbar(props) {
     // colorButton = useColorModeValue("white", "gray.700");
     // navbarPosition = "fixed";
   }
-  const createNftsLinks = (routes) => {
-    return routes.map((link, key) => {
+  const createNftsLinks = (AdminRoutes) => {
+    return AdminRoutes.map((link, key) => {
       return (
         <NavLink
           key={key}
@@ -147,8 +147,8 @@ export default function AuthNavbar(props) {
       );
     });
   };
-  const createDashboardsLinks = (routes) => {
-    return routes.map((link, key) => {
+  const createDashboardsLinks = (AdminRoutes) => {
+    return AdminRoutes.map((link, key) => {
       return (
         <NavLink
           key={key}
@@ -161,8 +161,8 @@ export default function AuthNavbar(props) {
       );
     });
   };
-  const createMainLinks = (routes) => {
-    return routes.map((link, key) => {
+  const createMainLinks = (AdminRoutes) => {
+    return AdminRoutes.map((link, key) => {
       if (link.collapse === true) {
         return (
           <Stack key={key} direction='column' maxW='max-content'>
@@ -204,8 +204,8 @@ export default function AuthNavbar(props) {
       }
     });
   };
-  const createAuthLinks = (routes) => {
-    return routes.map((link, key) => {
+  const createAuthLinks = (AdminRoutes) => {
+    return AdminRoutes.map((link, key) => {
       if (link.collapse === true) {
         return (
           <Stack key={key} direction='column' my='auto' maxW='max-content'>
@@ -474,7 +474,7 @@ export default function AuthNavbar(props) {
               }
               logoText={props.logoText}
               secondary={props.secondary}
-              routes={routes}
+              AdminRoutes={AdminRoutes}
               {...rest}
             />
           </Box>

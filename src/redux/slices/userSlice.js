@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Api from "@/config/api";
-import { notifyError, notifySuccess } from "@/components/toastify/toastify";
+import { notifyError, notifySuccess } from "@/components/admin/toastify/toastify";
 
 // Thunk for fetching user data
 export const fetchAllUsersData = createAsyncThunk(

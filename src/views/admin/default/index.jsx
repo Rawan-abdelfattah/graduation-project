@@ -34,9 +34,9 @@ import {
 // Assets
 import Usa from "assets/img/dashboards/usa.png";
 // Custom components
-import MiniCalendar from "components/calendar/MiniCalendar";
-import MiniStatistics from "components/card/MiniStatistics";
-import IconBox from "components/icons/IconBox";
+import MiniCalendar from "components/admin/calendar/MiniCalendar";
+import MiniStatistics from "components/admin/card/MiniStatistics";
+import IconBox from "components/admin/icons/IconBox";
 import React from "react";
 import {
   MdAddTask,

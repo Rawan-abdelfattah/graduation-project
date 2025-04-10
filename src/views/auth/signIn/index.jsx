@@ -17,7 +17,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // Custom components
-import { HSeparator } from "components/separator/Separator";
+import { HSeparator } from "components/admin/separator/Separator";
 import DefaultAuth from "layouts/auth/Default";
 // Assets
 import illustrationDoc from "assets/img/auth/image.png";

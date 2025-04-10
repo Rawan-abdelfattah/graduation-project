@@ -12,17 +12,17 @@ import {
   DrawerContent,
   DrawerCloseButton,
 } from "@chakra-ui/react";
-import Content from "components/sidebar/components/Content";
+import Content from "components/admin/sidebar/components/Content";
 import {
   renderThumb,
   renderTrack,
   renderView,
-} from "components/scrollbar/Scrollbar";
+} from "components/admin/scrollbar/Scrollbar";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { IoMenuOutline } from "react-icons/io5";
 
 function Sidebar(props) {
-  const { routes } = props;
+  const { AdminRoutes } = props;
 
   let variantChange = "0.2s linear";
   let shadow = useColorModeValue(
@@ -50,7 +50,7 @@ function Sidebar(props) {
           renderTrackVertical={renderTrack}
           renderThumbVertical={renderThumb}
           renderView={renderView}>
-          <Content routes={routes} />
+          <Content AdminRoutes={AdminRoutes} />
         </Scrollbars>
       </Box>
     </Box>
@@ -64,7 +64,7 @@ export function SidebarResponsive(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
-  const { routes } = props;
+  const { AdminRoutes } = props;
  
   return (
     <Flex display={{ base: "flex", xl: "none" }}alignItems='center'>
@@ -98,7 +98,7 @@ export function SidebarResponsive(props) {
               renderTrackVertical={renderTrack}
               renderThumbVertical={renderThumb}
               renderView={renderView}>
-              <Content routes={routes} />
+              <Content AdminRoutes={AdminRoutes} />
             </Scrollbars>
           </DrawerBody>
         </DrawerContent>
@@ -110,7 +110,7 @@ export function SidebarResponsive(props) {
 
 Sidebar.propTypes = {
   // logoText: PropTypes.string,
-  // routes: PropTypes.arrayOf(PropTypes.object),
+  // AdminRoutes: PropTypes.arrayOf(PropTypes.object),
   // variant: PropTypes.string,
 };
 
