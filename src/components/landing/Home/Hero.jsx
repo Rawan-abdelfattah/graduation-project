@@ -10,7 +10,7 @@ const Hero = () => {
   style={{ backgroundImage: `url(${bg})` }}
 >
       <Navbar /> 
-      <section className="  py-16 md:py-24">
+      <section className=" py-10">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
           <div>
             <h1 className="text-4xl md:text-5xl font-extrabold text-green-700 mb-6">
