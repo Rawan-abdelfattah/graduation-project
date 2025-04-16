@@ -7,6 +7,7 @@ import Chatbot from 'components/landing/Home/Chatbot';
 import Hero from 'components/landing/Home/Hero';
 import SmartDashboard from 'components/landing/Home/SmartDashboard';
 import Footer from 'components/landing/Home/Footer';
+import Features from 'components/landing/Home/Features';
 
 export const Home = () => {
   useEffect(() => {
@@ -33,6 +34,10 @@ export const Home = () => {
 
       <div data-aos="zoom-in">
         <Chatbot />
+      </div>
+
+      <div data-aos="fade-left">
+        <Features />
       </div>
       <Footer/>
     </div>

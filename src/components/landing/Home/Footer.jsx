@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="mt-[80px]">
+    <footer className="bg-white ">
       <div
         className="text-[20px] font-medium bg-cover bg-center"
         style={{ backgroundImage: `url(${bgImg})` }}
