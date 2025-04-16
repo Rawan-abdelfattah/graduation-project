@@ -1,7 +1,7 @@
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
-import bgImg from '../../../assets/img/landing/footer-bg.png';
-import robot from '../../../assets/img/landing/robot.png';
-import phone from '../../../assets/img/landing/footer-phone.png';
+import bgImg from '../../assets/img/landing/footer-bg.png';
+import robot from '../../assets/img/landing/robot.png';
+import phone from '../../assets/img/landing/footer-phone.png';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
