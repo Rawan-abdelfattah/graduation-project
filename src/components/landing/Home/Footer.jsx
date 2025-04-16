@@ -1,0 +1,93 @@
+import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
+import bgImg from '../../../assets/img/landing/footer-bg.png';
+import robot from '../../../assets/img/landing/robot.png';
+import phone from '../../../assets/img/landing/footer-phone.png';
+import { Link } from 'react-router-dom';
+
+export default function Footer() {
+  return (
+    <footer className="mt-[80px]">
+      <div
+        className="text-[20px] font-medium bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgImg})` }}
+      >
+        <div className="flex flex-col-reverse lg:flex-row justify-around items-center gap-10 pt-[40px] px-4">
+          <img src={phone} className="w-full max-w-[400px]" alt="phone" />
+
+          <div className="max-w-[740px] w-full text-center lg:text-left">
+            <h2 className="text-[#3B8F4F] font-bold text-3xl sm:text-4xl lg:text-[40px] leading-snug mb-4">
+              Streamline your appointment booking with our AI-powered system and
+              smart chatbot
+            </h2>
+
+            <div className="w-full max-w-[300px] lg:max-w-[550px] mx-auto lg:mx-0 mt-6 lg:mt-0 bg-transparent rounded-full overflow-hidden flex items-center border border-[#3B8F4F]">
+              <input
+                type="email"
+                placeholder="Enter your email for subscribe"
+                className="flex-grow px-4 sm:px-6 py-3 bg-transparent rounded-l-full text-sm text-gray-700 focus:outline-none"
+              />
+              <button className="bg-[#3B8F4F] text-white px-4 sm:px-6 py-3 rounded-r-full text-sm hover:bg-green-700 transition-all whitespace-nowrap">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-[#3B8F4F] text-white px-4 sm:px-8 lg:px-16 py-8">
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:justify-between items-center lg:items-start space-y-6 lg:space-y-0">
+            <div className="flex items-center space-x-3">
+              <img src={robot} className="w-[40px]" alt="robot" />
+              <h1 className="text-2xl font-bold">Doctor Bot</h1>
+            </div>
+
+            <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-center lg:text-left">
+              <Link to="#" className="hover:underline">
+                Home
+              </Link>
+              <Link to="#" className="hover:underline">
+                FAQ
+              </Link>
+              <Link to="#" className="hover:underline">
+                How it work
+              </Link>
+              <Link to="#" className="hover:underline">
+                Contact us
+              </Link>
+            </div>
+          </div>
+
+          <hr className="my-6 border-white/30" />
+
+          <div className="max-w-7xl mx-auto flex gap-4 flex-col-reverse lg:flex-row justify-between items-center space-y-4 lg:space-y-0 text-center lg:text-left">
+            <p>© Copyrights 2025 Doctor bot. All rights reserved.</p>
+
+            <div className="flex  gap-4 text-3xl">
+              <Link to="#" className="hover:text-gray-200">
+                <FaInstagram />
+              </Link>
+              <Link to="#" className="hover:text-gray-200">
+                <FaFacebookF />
+              </Link>
+              <Link to="#" className="hover:text-gray-200">
+                <FaTwitter />
+              </Link>
+            </div>
+          </div>
+          <hr className="my-6 border-white/30" />
+
+          <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4 text-center">
+            <Link href="#" className="hover:underline">
+              Terms & Conditions
+            </Link>
+            <Link href="#" className="hover:underline">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="hover:underline">
+              Contact Support
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

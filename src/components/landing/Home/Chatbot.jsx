@@ -9,7 +9,7 @@ const Chatbot = () => {
         <div className="max-w-[600px] text-center lg:text-left">
           <Link
             to="/chatbot"
-            className="inline-block bg-green-600 text-white hover:bg-green-700 mb-5 font-semibold px-12 py-3 rounded-full transition duration-200"
+            className="inline-block bg-green-600 text-white hover:bg-green-700 my-5 font-semibold px-12 py-3 rounded-full transition duration-200"
           >
             Ask the Bot
           </Link>
