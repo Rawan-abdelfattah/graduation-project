@@ -18,7 +18,7 @@ export const Home = () => {
   }, []);
 
   return (
-    <div>
+    <div className='bg-white'>
       <div>
         <Hero />
       </div>

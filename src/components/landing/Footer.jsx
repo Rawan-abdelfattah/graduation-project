@@ -76,13 +76,13 @@ export default function Footer() {
           <hr className="my-6 border-white/30" />
 
           <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4 text-center">
-            <Link href="/terms-and-conditions" className="hover:underline">
+            <Link to="/terms-and-conditions" className="hover:underline">
               Terms & Conditions
             </Link>
-            <Link href="/privacy-policy" className="hover:underline">
+            <Link to="/privacy-policy" className="hover:underline">
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:underline">
+            <Link to="#" className="hover:underline">
               Contact Support
             </Link>
           </div>

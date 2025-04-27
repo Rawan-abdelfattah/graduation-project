@@ -7,13 +7,16 @@ const Navbar = () => {
   const isActive = (path) =>
     location.pathname === path
       ? 'text-green-700 font-[30px] underline font-[800]'
-      : 'text-gray-600 hover:text-green-600'; 
+      : 'text-gray-600 hover:text-green-600';
 
   return (
     <nav className="sticky top-0 z-50  text-[22px] font-[500]">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex-shrink-0">
-          <img src="/logo.png" alt="Logo" className="w-[100px] h-[100px]" />
+          <Link to="/">
+            {' '}
+            <img src="/logo.png" alt="Logo" className="w-[100px] h-[100px]" />
+          </Link>
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-6">
