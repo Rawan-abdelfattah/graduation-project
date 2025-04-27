@@ -76,7 +76,7 @@ export const TermsAndCondition = () => {
           <img
             src={terms}
             alt="Doctor Bot Chat UI"
-            className="w-[250px] sm:w-[400px] mx-auto relative z-10"
+            className="w-[300px] sm:w-[400px] mx-auto relative z-10"
           />
         </div>
 

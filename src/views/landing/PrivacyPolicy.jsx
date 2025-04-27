@@ -54,7 +54,6 @@ const privacyPolicyData = [
 export const PrivacyPolicy = () => {
   return (
     <div className="bg-white">
-
       <Navbar />
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row justify-between items-center gap-12">
@@ -72,11 +71,10 @@ export const PrivacyPolicy = () => {
           <img
             src={privacy}
             alt="Doctor Bot Chat UI"
-            className="w-[250px] sm:w-[400px] mx-auto relative z-10"
+            className="w-[300px] sm:w-[400px] mx-auto relative z-10"
           />
         </div>
-
-        {/* Terms and Conditions List */}
+ 
         <div className="max-w-7xl mx-auto px-6 mt-10 space-y-8">
           {privacyPolicyData.map((term, index) => (
             <div key={index}>
