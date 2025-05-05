@@ -32,6 +32,9 @@ const Navbar = () => {
           <Link to="/support" className={isActive('/support')}>
             Support
           </Link>
+          <Link to="/contact-us" className={isActive('/contact-us')}>
+            Contact Us
+          </Link>
         </div>
       </div>
     </nav>

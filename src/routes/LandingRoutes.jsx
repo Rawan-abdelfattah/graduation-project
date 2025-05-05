@@ -1,3 +1,4 @@
+import ContactUs from 'components/landing/Home/ContactUs';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from 'views/landing/Home';
@@ -12,6 +13,7 @@ export default function LandingLayout() {
       <Route path="/support" element={<Support />} />
       <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/contact-us" element={<ContactUs />} />
     </Routes>
   );
 }
