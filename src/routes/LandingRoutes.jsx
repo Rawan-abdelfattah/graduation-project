@@ -1,4 +1,4 @@
-import ContactUs from 'components/landing/Home/ContactUs';
+import ContactUs from 'views/landing/ContactUs';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from 'views/landing/Home';

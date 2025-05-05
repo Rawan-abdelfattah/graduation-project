@@ -78,9 +78,7 @@ export const TermsAndCondition = () => {
             alt="Doctor Bot Chat UI"
             className="w-[300px] sm:w-[400px] mx-auto relative z-10"
           />
-        </div>
-
-        {/* Terms and Conditions List */}
+        </div> 
         <div className="max-w-7xl mx-auto px-6 mt-10 space-y-8">
           {termsData.map((term, index) => (
             <div key={index}>

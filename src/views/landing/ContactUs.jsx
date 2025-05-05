@@ -1,11 +1,11 @@
 import React from 'react';
-import Navbar from '../Navbar';
-import phoneImg from '../../../assets/img/landing/Frame 369.png';
-import emailImg from '../../../assets/img/landing/Frame 370.png';
+ import phoneImg from 'assets/img/landing/Frame 369.png';
+import emailImg from 'assets/img/landing/Frame 370.png';
 import { AiFillInstagram } from 'react-icons/ai';
 import { FaFacebook } from 'react-icons/fa';
 import { FaTwitter } from 'react-icons/fa';
-import Footer from '../Footer';
+import Footer from 'components/landing/Footer';
+import Navbar from 'components/landing/Navbar';
 
 export default function ContactUs() {
   return (
@@ -13,7 +13,7 @@ export default function ContactUs() {
       <div className="bg-cover bg-center pb-20">
         <Navbar />
         <div className="py-6">
-          <div className="flex justify-center items-center text-center">
+          <div className=" flex justify-center items-center text-center">
             <div className="mb-5">
               <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
                 Contact Us
@@ -31,7 +31,7 @@ export default function ContactUs() {
         </div>
       </div>
       <div className="flex items-center justify-center bg-white">
-        <div className="grid grid-cols-2 gap-4 py-28 px-28">
+        <div className=" grid grid-cols-2 gap-4 py-28 px-28">
           <div className="p-7">
             <h2 className="text-green-700 text-4xl font-extrabold mb-7">
               Leave a message
