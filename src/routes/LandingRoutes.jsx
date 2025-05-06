@@ -5,6 +5,7 @@ import { Home } from 'views/landing/Home';
 import { PrivacyPolicy } from 'views/landing/PrivacyPolicy';
 import { Support } from 'views/landing/Support';
 import { TermsAndCondition } from 'views/landing/TermsAndCondition';
+import DoctorBot from 'views/landing/DoctorBot';
  
 export default function LandingLayout() {
   return (
@@ -14,6 +15,7 @@ export default function LandingLayout() {
       <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/contact-us" element={<ContactUs />} />
+      <Route path="/doctor-bot" element={<DoctorBot />} />
     </Routes>
   );
 }

@@ -23,7 +23,6 @@ export default function ContactUs() {
                 products.
               </p>
               <p className="text-gray-700">
-                {' '}
                 We will try to provide an answer within a few days.
               </p>
             </div>
@@ -31,7 +30,7 @@ export default function ContactUs() {
         </div>
       </div>
       <div className="flex items-center justify-center bg-white">
-        <div className=" grid grid-cols-2 gap-4 py-28 px-28">
+        <div className=" md:grid grid-cols-2 md:gap-4 py-28 px-28">
           <div className="p-7">
             <h2 className="text-green-700 text-4xl font-extrabold mb-7">
               Leave a message
@@ -67,42 +66,42 @@ export default function ContactUs() {
             </div>
           </div>
           <div className="p-8 py-10 bg-slate-200 rounded-lg">
-            <form class="">
+            <form>
               <div className="flex flex-wrap justify-center items-center gap-5">
-                <div class="mb-5 w-[48%]">
-                  <label for="name" class="mb-2 text-green-700 font-extrabold">
+                <div className="mb-5 w-[100%] xl:w-[48%]">
+                  <label for="name" className="mb-2 text-green-700 font-extrabold">
                     Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    class="shadow-xs bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    className="min-w-full shadow-xs bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5"
                     placeholder="name"
                     required
                   />
                 </div>
-                <div class="mb-5 w-[48%]">
-                  <label for="phone" class="mb-2 text-green-700 font-extrabold">
+                <div className="mb-5 w-[100%] xl:w-[48%]">
+                  <label for="phone" className="mb-2 text-green-700 font-extrabold">
                     Phone
                   </label>
                   <input
                     type="tel"
                     id="phone"
-                    class="shadow-xs bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    className="min-w-full shadow-xs bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
                     placeholder="phone"
                     required
                   />
                 </div>
               </div>
 
-              <div class="mb-5">
-                <label for="email" class="mb-2 text-green-700 font-extrabold">
+              <div className="mb-5">
+                <label for="email" className="mb-2 text-green-700 font-extrabold">
                   Email
                 </label>
                 <input
                   type="email"
                   id="email"
-                  class="shadow-xs bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
+                  className="shadow-xs bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
                   placeholder="email"
                   required
                 />
@@ -110,21 +109,21 @@ export default function ContactUs() {
               <div className="mb-5">
                 <label
                   for="message"
-                  class="mb-2  text-green-700 font-extrabold"
+                  className="mb-2  text-green-700 font-extrabold"
                 >
                   Message
                 </label>
                 <textarea
                   id="message"
                   rows="4"
-                  class="p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                  className="p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Leave a message..."
                 ></textarea>
               </div>
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  class="text-white mb-6 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="text-white mb-6 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
                   Submit
                 </button>

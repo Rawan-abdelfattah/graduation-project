@@ -35,6 +35,9 @@ const Navbar = () => {
           <Link to="/contact-us" className={isActive('/contact-us')}>
             Contact Us
           </Link>
+          <Link to="/doctor-bot" className={isActive('/doctor-bot')}>
+            Doctor Bot
+          </Link>
         </div>
       </div>
     </nav>
