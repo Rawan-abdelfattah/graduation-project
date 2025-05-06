@@ -30,7 +30,7 @@ export default function ContactUs() {
         </div>
       </div>
       <div className="flex items-center justify-center bg-white">
-        <div className=" md:grid grid-cols-2 md:gap-4 py-28 px-28">
+        <div className=" lg:grid lg:grid-cols-2 gap-4 py-28 px-28">
           <div className="p-7">
             <h2 className="text-green-700 text-4xl font-extrabold mb-7">
               Leave a message
@@ -42,14 +42,14 @@ export default function ContactUs() {
             </p>
             <div className="flex gap-24 mt-9">
               <div className="phone flex gap-4">
-                <img className="w-12" src={phoneImg} alt="phone image" />
+                <img className="w-12" src={phoneImg} alt="phone" />
                 <div>
                   <h5 className="text-green-700 font-extrabold">Phone</h5>
                   <p>+02598774525</p>
                 </div>
               </div>
               <div className="email flex gap-4">
-                <img className="w-12" src={emailImg} alt="email image" />
+                <img className="w-12" src={emailImg} alt="email" />
                 <div>
                   <h5 className="text-green-700 font-extrabold">Email</h5>
                   <p>doc-bot.com</p>
@@ -65,34 +65,35 @@ export default function ContactUs() {
               <FaTwitter className="text-xl text-green-700" />
             </div>
           </div>
-          <div className="p-8 py-10 bg-slate-200 rounded-lg">
+          <div className="p-8 py-10 bg-[#E9F2EB] rounded-lg">
             <form>
-              <div className="flex flex-wrap justify-center items-center gap-5">
-                <div className="mb-5 w-[100%] xl:w-[48%]">
-                  <label for="name" className="mb-2 text-green-700 font-extrabold">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="min-w-full shadow-xs bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5"
-                    placeholder="name"
-                    required
-                  />
-                </div>
-                <div className="mb-5 w-[100%] xl:w-[48%]">
-                  <label for="phone" className="mb-2 text-green-700 font-extrabold">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    className="min-w-full shadow-xs bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
-                    placeholder="phone"
-                    required
-                  />
-                </div>
-              </div>
+            <div className="pb-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+  <div className="w-full">
+    <label htmlFor="name" className="block mb-2 text-green-700 font-extrabold">
+      Name
+    </label>
+    <input
+      type="text"
+      id="name"
+      className="w-full shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+      placeholder="Enter your name"
+      required
+    />
+  </div>
+
+  <div className="w-full">
+    <label htmlFor="phone" className="block mb-2 text-green-700 font-extrabold">
+      Phone
+    </label>
+    <input
+      type="tel"
+      id="phone"
+      className="w-full shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+      placeholder="Enter your phone"
+      required
+    />
+  </div>
+</div>
 
               <div className="mb-5">
                 <label for="email" className="mb-2 text-green-700 font-extrabold">

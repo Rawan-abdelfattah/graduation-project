@@ -3,7 +3,8 @@ import React from 'react';
 import bookImage from '../../assets/img/landing/book.png';
 import findImage from '../../assets/img/landing/image 33.png';
 import calendarImage from '../../assets/img/landing/image 32.png';
-import robotImage from '../../assets/img/landing/f7a08ffce51019b8fb331ac9409719b3-removebg-preview 1.png';
+import robotImage from '../../assets/img/landing/image 31.png';
+import robot from '../../assets/img/landing/robot.png';
 import specialistImage from '../../assets/img/landing/Specialist with Iphone X mask.png';
 import chatbotImage from '../../assets/img/landing/chatbot.png';
 import Footer from 'components/landing/Footer';
@@ -17,7 +18,7 @@ export default function DoctorBot() {
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
             <div>
               <div className='flex items-end gap-x-2'>
-                <img src={robotImage} alt="" className='w-14 mb-3' />
+                <img src={robot} alt="" className='w-14 mb-3' />
                 <h1 className="text-4xl md:text-5xl font-extrabold text-green-700 mb-6">
                   Doctor Bot
                 </h1>
