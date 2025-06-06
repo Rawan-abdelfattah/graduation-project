@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Book } from 'components/landing/Home/Book';
@@ -8,7 +8,9 @@ import SmartDashboard from 'components/landing/Home/SmartDashboard';
 import Features from 'components/landing/Home/Features';
 import Footer from 'components/landing/Footer';
 
+
 export const Home = () => {
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
