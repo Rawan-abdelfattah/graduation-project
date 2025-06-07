@@ -1,18 +1,20 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Send, Bot } from "lucide-react";
+import { X, Send, Bot, Globe } from "lucide-react";
 import ChatMessage from "./ChatMessages";
 
 const ChatBot = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([
     {
       id: "1",
-      text: "Hi, I'm here to guide you to the right medical specialist. How can I help you today?",
+      text: "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
       isBot: true,
       timestamp: new Date(),
     },
   ]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -22,6 +24,33 @@ const ChatBot = ({ isOpen, onClose }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const formatBotResponse = (data) => {
+    let responseText = "";
+    
+    // Check if the highest confidence prediction is below 0.3
+    const needsMoreSymptoms = data.predictions.length > 0 && data.predictions[0].confidence < 0.3;
+    
+    if (needsMoreSymptoms) {
+      if (language === "ar") {
+        responseText = "أحتاج إلى المزيد من المعلومات عن أعراضك. هل يمكنك وصف المزيد من الأعراض؟";
+      } else {
+        responseText = "I need more information about your symptoms. Could you please describe more symptoms?";
+      }
+    } else {
+      // Get the highest confidence prediction
+      const topPrediction = data.predictions[0];
+      const confidence = Math.round(topPrediction.confidence * 100);
+      
+      if (language === "ar") {
+        responseText = `حالتك قد تكون: ${topPrediction.disease_ar || topPrediction.disease}\nيجب عليك زيارة قسم: ${topPrediction.department_ar || topPrediction.department}`;
+      } else {
+        responseText = `Your condition could be: ${topPrediction.disease}\nYou should visit the: ${topPrediction.department} department`;
+      }
+    }
+    
+    return responseText;
+  };
 
   const handleSendMessage = async () => {
     if (!inputText.trim()) return;
@@ -44,7 +73,11 @@ const ChatBot = ({ isOpen, onClose }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: inputText }),
+        body: JSON.stringify({ 
+          text: inputText,
+          language: "auto",
+          output_language: language
+        }),
       });
 
       if (!response.ok) {
@@ -56,7 +89,7 @@ const ChatBot = ({ isOpen, onClose }) => {
       // Format the bot response based on the API response
       const botResponse = {
         id: (Date.now() + 1).toString(),
-        text: `Based on your symptoms, I think you might have ${data.predicted_disease} (${Math.round(data.confidence * 100)}% confidence). Would you like me to help you find a specialist for this condition?`,
+        text: formatBotResponse(data),
         isBot: true,
         timestamp: new Date(),
       };
@@ -67,7 +100,9 @@ const ChatBot = ({ isOpen, onClose }) => {
       // Fallback response in case of error
       const errorResponse = {
         id: (Date.now() + 1).toString(),
-        text: "I apologize, but I'm having trouble processing your symptoms right now. Please try again in a moment.",
+        text: language === "ar" 
+          ? "عذراً، لدي مشكلة في معالجة أعراضك الآن. يرجى المحاولة مرة أخرى بعد قليل."
+          : "I apologize, but I'm having trouble processing your symptoms right now. Please try again in a moment.",
         isBot: true,
         timestamp: new Date(),
       };
@@ -82,6 +117,44 @@ const ChatBot = ({ isOpen, onClose }) => {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  const handleReset = async () => {
+    try {
+      await fetch('http://localhost:8000/reset-conversation', {
+        method: 'POST',
+      });
+      setMessages([
+        {
+          id: "1",
+          text: language === "ar"
+            ? "مرحباً، أنا هنا لتوجيهك إلى الطبيب المختص المناسب. يرجى وصف أعراضك."
+            : "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
+          isBot: true,
+          timestamp: new Date(),
+        },
+      ]);
+    } catch (error) {
+      console.error('Error resetting conversation:', error);
+    }
+  };
+
+  const handleLanguageChange = (newLanguage) => {
+    setLanguage(newLanguage);
+    setShowLanguageMenu(false);
+    // Update the initial message when language changes
+    setMessages(prev => {
+      const newMessages = [...prev];
+      if (newMessages.length > 0) {
+        newMessages[0] = {
+          ...newMessages[0],
+          text: newLanguage === "ar"
+            ? "مرحباً، أنا هنا لتوجيهك إلى الطبيب المختص المناسب. يرجى وصف أعراضك."
+            : "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
+        };
+      }
+      return newMessages;
+    });
   };
 
   if (!isOpen) return null;
@@ -100,18 +173,52 @@ const ChatBot = ({ isOpen, onClose }) => {
               <p className="text-emerald-100 text-sm">Medical Assistant</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center space-x-2">
+            {/* Language Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                className="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full hover:bg-opacity-30 transition-colors flex items-center space-x-1"
+              >
+                <Globe className="w-4 h-4" />
+                <span>{language === "ar" ? "العربية" : "English"}</span>
+              </button>
+              {showLanguageMenu && (
+                <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-1 z-10">
+                  <button
+                    onClick={() => handleLanguageChange("en")}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    English
+                  </button>
+                  <button
+                    onClick={() => handleLanguageChange("ar")}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    العربية
+                  </button>
+                </div>
+              )}
+            </div>
+            <button
+              onClick={handleReset}
+              className="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full hover:bg-opacity-30 transition-colors"
+            >
+              {language === "ar" ? "إعادة" : "Reset"}
+            </button>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
           {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} />
+            <ChatMessage key={message.id} message={message} language={language} />
           ))}
           
           {isTyping && (
@@ -139,8 +246,9 @@ const ChatBot = ({ isOpen, onClose }) => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type your symptoms..."
+              placeholder={language === "ar" ? "اكتب أعراضك..." : "Type your symptoms..."}
               className="flex-1 border border-gray-300 rounded-full bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              dir={language === "ar" ? "rtl" : "ltr"}
             />
             <button
               onClick={handleSendMessage}
