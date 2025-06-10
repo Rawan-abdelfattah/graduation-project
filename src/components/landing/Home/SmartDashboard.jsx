@@ -1,6 +1,8 @@
 import React from 'react';
 import smartDashboardImage from '../../../assets/img/landing/smart-dashboard.png';
 import bg from '../../../assets/img/landing/shape-bg.png';
+import ImageWithLoading from '../../common/ImageWithLoading';
+
 const SmartDashboard = () => {
   return (
     <section className="py-20">
@@ -12,7 +14,7 @@ const SmartDashboard = () => {
              bg-no-repeat bg-center bg-contain sm:bg-cover"
           style={{ backgroundImage: `url(${bg})` }}
         >
-          <img
+          <ImageWithLoading
             src={smartDashboardImage}
             alt="Doctor Bot Chat UI"
             className="w-[250px] sm:w-[300px] md:w-[350px] lg:w-[400px] relative z-10"

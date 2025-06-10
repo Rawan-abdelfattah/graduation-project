@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import ImageWithLoading from '../common/ImageWithLoading';
 
 const Navbar = () => {
   const location = useLocation();
@@ -11,9 +12,9 @@ const Navbar = () => {
       : 'text-gray-600 hover:text-green-600';
 
   const navItems = [
-    { path: '/', label: 'Home' }, 
+    { path: '/', label: 'Home' },
     { path: '/doctor-bot', label: 'Doctor Bot' },
-    { path: '/reservation', label: 'Reservation' }, 
+    { path: '/reservation', label: 'Reservation' },
     { path: '/contact-us', label: 'Contact Us' },
   ];
 
@@ -22,19 +23,26 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 text-[22px] font-[500]">
+    <nav className="sticky top-0 z-50 text-[22px] font-[500] bg-white md:bg-transparent">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex-shrink-0">
           <Link to="/">
-            {' '}
-            <img src="/logo.png" alt="Logo" className="w-[80px] mt-4 h-[80px]" />
+            <ImageWithLoading
+              src="/logo.png"
+              alt="Logo"
+              className="w-[80px] mt-4 h-[80px]"
+            />
           </Link>
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6">
           {navItems.map((item) => (
-            <Link key={item.path} to={item.path} className={isActive(item.path)}>
+            <Link
+              key={item.path}
+              to={item.path}
+              className={isActive(item.path)}
+            >
               {item.label}
             </Link>
           ))}
@@ -66,7 +74,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 shadow-lg">
+          <div className="md:hidden absolute top-full left-0 right-0 shadow-lg bg-white">
             <div className="px-4 py-2 space-y-3">
               {navItems.map((item) => (
                 <Link

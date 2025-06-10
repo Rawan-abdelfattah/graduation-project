@@ -1,7 +1,8 @@
 import React from 'react';
 import book from '../../../assets/img/landing/book.png';
 import { Link } from 'react-router-dom';
-
+import ImageWithLoading from 'components/common/ImageWithLoading';
+ 
 export const Book = () => {
   return (
     <section className="py-16 bg-[#D8E9DC]">
@@ -23,7 +24,7 @@ export const Book = () => {
           </p>
         </div>
 
-        <img
+        <ImageWithLoading
           src={book}
           alt="Doctor Bot Chat UI"
           className="w-[250px] sm:w-[300px] mx-auto relative z-10"

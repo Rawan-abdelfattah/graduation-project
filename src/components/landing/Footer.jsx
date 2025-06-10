@@ -3,6 +3,7 @@ import bgImg from '../../assets/img/landing/footer-bg.png';
 import robot from '../../assets/img/landing/robot.png';
 import phone from '../../assets/img/landing/footer-phone.png';
 import { Link } from 'react-router-dom';
+import ImageWithLoading from '../common/ImageWithLoading';
 
 export default function Footer() {
   const navLinks = [
@@ -31,7 +32,7 @@ export default function Footer() {
         style={{ backgroundImage: `url(${bgImg})` }}
       >
         <div className="flex flex-col-reverse lg:flex-row justify-around items-center gap-10 pt-[40px] px-4">
-          <img src={phone} className="w-full max-w-[400px]" alt="phone" />
+          <ImageWithLoading src={phone} className="w-full max-w-[400px]" alt="phone" />
 
           <div className="max-w-[740px] w-full text-center lg:text-left">
             <h2 className="text-[#3B8F4F] font-bold text-3xl sm:text-4xl lg:text-[40px] leading-snug mb-4">
@@ -55,7 +56,7 @@ export default function Footer() {
         <div className="bg-[#3B8F4F] text-white px-4 sm:px-8 lg:px-16 py-8">
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:justify-between items-center lg:items-start space-y-6 lg:space-y-0">
             <div className="flex items-center space-x-3">
-              <img src={robot} className="w-[40px]" alt="robot" />
+              <ImageWithLoading src={robot} className="w-[40px]" alt="robot" />
               <h1 className="text-2xl font-bold">Doctor Bot</h1>
             </div>
 

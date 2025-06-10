@@ -4,6 +4,8 @@ import bg from '../../../assets/img/landing/hero-img1.png';
 import heroImage from '../../../assets/img/landing/hero-img2.png';
 import FloatingChatButton from './FloatingChatButton';
 import ChatBot from './ChatBotModel';
+import ImageWithLoading from '../../common/ImageWithLoading';
+
 const Hero = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
@@ -32,7 +34,7 @@ const Hero = () => {
             {/* Chat Bot Component */}
             <ChatBot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
           </div>
-          <img
+          <ImageWithLoading
             src={heroImage}
             alt="Doctor Bot Chat UI"
             className="w-[365px] max-w-[400px] mx-auto"
