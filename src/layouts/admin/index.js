@@ -9,6 +9,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AdminRoutes from 'routes/AdminRoutes';
 import currentTheme from "../../theme/theme"
 import Footer from 'components/admin/footer/FooterAdmin';
+import NotFound from 'components/admin/NotFound';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
@@ -172,6 +173,7 @@ export default function Dashboard(props) {
                       path="/"
                       element={<Navigate to="/admin/default" replace />}
                     />
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Box>
               ) : null}

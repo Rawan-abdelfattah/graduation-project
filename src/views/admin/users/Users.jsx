@@ -112,9 +112,9 @@ const Users = () => {
                 Role
               </Th>
 
-              <Th textAlign={'center'} color="#fff">
+              {/* <Th textAlign={'center'} color="#fff">
                 Permission
-              </Th>
+              </Th> */}
               <Th textAlign={'center'} color="#fff">
                 Edit
               </Th>
@@ -131,7 +131,7 @@ const Users = () => {
                 <Td textAlign={'center'}>{row?.name}</Td>
                 <Td textAlign={'center'}>{row?.nationalId}</Td>
                 <Td textAlign={'center'}>{row?.role?.name}</Td>
-                <Td textAlign={'center'}><PermissionModel id={row?.id}/></Td>
+                {/* <Td textAlign={'center'}><PermissionModel id={row?.id}/></Td> */}
 
                 <Td textAlign={'center'}>
                   <UserModel

@@ -6,6 +6,7 @@ import { PrivacyPolicy } from 'views/landing/PrivacyPolicy';
 import { TermsAndCondition } from 'views/landing/TermsAndCondition';
 import DoctorBot from 'views/landing/DoctorBot';
 import Reservation from 'views/landing/Reservation';
+import NotFound from 'components/NotFound';
  
 export default function LandingLayout() {
   return (
@@ -16,6 +17,7 @@ export default function LandingLayout() {
       <Route path="/contact-us" element={<ContactUs />} />
       <Route path="/doctor-bot" element={<DoctorBot />} />
       <Route path="/reservation" element={<Reservation />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

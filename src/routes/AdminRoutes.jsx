@@ -61,7 +61,6 @@ const AdminRoutes = [
     path: '/rooms',
     icon: <Icon as={MdBedroomParent  } width="20px" height="20px" color="inherit" />,
     component: <Rooms />,
-
   },
   {
     name: 'Operations',
@@ -69,7 +68,6 @@ const AdminRoutes = [
     path: '/operation',
     icon: <Icon as={MdOutlineSick  } width="20px" height="20px" color="inherit" />,
     component: <Operations />,
-
   },
   {
     name: 'Specialization',
@@ -79,7 +77,7 @@ const AdminRoutes = [
       <Icon as={RiHealthBookLine} width="20px" height="20px" color="inherit" />
     ),
     component: <Specialization />,
-  },
+  }
 ];
 
 export default AdminRoutes;

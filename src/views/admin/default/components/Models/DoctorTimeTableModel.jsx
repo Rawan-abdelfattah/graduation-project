@@ -178,9 +178,8 @@ export default function DoctorTimeTableModel({ action, doctorTimeTable }) {
                       </FormControl>
 
                       {values.schedule.length > 1 && (
-                        <div className="flex">
-                          <h5>Delete</h5>
-                          <IconButton
+                        <div className="flex mt-8">
+                           <IconButton
                             icon={<DeleteIcon />}
                             colorScheme="red"
                             onClick={() =>
