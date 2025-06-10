@@ -46,15 +46,15 @@ const AdminRoutes = [
     icon: <Icon as={FaUserDoctor } width="20px" height="20px" color="inherit" />,
     component: <DoctorTabs />,
   },
-  {
-    name: 'Screen',
-    layout: '/admin',
-    path: '/screen',
-    icon: (
-      <Icon as={TbCategoryPlus} width="20px" height="20px" color="inherit" />
-    ),
-    component: <ScreenTabs />,
-  },
+  // {
+  //   name: 'Screen',
+  //   layout: '/admin',
+  //   path: '/screen',
+  //   icon: (
+  //     <Icon as={TbCategoryPlus} width="20px" height="20px" color="inherit" />
+  //   ),
+  //   component: <ScreenTabs />,
+  // },
   {
     name: 'Rooms',
     layout: '/admin',
