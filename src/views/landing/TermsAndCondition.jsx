@@ -1,7 +1,6 @@
 import React from 'react';
 import terms from '../../assets/img/landing/terms.png';
-import Navbar from 'components/landing/Navbar';
-import Footer from 'components/landing/Footer';
+import MainLayout from 'layouts/landing/MainLayout';
 
 const termsData = [
   {
@@ -58,8 +57,7 @@ const termsData = [
 
 export const TermsAndCondition = () => {
   return (
-    <div className="bg-white">
-      <Navbar />
+    <MainLayout>
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row justify-between items-center gap-12">
           <div className="max-w-[600px] text-center md:text-left">
@@ -87,9 +85,7 @@ export const TermsAndCondition = () => {
             </div>
           ))}
         </div>
-
       </section>
-      <Footer />
-    </div>
+    </MainLayout>
   );
 };

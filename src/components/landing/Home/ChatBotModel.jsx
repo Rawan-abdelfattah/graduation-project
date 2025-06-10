@@ -1,24 +1,24 @@
-import { useState, useRef, useEffect } from "react";
-import { X, Send, Bot, Globe } from "lucide-react";
-import ChatMessage from "./ChatMessages";
+import { useState, useRef, useEffect } from 'react';
+import { X, Send, Bot, Globe } from 'lucide-react';
+import ChatMessage from './ChatMessages';
 
 const ChatBot = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([
     {
-      id: "1",
+      id: '1',
       text: "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
       isBot: true,
       timestamp: new Date(),
     },
   ]);
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState('en');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -26,29 +26,36 @@ const ChatBot = ({ isOpen, onClose }) => {
   }, [messages]);
 
   const formatBotResponse = (data) => {
-    let responseText = "";
-    
+    let responseText = '';
+
     // Check if the highest confidence prediction is below 0.3
-    const needsMoreSymptoms = data.predictions.length > 0 && data.predictions[0].confidence < 0.3;
-    
+    const needsMoreSymptoms =
+      data.predictions.length > 0 && data.predictions[0].confidence < 0.3;
+
     if (needsMoreSymptoms) {
-      if (language === "ar") {
-        responseText = "أحتاج إلى المزيد من المعلومات عن أعراضك. هل يمكنك وصف المزيد من الأعراض؟";
+      if (language === 'ar') {
+        responseText =
+          'أحتاج إلى المزيد من المعلومات عن أعراضك. هل يمكنك وصف المزيد من الأعراض؟';
       } else {
-        responseText = "I need more information about your symptoms. Could you please describe more symptoms?";
+        responseText =
+          'I need more information about your symptoms. Could you please describe more symptoms?';
       }
     } else {
       // Get the highest confidence prediction
       const topPrediction = data.predictions[0];
       const confidence = Math.round(topPrediction.confidence * 100);
-      
-      if (language === "ar") {
-        responseText = `حالتك قد تكون: ${topPrediction.disease_ar || topPrediction.disease}\nيجب عليك زيارة قسم: ${topPrediction.department_ar || topPrediction.department}`;
+
+      if (language === 'ar') {
+        responseText = `حالتك قد تكون: ${
+          topPrediction.disease_ar || topPrediction.disease
+        }\nيجب عليك زيارة قسم: ${
+          topPrediction.department_ar || topPrediction.department
+        }`;
       } else {
         responseText = `Your condition could be: ${topPrediction.disease}\nYou should visit the: ${topPrediction.department} department`;
       }
     }
-    
+
     return responseText;
   };
 
@@ -62,30 +69,33 @@ const ChatBot = ({ isOpen, onClose }) => {
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInputText("");
+    setMessages((prev) => [...prev, userMessage]);
+    setInputText('');
     setIsTyping(true);
 
     try {
       // Call the backend API
-      const response = await fetch('https://chatbot.pevidea.com/classify-symptoms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://chatbot.pevidea.com/classify-symptoms',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: inputText,
+            language: 'auto',
+            output_language: language,
+          }),
         },
-        body: JSON.stringify({ 
-          text: inputText,
-          language: "auto",
-          output_language: language
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Failed to get response from server');
       }
 
       const data = await response.json();
-      
+
       // Format the bot response based on the API response
       const botResponse = {
         id: (Date.now() + 1).toString(),
@@ -94,26 +104,27 @@ const ChatBot = ({ isOpen, onClose }) => {
         timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, botResponse]);
+      setMessages((prev) => [...prev, botResponse]);
     } catch (error) {
       console.error('Error:', error);
       // Fallback response in case of error
       const errorResponse = {
         id: (Date.now() + 1).toString(),
-        text: language === "ar" 
-          ? "عذراً، لدي مشكلة في معالجة أعراضك الآن. يرجى المحاولة مرة أخرى بعد قليل."
-          : "I apologize, but I'm having trouble processing your symptoms right now. Please try again in a moment.",
+        text:
+          language === 'ar'
+            ? 'عذراً، لدي مشكلة في معالجة أعراضك الآن. يرجى المحاولة مرة أخرى بعد قليل.'
+            : "I apologize, but I'm having trouble processing your symptoms right now. Please try again in a moment.",
         isBot: true,
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorResponse]);
+      setMessages((prev) => [...prev, errorResponse]);
     } finally {
       setIsTyping(false);
     }
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -126,10 +137,11 @@ const ChatBot = ({ isOpen, onClose }) => {
       });
       setMessages([
         {
-          id: "1",
-          text: language === "ar"
-            ? "مرحباً، أنا هنا لتوجيهك إلى الطبيب المختص المناسب. يرجى وصف أعراضك."
-            : "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
+          id: '1',
+          text:
+            language === 'ar'
+              ? 'مرحباً، أنا هنا لتوجيهك إلى الطبيب المختص المناسب. يرجى وصف أعراضك.'
+              : "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
           isBot: true,
           timestamp: new Date(),
         },
@@ -143,14 +155,15 @@ const ChatBot = ({ isOpen, onClose }) => {
     setLanguage(newLanguage);
     setShowLanguageMenu(false);
     // Update the initial message when language changes
-    setMessages(prev => {
+    setMessages((prev) => {
       const newMessages = [...prev];
       if (newMessages.length > 0) {
         newMessages[0] = {
           ...newMessages[0],
-          text: newLanguage === "ar"
-            ? "مرحباً، أنا هنا لتوجيهك إلى الطبيب المختص المناسب. يرجى وصف أعراضك."
-            : "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
+          text:
+            newLanguage === 'ar'
+              ? 'مرحباً، أنا هنا لتوجيهك إلى الطبيب المختص المناسب. يرجى وصف أعراضك.'
+              : "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
         };
       }
       return newMessages;
@@ -181,18 +194,18 @@ const ChatBot = ({ isOpen, onClose }) => {
                 className="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full hover:bg-opacity-30 transition-colors flex items-center space-x-1"
               >
                 <Globe className="w-4 h-4" />
-                <span>{language === "ar" ? "العربية" : "English"}</span>
+                <span>{language === 'ar' ? 'العربية' : 'English'}</span>
               </button>
               {showLanguageMenu && (
                 <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-1 z-10">
                   <button
-                    onClick={() => handleLanguageChange("en")}
+                    onClick={() => handleLanguageChange('en')}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     English
                   </button>
                   <button
-                    onClick={() => handleLanguageChange("ar")}
+                    onClick={() => handleLanguageChange('ar')}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     العربية
@@ -204,7 +217,7 @@ const ChatBot = ({ isOpen, onClose }) => {
               onClick={handleReset}
               className="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full hover:bg-opacity-30 transition-colors"
             >
-              {language === "ar" ? "إعادة" : "Reset"}
+              {language === 'ar' ? 'إعادة' : 'Reset'}
             </button>
             <button
               onClick={onClose}
@@ -218,9 +231,13 @@ const ChatBot = ({ isOpen, onClose }) => {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
           {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} language={language} />
+            <ChatMessage
+              key={message.id}
+              message={message}
+              language={language}
+            />
           ))}
-          
+
           {isTyping && (
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center">
@@ -229,8 +246,14 @@ const ChatBot = ({ isOpen, onClose }) => {
               <div className="bg-white p-3 rounded-2xl rounded-tl-md shadow-sm">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0.1s' }}
+                  ></div>
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0.2s' }}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -246,9 +269,11 @@ const ChatBot = ({ isOpen, onClose }) => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={language === "ar" ? "اكتب أعراضك..." : "Type your symptoms..."}
+              placeholder={
+                language === 'ar' ? 'اكتب أعراضك...' : 'Type your symptoms...'
+              }
               className="flex-1 border border-gray-300 rounded-full bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-              dir={language === "ar" ? "rtl" : "ltr"}
+              dir={language === 'ar' ? 'rtl' : 'ltr'}
             />
             <button
               onClick={handleSendMessage}

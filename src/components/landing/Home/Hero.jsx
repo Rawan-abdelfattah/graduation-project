@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '../Navbar';
 import bg from '../../../assets/img/landing/hero-img1.png';
 import heroImage from '../../../assets/img/landing/hero-img2.png';
 import FloatingChatButton from './FloatingChatButton';
 import ChatBot from './ChatBotModel';
 const Hero = () => {
-      const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
     <div
@@ -25,11 +24,13 @@ const Hero = () => {
               smart mobile app — featuring a built-in symptom checker and
               AI-powered chatbot for fast, reliable support.
             </p>
-          
-             {!isChatOpen && <FloatingChatButton onClick={() => setIsChatOpen(true)} />}
 
-      {/* Chat Bot Component */}
-      <ChatBot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+            {!isChatOpen && (
+              <FloatingChatButton onClick={() => setIsChatOpen(true)} />
+            )}
+
+            {/* Chat Bot Component */}
+            <ChatBot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
           </div>
           <img
             src={heroImage}

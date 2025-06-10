@@ -5,6 +5,25 @@ import phone from '../../assets/img/landing/footer-phone.png';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
+  const navLinks = [
+    { path: '#', label: 'Home' },
+    { path: '#', label: 'FAQ' },
+    { path: '#', label: 'How it work' },
+    { path: '#', label: 'Contact us' },
+  ];
+
+  const socialLinks = [
+    { icon: <FaInstagram />, path: '#' },
+    { icon: <FaFacebookF />, path: '#' },
+    { icon: <FaTwitter />, path: '#' },
+  ];
+
+  const legalLinks = [
+    { path: '/terms-and-conditions', label: 'Terms & Conditions' },
+    { path: '/privacy-policy', label: 'Privacy Policy' },
+    { path: '#', label: 'Contact Support' },
+  ];
+
   return (
     <footer className="bg-white ">
       <div
@@ -41,18 +60,11 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-center lg:text-left">
-              <Link to="#" className="hover:underline">
-                Home
-              </Link>
-              <Link to="#" className="hover:underline">
-                FAQ
-              </Link>
-              <Link to="#" className="hover:underline">
-                How it work
-              </Link>
-              <Link to="#" className="hover:underline">
-                Contact us
-              </Link>
+              {navLinks.map((link) => (
+                <Link key={link.path} to={link.path} className="hover:underline">
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -61,30 +73,22 @@ export default function Footer() {
           <div className="max-w-7xl mx-auto flex gap-4 flex-col-reverse lg:flex-row justify-between items-center space-y-4 lg:space-y-0 text-center lg:text-left">
             <p>© Copyrights 2025 Doctor bot. All rights reserved.</p>
 
-            <div className="flex  gap-4 text-3xl">
-              <Link to="#" className="hover:text-gray-200">
-                <FaInstagram />
-              </Link>
-              <Link to="#" className="hover:text-gray-200">
-                <FaFacebookF />
-              </Link>
-              <Link to="#" className="hover:text-gray-200">
-                <FaTwitter />
-              </Link>
+            <div className="flex gap-4 text-3xl">
+              {socialLinks.map((link, index) => (
+                <Link key={index} to={link.path} className="hover:text-gray-200">
+                  {link.icon}
+                </Link>
+              ))}
             </div>
           </div>
           <hr className="my-6 border-white/30" />
 
           <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4 text-center">
-            <Link to="/terms-and-conditions" className="hover:underline">
-              Terms & Conditions
-            </Link>
-            <Link to="/privacy-policy" className="hover:underline">
-              Privacy Policy
-            </Link>
-            <Link to="#" className="hover:underline">
-              Contact Support
-            </Link>
+            {legalLinks.map((link) => (
+              <Link key={link.path} to={link.path} className="hover:underline">
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
