@@ -68,7 +68,7 @@ const ChatBot = ({ isOpen, onClose }) => {
 
     try {
       // Call the backend API
-      const response = await fetch('http://localhost:8000/classify-symptoms', {
+      const response = await fetch('https://chatbot.pevidea.com/classify-symptoms', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const ChatBot = ({ isOpen, onClose }) => {
 
   const handleReset = async () => {
     try {
-      await fetch('http://localhost:8000/reset-conversation', {
+      await fetch('https://chatbot.pevidea.com/reset-conversation', {
         method: 'POST',
       });
       setMessages([
