@@ -27,12 +27,7 @@ import {
 } from '@chakra-ui/react';
 import MainLayout from 'layouts/landing/MainLayout';
 import Api from 'config/api';
-import {
-  createReservationStart,
-  createReservationSuccess,
-  createReservationFailure,
-  resetReservationState
-} from '../../redux/slices/reservationSlice';
+import { createReservation, resetReservationState } from '../../redux/slices/reservationSlice';
 
 function Reservation() {
   const dispatch = useDispatch();
@@ -85,16 +80,14 @@ function Reservation() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createReservationStart());
     
     try {
-      const response = await Api.post('/reservation', {
+      const response = await dispatch(createReservation({
         ...formData,
         doctorId: Number(formData.doctorId),
         specializationId: Number(formData.specializationId)
-      });
+      })).unwrap();
       
-      dispatch(createReservationSuccess(response.data));
       toast({
         title: 'Reservation Submitted',
         description: "We'll contact you shortly to confirm your appointment.",
@@ -118,10 +111,9 @@ function Reservation() {
       // Redirect to success page
       navigate('/reservation-success');
     } catch (error) {
-      dispatch(createReservationFailure(error.response?.data?.message || 'An error occurred'));
       toast({
         title: 'Submission Failed',
-        description: error.response?.data?.message || 'An error occurred while submitting your reservation.',
+        description: error.message || 'An error occurred while submitting your reservation.',
         status: 'error',
         duration: 5000,
         isClosable: true,
