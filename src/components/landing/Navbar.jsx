@@ -16,7 +16,7 @@ const Navbar = () => {
     { path: '/doctor-bot', label: 'Doctor Bot' },
     { path: '/reservation', label: 'Reservation' },
     { path: '/contact-us', label: 'Contact Us' },
-    { path: '/dashboard/login', label: 'Login' },
+    { path: '/sign-in', label: 'Login' },
   ];
 
   const toggleMenu = () => {

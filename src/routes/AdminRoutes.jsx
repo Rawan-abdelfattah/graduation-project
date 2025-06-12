@@ -14,7 +14,6 @@ import DataTables from 'views/admin/dataTables';
 import RTL from 'views/admin/rtl';
 
 // Auth Imports
-import SignInCentered from 'views/auth/signIn';
 import Users from 'views/admin/users/Users';
 import ScreenTabs from 'views/admin/screen/ScreenTabs';
 import Rooms from 'views/admin/rooms/Rooms';

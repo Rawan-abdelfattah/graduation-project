@@ -1,5 +1,6 @@
 import './assets/css/App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import SparkleEffect from './components/SparkleEffect';
 
 import AuthLayout from './layouts/auth';
 import AdminLayout from './layouts/admin';
@@ -19,22 +20,24 @@ export default function Main() {
 
   return (
     <ChakraProvider theme={currentTheme}>
-      <Routes>
-        <Route path="auth/*" element={<AuthLayout />} />
-        <Route
-          path="admin/*"
-          element={
-            <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
-          }
-        />
-        <Route
-          path="rtl/*"
-          element={
-            <RTLLayout theme={currentTheme} setTheme={setCurrentTheme} />
-          }
-        />
-        <Route path="/*" element={<LandingLayout />} />
-      </Routes>
+      <SparkleEffect>
+        <Routes>
+          <Route path="auth/*" element={<AuthLayout />} />
+          <Route
+            path="admin/*"
+            element={
+              <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
+            }
+          />
+          <Route
+            path="rtl/*"
+            element={
+              <RTLLayout theme={currentTheme} setTheme={setCurrentTheme} />
+            }
+          />
+          <Route path="/*" element={<LandingLayout />} />
+        </Routes>
+      </SparkleEffect>
     </ChakraProvider>
   );
 }
