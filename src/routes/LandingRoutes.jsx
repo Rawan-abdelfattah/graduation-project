@@ -19,8 +19,8 @@ export default function LandingLayout() {
       <Route path="/contact-us" element={<ContactUs />} />
       <Route path="/doctor-bot" element={<DoctorBot />} />
       <Route path="/reservation" element={<Reservation />} />
+      <Route path="/signin" element={<SignInCentered />} />
       <Route path="/reservation-success" element={<ReservationSuccess />} />
-      <Route path="/sign-in" element={<SignInCentered />} />
        <Route path="*" element={<NotFound />} />
     </Routes>
   );

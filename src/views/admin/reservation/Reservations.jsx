@@ -60,7 +60,7 @@ const Reservations = () => {
   const handleStatusChange = async (id, newStatus) => {
     try {
       setUpdatingStatus(id);
-      await Api.patch(`/reservation/${id}/status`, { status: newStatus });
+      await Api.patch(`/c/${id}/status`, { status: newStatus });
       dispatch(fetchReservations({ page: currentPage, query: searchQuery }));
       toast({
         title: 'Status updated',

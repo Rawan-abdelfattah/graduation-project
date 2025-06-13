@@ -20,7 +20,7 @@ import Rooms from 'views/admin/rooms/Rooms';
 import Operations from 'views/admin/operations/Operations';
 import UserTabs from 'views/admin/users/UserTabs';
 import Specialization from 'views/admin/specialization/Specialization';
-import { FaUserDoctor } from "react-icons/fa6"; 
+import { FaUserDoctor } from "react-icons/fa6";
 import DoctorTabs from 'views/admin/doctor/DoctorTabs';
 import Reservations from 'views/admin/reservation/Reservations';
 
@@ -43,7 +43,7 @@ const AdminRoutes = [
     name: 'Doctors',
     layout: '/admin',
     path: '/doctor',
-    icon: <Icon as={FaUserDoctor } width="20px" height="20px" color="inherit" />,
+    icon: <Icon as={FaUserDoctor} width="20px" height="20px" color="inherit" />,
     component: <DoctorTabs />,
   },
   // {
