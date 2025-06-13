@@ -41,7 +41,8 @@ function Reservation() {
     time: '', 
     doctorId: '',
     specializationId: '',
-    notes: ''
+    notes: '',
+    type: 'CONSULTATION'
   });
   const [doctors, setDoctors] = useState([]);
   const [specializations, setSpecializations] = useState([]);
@@ -105,7 +106,8 @@ function Reservation() {
         time: '',
         doctorId: '',
         specializationId: '',
-        notes: ''
+        notes: '',
+        type: 'CONSULTATION'
       });
 
       // Redirect to success page
@@ -187,6 +189,22 @@ function Reservation() {
             </GridItem>
             <GridItem>
               <FormControl isRequired>
+                <FormLabel>Reservation Type</FormLabel>
+                <Select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleChange}
+                >
+                  <option value="CONSULTATION">Consultation</option>
+                  <option value="EXAMINATION">Examination</option>
+                </Select>
+              </FormControl>
+            </GridItem>
+          </Grid>
+
+          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6} w="full">
+            <GridItem>
+              <FormControl isRequired>
                 <FormLabel>Select Specialization</FormLabel>
                 <Select
                   name="specializationId"
@@ -201,9 +219,6 @@ function Reservation() {
                 </Select>
               </FormControl>
             </GridItem>
-          </Grid>
-
-          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6} w="full">
             <GridItem>
               <FormControl isRequired>
                 <FormLabel>Select Doctor</FormLabel>
@@ -220,7 +235,6 @@ function Reservation() {
                 </Select>
               </FormControl>
             </GridItem>
-         
           </Grid>
 
           <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6} w="full">

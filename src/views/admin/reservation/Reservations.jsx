@@ -156,6 +156,9 @@ const Reservations = () => {
                   Date
                 </Th>
                 <Th textAlign="center" color="#fff" py={4}>
+                  Type
+                </Th>
+                <Th textAlign="center" color="#fff" py={4}>
                   Time
                 </Th>
                 <Th textAlign="center" color="#fff" py={4}>
@@ -187,6 +190,9 @@ const Reservations = () => {
                   </Td>
                   <Td textAlign="center" py={4}>
                     {reservation.time}
+                  </Td>
+                  <Td textAlign="center" py={4}>
+                    {reservation.type}
                   </Td>
                   <Td textAlign="center" py={4}>
                     <Menu>
