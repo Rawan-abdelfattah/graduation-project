@@ -56,7 +56,7 @@ export default function Footer() {
         <div className="bg-[#3B8F4F] text-white px-4 sm:px-8 lg:px-16 py-8">
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:justify-between items-center lg:items-start space-y-6 lg:space-y-0">
             <div className="flex items-center space-x-3">
-              <ImageWithLoading src={robot} className="w-[40px]" alt="robot" />
+              <ImageWithLoading src={robot} className="w-[40px] min-h-[40px]" alt="robot" />
               <h1 className="text-2xl font-bold">Doctor Bot</h1>
             </div>
 

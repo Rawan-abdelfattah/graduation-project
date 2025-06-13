@@ -34,11 +34,15 @@ const Hero = () => {
             {/* Chat Bot Component */}
             <ChatBot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
           </div>
-          <ImageWithLoading
-            src={heroImage}
-            alt="Doctor Bot Chat UI"
-            className="w-[365px] max-w-[400px] mx-auto"
-          />
+          <div className="flex-shrink-0 w-full md:w-auto flex justify-center">
+            <ImageWithLoading
+              src={heroImage}
+              alt="Doctor Bot Chat UI"
+              className="w-[365px] max-w-[400px] min-h-[500px] mx-auto"
+              delay={2000}
+             
+            />
+          </div>
         </div>
       </section>
     </div>

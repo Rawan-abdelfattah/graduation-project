@@ -64,8 +64,8 @@ const Features = () => {
             <ImageWithLoading
               src={feature.icon}
               alt={`${feature.title} icon`}
-              className="w-[200px] mx-auto mb-4"
-            />
+              className="w-[200px] min-h-[200px] mx-auto mb-4"
+             />
             <h3 className="text-[24px] font-bold mb-2">{feature.title}</h3>
             <p className="text-[18px] text-gray-600">{feature.description}</p>
           </div>

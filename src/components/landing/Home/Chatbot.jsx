@@ -2,6 +2,7 @@ import React from 'react';
 import chatbot from '../../../assets/img/landing/chatbot.png';
 import bg from '../../../assets/img/landing/shape-bg.png';
 import { Link } from 'react-router-dom';
+import ImageWithLoading from 'components/common/ImageWithLoading';
 const Chatbot = () => {
   return (
     <section className="py-20">
@@ -28,11 +29,11 @@ const Chatbot = () => {
              bg-no-repeat bg-center bg-contain sm:bg-cover"
           style={{ backgroundImage: `url(${bg})` }}
         >
-          <img
+          <ImageWithLoading
             src={chatbot}
             alt="Doctor Bot Chat UI"
-            className="w-[250px] sm:w-[300px] mx-auto relative z-10"
-          />
+            className="w-[250px] sm:w-[300px] min-h-[300px] mx-auto relative z-10"
+           />
         </div>
       </div>
     </section>
