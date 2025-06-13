@@ -1,4 +1,3 @@
-
 import { configureStore } from '@reduxjs/toolkit';
 // import userSlice from './slices/userSlice';
 import screenCategorySlice from './slices/screenCategorySlice';
@@ -7,6 +6,7 @@ import doctorPricingSlice from './slices/doctorPricingSlice';
 import screenSlice from './slices/screenSlice';
 import roomsSlice from './slices/roomsSlice';
 import operationsSlice from './slices/operationsSlice';
+import reservationSlice from './slices/reservationSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import logedUserSlice from './slices/logedUserSlice';
@@ -41,9 +41,8 @@ const store = configureStore({
     screen : screenSlice,
     rooms : roomsSlice,
     operations : operationsSlice,
+    reservation: reservationSlice,
   },
 });
-
-
 
 export default store;

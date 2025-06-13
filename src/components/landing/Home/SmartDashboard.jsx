@@ -17,7 +17,7 @@ const SmartDashboard = () => {
           <ImageWithLoading
             src={smartDashboardImage}
             alt="Doctor Bot Chat UI"
-            className="w-[250px] sm:w-[300px] md:w-[350px] lg:w-[400px] relative z-10"
+             className=" w-[250px] min-h-[250px] sm:w-[300px] md:w-[350px] lg:w-[400px] relative z-10"
           />
         </div>
 

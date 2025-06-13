@@ -11,6 +11,7 @@ import currentTheme from "../../theme/theme"
 import Footer from 'components/admin/footer/FooterAdmin';
 import NotFound from 'components/admin/NotFound';
 import { useSelector } from 'react-redux';
+import { DoctorChat } from 'components/admin/doctorChat/DoctorChat';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
@@ -18,24 +19,24 @@ export default function Dashboard(props) {
   // states and functions
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
-  const navigate=useNavigate()
-  const [activeRoute , setActiveRoute] = useState();
-  const {user , logedIn , isAdmin}=useSelector((state)=>state?.logedUserSlice)
+  const navigate = useNavigate()
+  const [activeRoute, setActiveRoute] = useState();
+  const { user, logedIn, isAdmin } = useSelector((state) => state?.logedUserSlice)
 
-  useEffect(()=>{
-    if(!logedIn){
+  useEffect(() => {
+    if (!logedIn) {
       navigate("/auth/signin")
     }
-    if(!isAdmin){
+    if (!isAdmin) {
       navigate("/admin/default")
     }
-  },[logedIn,isAdmin])
+  }, [logedIn, isAdmin])
 
-  let currentPath =useLocation().pathname;
+  let currentPath = useLocation().pathname;
 
   useEffect(() => {
     setActiveRoute(getActiveRoute(AdminRoutes));
-  },[currentPath])
+  }, [currentPath])
   // functions for changing the states from components
   const getRoute = () => {
     return window.location.pathname !== '/admin/full-screen-maps';
@@ -196,6 +197,7 @@ export default function Dashboard(props) {
             </Box>
           </SidebarContext.Provider>
         </Box>
+        <DoctorChat />
       </Box>
     </ChakraProvider>
   );

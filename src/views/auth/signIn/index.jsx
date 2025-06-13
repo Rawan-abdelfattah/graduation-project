@@ -206,6 +206,7 @@ const handleSubmit=async(e)=>{
                 variant="brand"
                 fontWeight="500"
                 w="100%"
+                color="white"
                 h="50"
                 type="submit"
                 mb="24px"
