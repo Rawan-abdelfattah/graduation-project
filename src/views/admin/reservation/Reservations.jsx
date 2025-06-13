@@ -57,10 +57,11 @@ const Reservations = () => {
     setCurrentPage(newPage);
   };
 
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = async (id, newStatus, reservation) => {
     try {
       setUpdatingStatus(id);
-      await Api.patch(`/c/${id}/status`, { status: newStatus });
+      const endpoint = reservation.type === 'Mobile' ? `/reservation/mobile/${id}/status` : `/reservation/web/${id}/status`;
+      await Api.patch(endpoint, { status: newStatus });
       dispatch(fetchReservations({ page: currentPage, query: searchQuery }));
       toast({
         title: 'Status updated',
@@ -136,6 +137,7 @@ const Reservations = () => {
               justifyContent="center"
               zIndex="1"
               borderRadius="lg"
+              w="100%"
             >
               <Loader active={loading} />
             </Box>
@@ -177,22 +179,22 @@ const Reservations = () => {
                   transition="all 0.2s"
                 >
                   <Td textAlign="center" py={4}>
-                    {reservation.name}
+                    {reservation.type === 'Mobile' ? reservation.patient?.name : reservation.name}
                   </Td>
                   <Td textAlign="center" py={4}>
-                    {reservation.email}
+                    {reservation.type === 'Mobile' ? reservation.patient?.username : reservation.email}
                   </Td>
                   <Td textAlign="center" py={4}>
-                    {reservation.phone}
+                    {reservation.type === 'Mobile' ? reservation.patient?.phone : reservation.phone}
                   </Td>
                   <Td textAlign="center" py={4}>
-                    {new Date(reservation.date).toLocaleDateString()}
-                  </Td>
-                  <Td textAlign="center" py={4}>
-                    {reservation.time}
+                    {new Date(reservation.appointmentDateTime).toLocaleDateString()}
                   </Td>
                   <Td textAlign="center" py={4}>
                     {reservation.type}
+                  </Td>
+                  <Td textAlign="center" py={4}>
+                    {new Date(reservation.appointmentDateTime).toLocaleTimeString()}
                   </Td>
                   <Td textAlign="center" py={4}>
                     <Menu>
@@ -235,19 +237,19 @@ const Reservations = () => {
                       </MenuButton>
                       <MenuList>
                         <MenuItem 
-                          onClick={() => handleStatusChange(reservation.id, 'PENDING')}
+                          onClick={() => handleStatusChange(reservation.id, 'PENDING', reservation)}
                           isDisabled={updatingStatus === reservation.id}
                         >
                           PENDING
                         </MenuItem>
                         <MenuItem 
-                          onClick={() => handleStatusChange(reservation.id, 'CONFIRMED')}
+                          onClick={() => handleStatusChange(reservation.id, 'CONFIRMED', reservation)}
                           isDisabled={updatingStatus === reservation.id}
                         >
                           CONFIRMED
                         </MenuItem>
                         <MenuItem 
-                          onClick={() => handleStatusChange(reservation.id, 'CANCELLED')}
+                          onClick={() => handleStatusChange(reservation.id, 'CANCELLED', reservation)}
                           isDisabled={updatingStatus === reservation.id}
                         >
                           CANCELLED
