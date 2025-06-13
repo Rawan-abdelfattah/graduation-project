@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ImageWithLoading from '../common/ImageWithLoading';
 
 const Navbar = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const isActive = (path) =>
     location.pathname === path
@@ -24,7 +35,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 text-[22px] font-[500] bg-white md:bg-transparent">
+    <nav className={`sticky top-0 z-50 text-[22px] font-[500] transition-colors duration-300 ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex-shrink-0">
           <Link to="/">
