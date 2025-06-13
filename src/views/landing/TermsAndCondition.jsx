@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import terms from '../../assets/img/landing/terms.png';
 import MainLayout from 'layouts/landing/MainLayout';
 
@@ -58,6 +59,10 @@ const termsData = [
 export const TermsAndCondition = () => {
   return (
     <MainLayout>
+      <Helmet>
+        <title>Terms and Conditions | Doctor Bot</title>
+        <meta name="description" content="Read Doctor Bot's terms and conditions. Understand our service policies, user responsibilities, and legal agreements." />
+      </Helmet>
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row justify-between items-center gap-12">
           <div className="max-w-[600px] text-center md:text-left">

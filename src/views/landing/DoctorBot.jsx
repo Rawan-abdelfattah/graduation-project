@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import bookImage from '../../assets/img/landing/book.png';
 import findImage from '../../assets/img/landing/image 33.png';
 import calendarImage from '../../assets/img/landing/image 32.png';
@@ -11,6 +12,10 @@ import MainLayout from 'layouts/landing/MainLayout';
 export default function DoctorBot() {
   return (
     <MainLayout>
+      <Helmet>
+        <title>Doctor Bot - AI-Powered Healthcare Assistant</title>
+        <meta name="description" content="Experience smart healthcare with Doctor Bot. Book appointments, get instant health guidance, and connect with specialists through our AI-powered platform." />
+      </Helmet>
       <section>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
           <div>

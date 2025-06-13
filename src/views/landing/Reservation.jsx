@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -295,6 +296,10 @@ function Reservation() {
 
   return (
     <MainLayout>
+      <Helmet>
+        <title>Book an Appointment | Doctor Bot</title>
+        <meta name="description" content="Schedule your medical appointment with Doctor Bot. Choose your preferred doctor, date, and time for a consultation or examination." />
+      </Helmet>
       <Box py={12} px={4}>
         <Box maxW="3xl" mx="auto">
           <Card>

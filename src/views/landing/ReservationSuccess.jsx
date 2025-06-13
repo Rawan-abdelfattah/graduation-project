@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import Confetti from 'react-confetti';
 import {
   Box,
@@ -45,6 +46,10 @@ function ReservationSuccess() {
 
   return (
     <MainLayout>
+      <Helmet>
+        <title>Reservation Confirmed | Doctor Bot</title>
+        <meta name="description" content="Your appointment has been successfully booked. View your reservation details and next steps." />
+      </Helmet>
       <Confetti
         width={windowSize.width}
         height={windowSize.height}

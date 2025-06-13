@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import phoneImg from 'assets/img/landing/Frame 369.png';
 import emailImg from 'assets/img/landing/Frame 370.png';
 import { AiFillInstagram } from 'react-icons/ai';
@@ -8,6 +9,10 @@ import MainLayout from 'layouts/landing/MainLayout';
 export default function ContactUs() {
   return (
     <MainLayout>
+      <Helmet>
+        <title>Contact Us | Doctor Bot</title>
+        <meta name="description" content="Get in touch with Doctor Bot. Contact us for any questions about our services, booking, or technical support." />
+      </Helmet>
       <div className="bg-cover bg-center pb-20">
         <div className="py-6">
           <div className=" flex justify-center items-center text-center">
