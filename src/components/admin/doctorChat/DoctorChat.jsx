@@ -1,175 +1,277 @@
 import React, { useState, useEffect } from 'react';
 import { FaComments, FaPaperPlane } from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
+import { IoClose, IoArrowBack } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
-import { getDatabase, ref, onValue, push, set, get } from 'firebase/database';
+import { collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp, getDocs, writeBatch, limit } from 'firebase/firestore';
 import './DoctorChat.css';
-import {app,db} from '../../../config/firebase';
+import { db } from '../../../config/firebase';
 
 export const DoctorChat = () => {
+
   const [isOpen, setIsOpen] = useState(false);
   const [chats, setChats] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
   const [newMessage, setNewMessage] = useState('');
+  const [showMessages, setShowMessages] = useState(false);
+  const [messages, setMessages] = useState([]); // New state for real-time messages
   const { user } = useSelector((state) => state?.logedUserSlice);
 
+  // Real-time listener for messages in active chat
   useEffect(() => {
-    if (user?.id) {
-      // Listen for user's chats
-      const userChatsRef = ref(db, `userChats/${user.id}`);
-      onValue(userChatsRef, async (snapshot) => {
-        const userChatsData = snapshot.val() || {};
-        const chatPromises = Object.entries(userChatsData).map(async ([otherUserId, chatId]) => {
-          // Get other user's details
-          const otherUserRef = ref(db, `users/${otherUserId}`);
-          const otherUserSnapshot = await get(otherUserRef);
-          const otherUserData = otherUserSnapshot.val();
+    if (!activeChat) {
+      setMessages([]);
+      return;
+    }
 
-          // Get chat details
-          const chatRef = ref(db, `chats/${chatId}`);
-          const chatSnapshot = await get(chatRef);
-          const chatData = chatSnapshot.val();
+    const messagesRef = collection(db, 'chats', activeChat, 'messages');
+    const messagesQuery = query(messagesRef, orderBy('timestamp', 'asc'));
+
+    const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+      const messagesData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setMessages(messagesData);
+    });
+
+    return () => unsubscribe();
+  }, [activeChat]);
+
+  // Mark messages as read when entering a chat
+  useEffect(() => {
+    if (!user?.id || !user?.Doctor?.id) return;
+
+    const chatsRef = collection(db, 'chats');
+
+    const unsubscribe = onSnapshot(chatsRef, async (snapshot) => {
+      const chatDocs = snapshot.docs;
+
+      const chatsData = await Promise.all(
+        chatDocs.map(async (chatDoc) => {
+          const chatId = chatDoc.id;
+
+          if (!chatId.endsWith(`_${user.Doctor.id}`)) return null;
+
+          const messagesRef = collection(db, 'chats', chatId, 'messages');
+
+          // Get the last message
+          const lastMessageQuery = query(messagesRef, orderBy('timestamp', 'desc'), limit(1));
+          const lastMessageSnapshot = await getDocs(lastMessageQuery);
+          const lastMessage = lastMessageSnapshot.docs[0]?.data();
+
+          // Count unread messages from other users (patients)
+          const unreadQuery = query(
+            messagesRef,
+            where('isRead', '==', false),
+            where('userId', '!=', user.Doctor.id)
+          );
+          const unreadSnapshot = await getDocs(unreadQuery);
+          const unreadCount = unreadSnapshot.size;
+
+          // Determine if chat should be marked as unread
+          const hasUnreadMessages = unreadCount > 0;
+
+          // Get the sender info for last message display
+          const isLastMessageFromDoctor = lastMessage?.userId === user.Doctor.id;
 
           return {
             id: chatId,
-            otherUserId,
-            otherUserName: otherUserData?.name || 'Unknown User',
-            messages: Object.entries(chatData?.messages || {}).map(([msgId, msg]) => ({
-              id: msgId,
-              ...msg
-            })),
-            lastMessage: chatData?.lastMessage
+            doctorId: chatDoc.data().doctorId,
+            doctorName: chatDoc.data().doctorName,
+            patientId: chatDoc.data().patientId,
+            patientName: chatDoc.data().patientName,
+            timestamp: lastMessage?.timestamp,
+            lastMessage: lastMessage?.text || 'No messages yet',
+            lastMessageSender: isLastMessageFromDoctor ? 'You' : chatDoc.data().patientName,
+            isLastMessageFromDoctor,
+            isRead: !hasUnreadMessages,
+            unreadCount,
+            hasUnreadMessages,
           };
+        })
+      );
+
+      const filteredChats = chatsData
+        .filter(Boolean)
+        .sort((a, b) => {
+          if (!a.timestamp && !b.timestamp) return 0;
+          if (!a.timestamp) return 1;
+          if (!b.timestamp) return -1;
+          return b.timestamp.toMillis() - a.timestamp.toMillis();
         });
 
-        const chatResults = await Promise.all(chatPromises);
-        setChats(chatResults);
-        if (chatResults.length > 0 && !activeChat) {
-          setActiveChat(chatResults[0].id);
-        }
-      });
-    }
+      setChats(filteredChats);
+    });
+
+    return () => unsubscribe();
   }, [user?.id]);
+
+  const truncateMessage = (message, maxLength = 50) => {
+    if (!message) return 'No messages yet';
+    if (message.length <= maxLength) return message;
+    return message.substring(0, maxLength) + '...';
+  };
+
+  // Helper function to format last message with sender info
+  const formatLastMessage = (chat) => {
+    if (!chat.lastMessage || chat.lastMessage === 'No messages yet') {
+      return 'No messages yet';
+    }
+
+    const truncatedMessage = truncateMessage(chat.lastMessage);
+
+    if (chat.isLastMessageFromDoctor) {
+      return `You: ${truncatedMessage}`;
+    } else {
+      return truncatedMessage;
+    }
+  };
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
+    if (!isOpen) {
+      setShowMessages(false);
+      setActiveChat(null);
+    }
+  };
+
+  const handleChatSelect = (chatId) => {
+    setActiveChat(chatId);
+    setShowMessages(true);
+  };
+
+  const handleBackToList = () => {
+    setShowMessages(false);
+    setActiveChat(null);
   };
 
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !activeChat || !user?.id) return;
 
-    const chatRef = ref(db, `chats/${activeChat}/messages`);
-    const newMessageRef = push(chatRef);
-    const timestamp = Date.now();
+    const activeChatData = chats.find(chat => chat.id === activeChat);
+    if (!activeChatData) return;
 
     const messageData = {
-      senderId: user.id,
       text: newMessage.trim(),
-      timestamp
+      timestamp: serverTimestamp(),
+      isRead: false,
+      doctorId: user?.Doctor?.id,
+      userId: user?.Doctor?.id,
+      userName: user.name
     };
 
     try {
-      await set(newMessageRef, messageData);
-
-      // Update last message
-      const lastMessageRef = ref(db, `chats/${activeChat}/lastMessage`);
-      await set(lastMessageRef, {
-        text: newMessage.trim(),
-        timestamp
-      });
-
+      const messagesRef = collection(db, 'chats', activeChat, 'messages');
+      await addDoc(messagesRef, messageData);
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
 
-  const startNewChat = async (otherUserId) => {
-    if (!user?.id || !otherUserId) return;
-
-    // Check if chat already exists
-    const userChatsRef = ref(db, `userChats/${user.id}/${otherUserId}`);
-    const otherUserChatsRef = ref(db, `userChats/${otherUserId}/${user.id}`);
-
-    const snapshot = await get(userChatsRef);
-    if (snapshot.exists()) {
-      setActiveChat(snapshot.val());
-      return;
-    }
-
-    // Create new chat
-    const newChatRef = push(ref(db, 'chats'));
-    const chatId = newChatRef.key;
-
-    const chatData = {
-      participants: {
-        [user.id]: true,
-        [otherUserId]: true
-      },
-      messages: {},
-      lastMessage: null
-    };
-
-    try {
-      await set(newChatRef, chatData);
-      await set(userChatsRef, chatId);
-      await set(otherUserChatsRef, chatId);
-      setActiveChat(chatId);
-    } catch (error) {
-      console.error('Error creating new chat:', error);
-    }
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return '';
+    const date = timestamp.toDate();
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (showMessages && messages.length > 0) {
+      const messagesContainer = document.querySelector('.chat-messages');
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }
+  }, [messages, showMessages]);
 
   return (
     <div className="chat-container">
       {!isOpen && (
         <button className="chat-toggle-button" onClick={toggleChat}>
           <FaComments size={24} />
+          {chats.some(chat => !chat.isRead ) && (
+            <span className="notification-badge">
+              {chats.filter(chat => !chat.isRead).length}
+            </span>
+          )}
         </button>
       )}
 
       {isOpen && (
         <div className="chat-window">
           <div className="chat-header">
-            <div className="chat-tabs">
-              {chats.map(chat => (
-                <button
-                  key={chat.id}
-                  className={`chat-tab ${activeChat === chat.id ? 'active' : ''}`}
-                  onClick={() => setActiveChat(chat.id)}
-                >
-                  {chat.otherUserName}
+            {showMessages ? (
+              <>
+                <button className="back-button" onClick={handleBackToList}>
+                  <IoArrowBack size={24} />
                 </button>
-              ))}
-            </div>
+                <h3>{chats.find(chat => chat.id === activeChat)?.patientName}</h3>
+              </>
+            ) : (
+              <h3>Messages</h3>
+            )}
             <button className="close-button" onClick={toggleChat}>
               <IoClose size={24} />
             </button>
           </div>
 
-          <div className="chat-messages">
-            {chats.find(chat => chat.id === activeChat)?.messages.map((message) => (
-              <div
-                key={message.id}
-                className={`message ${message.senderId === user?.id ? 'user' : 'other'}`}
-              >
-                {message.text}
+          {!showMessages ? (
+            <div className="chat-list">
+              {chats?.map(chat => (
+                <div
+                  key={chat.id}
+                  className={`chat-item ${chat.hasUnreadMessages ? 'unread' : ''}`}
+                  onClick={() => handleChatSelect(chat.id)}
+                >
+                  <div className="chat-item-header">
+                    <span className="patient-name">{chat.patientName}</span>
+                    <div className="header-right">
+                      <span className="timestamp">{formatTimestamp(chat.timestamp)}</span>
+                      {chat.hasUnreadMessages && (
+                        <span className="unread-count-badge">{chat.unreadCount}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="chat-item-content">
+                    <p className={`last-message ${chat.hasUnreadMessages ? 'unread-text' : ''}`}>
+                      {formatLastMessage(chat)}
+                    </p>
+                    {chat.hasUnreadMessages && (
+                      <div className="unread-indicator"></div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              <div className="chat-messages">
+                {messages?.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`message ${message.userId === user?.Doctor?.id ? 'user' : 'other'}`}
+                  >
+                    <div className="message-content">{message.text}</div>
+                    <div className="message-time">{formatTimestamp(message.timestamp)}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <form onSubmit={sendMessage} className="chat-input">
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type a message..."
-            />
-            <button type="submit">
-              <FaPaperPlane size={20} />
-            </button>
-          </form>
+              <form onSubmit={sendMessage} className="chat-input">
+                <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type a message..."
+                />
+                <button type="submit">
+                  <FaPaperPlane size={20} />
+                </button>
+              </form>
+            </>
+          )}
         </div>
       )}
     </div>
