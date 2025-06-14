@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Send, Bot, Globe } from "lucide-react";
+import { X, Send, Bot, Mic, MicOff } from "lucide-react";
 import ChatMessage from "./ChatMessages";
 
 const ChatBot = ({ isOpen, onClose }) => {
@@ -13,8 +13,8 @@ const ChatBot = ({ isOpen, onClose }) => {
   ]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [language, setLanguage] = useState("en");
-  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -28,24 +28,49 @@ const ChatBot = ({ isOpen, onClose }) => {
   const formatBotResponse = (data) => {
     let responseText = "";
     
-    // Check if the highest confidence prediction is below 0.3
-    const needsMoreSymptoms = data.predictions.length > 0 && data.predictions[0].confidence < 0.3;
-    
-    if (needsMoreSymptoms) {
-      if (language === "ar") {
-        responseText = "أحتاج إلى المزيد من المعلومات عن أعراضك. هل يمكنك وصف المزيد من الأعراض؟";
-      } else {
-        responseText = "I need more information about your symptoms. Could you please describe more symptoms?";
-      }
+    if (!data.predictions) {
+      responseText = "I need more information about your symptoms. Could you please describe more symptoms?";
     } else {
-      // Get the highest confidence prediction
-      const topPrediction = data.predictions[0];
-      const confidence = Math.round(topPrediction.confidence * 100);
+      // Get all predictions
+      const predictions = data.predictions;
       
-      if (language === "ar") {
-        responseText = `حالتك قد تكون: ${topPrediction.disease_ar || topPrediction.disease}\nيجب عليك زيارة قسم: ${topPrediction.department_ar || topPrediction.department}`;
+      // Count department occurrences
+      const departmentCounts = {};
+      predictions.forEach(pred => {
+        departmentCounts[pred.department] = (departmentCounts[pred.department] || 0) + 1;
+      });
+      
+      // Find most frequent department
+      let recommendedDepartment = predictions[0].department;
+      let maxCount = 1;
+      
+      for (const [dept, count] of Object.entries(departmentCounts)) {
+        if (count > maxCount) {
+          maxCount = count;
+          recommendedDepartment = dept;
+        }
+      }
+      
+      // If no department is repeated, use the one with highest confidence
+      if (maxCount === 1) {
+        recommendedDepartment = predictions[0].department;
+      }
+
+      // Check if the response is in Arabic
+      const isArabic = /[\u0600-\u06FF]/.test(predictions[0].disease);
+      
+      if (isArabic) {
+        responseText = "الحالات المحتملة:\n";
+        predictions.forEach((pred, index) => {
+          responseText += `${index + 1}. ${pred.disease}\n`;
+        });
+        responseText += `\nبناءً على تحليل الأعراض، نوصي بزيارة قسم: ${recommendedDepartment}`;
       } else {
-        responseText = `Your condition could be: ${topPrediction.disease}\nYou should visit the: ${topPrediction.department} department`;
+        responseText = "Possible conditions:\n";
+        predictions.forEach((pred, index) => {
+          responseText += `${index + 1}. ${pred.disease}\n`;
+        });
+        responseText += `\nBased on symptom analysis, we recommend visiting the: ${recommendedDepartment} department`;
       }
     }
     
@@ -67,17 +92,12 @@ const ChatBot = ({ isOpen, onClose }) => {
     setIsTyping(true);
 
     try {
-      // Call the backend API
+      const formData = new FormData();
+      formData.append('symptoms', inputText);
+
       const response = await fetch('http://localhost:8000/classify-symptoms', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          text: inputText,
-          language: "auto",
-          output_language: language
-        }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -86,7 +106,6 @@ const ChatBot = ({ isOpen, onClose }) => {
 
       const data = await response.json();
       
-      // Format the bot response based on the API response
       const botResponse = {
         id: (Date.now() + 1).toString(),
         text: formatBotResponse(data),
@@ -97,12 +116,85 @@ const ChatBot = ({ isOpen, onClose }) => {
       setMessages(prev => [...prev, botResponse]);
     } catch (error) {
       console.error('Error:', error);
-      // Fallback response in case of error
       const errorResponse = {
         id: (Date.now() + 1).toString(),
-        text: language === "ar" 
-          ? "عذراً، لدي مشكلة في معالجة أعراضك الآن. يرجى المحاولة مرة أخرى بعد قليل."
-          : "I apologize, but I'm having trouble processing your symptoms right now. Please try again in a moment.",
+        text: "I apologize, but I'm having trouble processing your symptoms right now. Please try again in a moment.",
+        isBot: true,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      const chunks = [];
+
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = async () => {
+        const audioBlob = new Blob(chunks, { type: 'audio/mp3' });
+        await handleAudioUpload(audioBlob);
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handleAudioUpload = async (audioBlob) => {
+    const userMessage = {
+      id: Date.now().toString(),
+      text: "🎤 Voice message...",
+      isBot: false,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setIsTyping(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('audio_file', audioBlob, 'recording.mp3');
+
+      const response = await fetch('http://localhost:8000/classify-symptoms', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from server');
+      }
+
+      const data = await response.json();
+      
+      const botResponse = {
+        id: (Date.now() + 1).toString(),
+        text: formatBotResponse(data),
+        isBot: true,
+        timestamp: new Date(),
+      };
+
+      setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      console.error('Error:', error);
+      const errorResponse = {
+        id: (Date.now() + 1).toString(),
+        text: "I apologize, but I'm having trouble processing your voice message right now. Please try again in a moment.",
         isBot: true,
         timestamp: new Date(),
       };
@@ -127,9 +219,7 @@ const ChatBot = ({ isOpen, onClose }) => {
       setMessages([
         {
           id: "1",
-          text: language === "ar"
-            ? "مرحباً، أنا هنا لتوجيهك إلى الطبيب المختص المناسب. يرجى وصف أعراضك."
-            : "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
+          text: "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
           isBot: true,
           timestamp: new Date(),
         },
@@ -137,24 +227,6 @@ const ChatBot = ({ isOpen, onClose }) => {
     } catch (error) {
       console.error('Error resetting conversation:', error);
     }
-  };
-
-  const handleLanguageChange = (newLanguage) => {
-    setLanguage(newLanguage);
-    setShowLanguageMenu(false);
-    // Update the initial message when language changes
-    setMessages(prev => {
-      const newMessages = [...prev];
-      if (newMessages.length > 0) {
-        newMessages[0] = {
-          ...newMessages[0],
-          text: newLanguage === "ar"
-            ? "مرحباً، أنا هنا لتوجيهك إلى الطبيب المختص المناسب. يرجى وصف أعراضك."
-            : "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
-        };
-      }
-      return newMessages;
-    });
   };
 
   if (!isOpen) return null;
@@ -174,37 +246,11 @@ const ChatBot = ({ isOpen, onClose }) => {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            {/* Language Selector */}
-            <div className="relative">
-              <button
-                onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-                className="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full hover:bg-opacity-30 transition-colors flex items-center space-x-1"
-              >
-                <Globe className="w-4 h-4" />
-                <span>{language === "ar" ? "العربية" : "English"}</span>
-              </button>
-              {showLanguageMenu && (
-                <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-1 z-10">
-                  <button
-                    onClick={() => handleLanguageChange("en")}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    English
-                  </button>
-                  <button
-                    onClick={() => handleLanguageChange("ar")}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    العربية
-                  </button>
-                </div>
-              )}
-            </div>
             <button
               onClick={handleReset}
               className="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full hover:bg-opacity-30 transition-colors"
             >
-              {language === "ar" ? "إعادة" : "Reset"}
+              Reset
             </button>
             <button
               onClick={onClose}
@@ -218,7 +264,7 @@ const ChatBot = ({ isOpen, onClose }) => {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
           {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} language={language} />
+            <ChatMessage key={message.id} message={message} />
           ))}
           
           {isTyping && (
@@ -241,14 +287,23 @@ const ChatBot = ({ isOpen, onClose }) => {
         {/* Input */}
         <div className="p-4 bg-white border-t">
           <div className="flex items-center space-x-2">
+            <button
+              onClick={isRecording ? stopRecording : startRecording}
+              className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                isRecording 
+                  ? 'bg-red-500 hover:bg-red-600 text-white' 
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+              }`}
+            >
+              {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            </button>
             <input
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={language === "ar" ? "اكتب أعراضك..." : "Type your symptoms..."}
+              placeholder="Type your symptoms..."
               className="flex-1 border border-gray-300 rounded-full bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-              dir={language === "ar" ? "rtl" : "ltr"}
             />
             <button
               onClick={handleSendMessage}

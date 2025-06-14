@@ -1,10 +1,12 @@
 import { Bot } from "lucide-react";
 
-
-const ChatMessage = ({ message, language }) => {
+const ChatMessage = ({ message }) => {
   const formatTime = (date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
+
+  // Check if the message contains Arabic text
+  const isArabic = /[\u0600-\u06FF]/.test(message.text);
 
   return (
     <div className={`flex items-start space-x-2 ${message.isBot ? '' : 'flex-row-reverse space-x-reverse'}`}>
@@ -24,7 +26,7 @@ const ChatMessage = ({ message, language }) => {
         >
           <p 
             className="text-sm leading-relaxed whitespace-pre-line"
-            dir={language === "ar" ? "rtl" : "ltr"}
+            dir={isArabic ? "rtl" : "ltr"}
           >
             {message.text}
           </p>
