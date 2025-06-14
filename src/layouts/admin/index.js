@@ -22,6 +22,7 @@ export default function Dashboard(props) {
   const navigate = useNavigate()
   const [activeRoute, setActiveRoute] = useState();
   const { user, logedIn, isAdmin } = useSelector((state) => state?.logedUserSlice)
+  console.log("🚀 ~ Dashboard ~ user:", user)
 
   useEffect(() => {
     if (!logedIn) {
@@ -197,7 +198,7 @@ export default function Dashboard(props) {
             </Box>
           </SidebarContext.Provider>
         </Box>
-        <DoctorChat />
+        {user?.roleId === 2 && <DoctorChat />}
       </Box>
     </ChakraProvider>
   );

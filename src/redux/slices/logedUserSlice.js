@@ -13,7 +13,8 @@ const authSlice = createSlice({
     Login: (state, action) => {
       state.user = action.payload;
       state.logedIn = true;
-      state.isAdmin = action?.payload?.isAdmin ||  action?.payload?.role ===1;
+      // state.isAdmin = action?.payload?.isAdmin ||  action?.payload?.role ===1;
+      state.isAdmin = true;
     },
     Logout: (state, action) => {
       state.user = {};
