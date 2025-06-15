@@ -23,6 +23,8 @@ import Specialization from 'views/admin/specialization/Specialization';
 import { FaUserDoctor } from "react-icons/fa6";
 import DoctorTabs from 'views/admin/doctor/DoctorTabs';
 import Reservations from 'views/admin/reservation/Reservations';
+import GallstonePrediction from 'views/admin/gallstonePrediction/gallstonePrediction';
+
 
 const AdminRoutes = [
   {
@@ -84,6 +86,13 @@ const AdminRoutes = [
     path: '/reservations',
     icon: <Icon as={MdCalendarMonth} width="20px" height="20px" color="inherit" />,
     component: <Reservations />,
+  },
+  {
+    name: 'Gallstone prediction',
+    layout: '/admin',
+    path: '/gallstone_prediction',
+    icon: <Icon as={MdCalendarMonth} width="20px" height="20px" color="inherit" />,
+    component: <GallstonePrediction />,
   }
 ];
 
