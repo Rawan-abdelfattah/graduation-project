@@ -1,7 +1,7 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import privacy from '../../assets/img/landing/privacy.png';
-import Navbar from 'components/landing/Navbar';
-import Footer from 'components/landing/Footer';
+import MainLayout from 'layouts/landing/MainLayout';
 
 const privacyPolicyData = [
   {
@@ -53,8 +53,11 @@ const privacyPolicyData = [
 
 export const PrivacyPolicy = () => {
   return (
-    <div className="bg-white">
-      <Navbar />
+    <MainLayout>
+      <Helmet>
+        <title>Privacy Policy | Doctor Bot</title>
+        <meta name="description" content="Learn about how Doctor Bot protects your privacy and handles your personal information. Read our comprehensive privacy policy." />
+      </Helmet>
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row justify-between items-center gap-12">
           <div className="max-w-[600px] text-center md:text-left">
@@ -86,7 +89,6 @@ export const PrivacyPolicy = () => {
           ))}
         </div>
       </section>
-      <Footer />
-    </div>
+    </MainLayout>
   );
 };

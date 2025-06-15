@@ -5,6 +5,7 @@ import featureImg4 from '../../../assets/img/landing/feature4.png';
 import featureImg5 from '../../../assets/img/landing/feature5.png';
 import featureImg6 from '../../../assets/img/landing/feature6.png';
 import bgImg from '../../../assets/img/landing/feature-bg.png';
+import ImageWithLoading from '../../common/ImageWithLoading';
 
 const Features = () => {
   const dashboardFeatures = [
@@ -60,11 +61,11 @@ const Features = () => {
             key={index}
             className="bg-white shadow-md hover:shadow-lg transition rounded-xl p-6 text-center border border-gray-100"
           >
-            <img
+            <ImageWithLoading
               src={feature.icon}
               alt={`${feature.title} icon`}
-              className="w-[200px] mx-auto mb-4"
-            />
+              className="w-[200px] min-h-[200px] mx-auto mb-4"
+             />
             <h3 className="text-[24px] font-bold mb-2">{feature.title}</h3>
             <p className="text-[18px] text-gray-600">{feature.description}</p>
           </div>

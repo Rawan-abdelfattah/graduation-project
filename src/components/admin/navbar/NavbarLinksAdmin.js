@@ -30,13 +30,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import arImg from "../../../assets/img/ar.jpg"
 import enImg from "../../../assets/img/en.png"
 import AdminRoutes from 'routes/AdminRoutes';
+import { useDispatch } from 'react-redux';
+import { Logout } from '../../../redux/slices/logedUserSlice';
 
 export default function HeaderLinks(props) {
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   const { pathname } = useLocation()
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   // Chakra Color Mode
   const navbarIcon = useColorModeValue('gray.400', 'white');
   let menuBg = useColorModeValue('white', 'navy.800');
@@ -63,6 +65,11 @@ export default function HeaderLinks(props) {
       ltrPath = ltrPath[ltrPath.length - 1]
       navigate(ltrPath)
     }
+  }
+
+  function handleLogout(){
+    dispatch(Logout())
+    navigate("/signin")
   }
 
   return (
@@ -248,7 +255,7 @@ export default function HeaderLinks(props) {
         <MenuItem _hover={{ bg: "none" }} _focus={{ bg: "none" }} borderRadius="8px" px="14px">
           <Text fontSize="sm">Newsletter Settings</Text>
         </MenuItem>
-        <MenuItem _hover={{ bg: "none" }} _focus={{ bg: "none" }} color="red.400" borderRadius="8px" px="14px">
+        <MenuItem  _hover={{ bg: "none" }} _focus={{ bg: "none" }} color="red.400" borderRadius="8px" px="14px" onClick={handleLogout}>
           <Text fontSize="sm">Log out</Text>
         </MenuItem>
       </Flex>

@@ -1,17 +1,19 @@
 import React from 'react';
- import phoneImg from 'assets/img/landing/Frame 369.png';
+import { Helmet } from 'react-helmet';
+import phoneImg from 'assets/img/landing/Frame 369.png';
 import emailImg from 'assets/img/landing/Frame 370.png';
 import { AiFillInstagram } from 'react-icons/ai';
 import { FaFacebook } from 'react-icons/fa';
-import { FaTwitter } from 'react-icons/fa';
-import Footer from 'components/landing/Footer';
-import Navbar from 'components/landing/Navbar';
-
+import { FaTwitter } from 'react-icons/fa'; 
+import MainLayout from 'layouts/landing/MainLayout';
 export default function ContactUs() {
   return (
-    <>
+    <MainLayout>
+      <Helmet>
+        <title>Contact Us | Doctor Bot</title>
+        <meta name="description" content="Get in touch with Doctor Bot. Contact us for any questions about our services, booking, or technical support." />
+      </Helmet>
       <div className="bg-cover bg-center pb-20">
-        <Navbar />
         <div className="py-6">
           <div className=" flex justify-center items-center text-center">
             <div className="mb-5">
@@ -67,36 +69,36 @@ export default function ContactUs() {
           </div>
           <div className="p-8 py-10 bg-[#E9F2EB] rounded-lg">
             <form>
-            <div className="pb-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-  <div className="w-full">
-    <label htmlFor="name" className="block mb-2 text-green-700 font-extrabold">
-      Name
-    </label>
-    <input
-      type="text"
-      id="name"
-      className="w-full shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-      placeholder="Enter your name"
-      required
-    />
-  </div>
+              <div className="pb-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="w-full">
+                  <label htmlFor="name" className="block mb-2 text-green-700 font-extrabold">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="w-full shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
 
-  <div className="w-full">
-    <label htmlFor="phone" className="block mb-2 text-green-700 font-extrabold">
-      Phone
-    </label>
-    <input
-      type="tel"
-      id="phone"
-      className="w-full shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-      placeholder="Enter your phone"
-      required
-    />
-  </div>
-</div>
+                <div className="w-full">
+                  <label htmlFor="phone" className="block mb-2 text-green-700 font-extrabold">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    className="w-full shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    placeholder="Enter your phone"
+                    required
+                  />
+                </div>
+              </div>
 
               <div className="mb-5">
-                <label for="email" className="mb-2 text-green-700 font-extrabold">
+                <label htmlFor="email" className="mb-2 text-green-700 font-extrabold">
                   Email
                 </label>
                 <input
@@ -109,7 +111,7 @@ export default function ContactUs() {
               </div>
               <div className="mb-5">
                 <label
-                  for="message"
+                  htmlFor="message"
                   className="mb-2  text-green-700 font-extrabold"
                 >
                   Message
@@ -133,7 +135,6 @@ export default function ContactUs() {
           </div>
         </div>
       </div>
-      <Footer />
-    </>
+    </MainLayout>
   );
 }

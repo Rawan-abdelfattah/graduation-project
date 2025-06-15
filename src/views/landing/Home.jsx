@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Book } from 'components/landing/Home/Book';
@@ -21,6 +22,10 @@ export const Home = () => {
 
   return (
     <div className='bg-white'>
+      <Helmet>
+        <title>Doctor Bot - Smart Healthcare Solutions</title>
+        <meta name="description" content="Welcome to Doctor Bot - Your intelligent healthcare companion. Book appointments, get instant medical guidance, and connect with healthcare professionals." />
+      </Helmet>
       <div>
         <Hero />
       </div>

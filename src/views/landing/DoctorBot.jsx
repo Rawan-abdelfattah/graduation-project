@@ -1,5 +1,5 @@
-import Navbar from 'components/landing/Navbar';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import bookImage from '../../assets/img/landing/book.png';
 import findImage from '../../assets/img/landing/image 33.png';
 import calendarImage from '../../assets/img/landing/image 32.png';
@@ -7,36 +7,37 @@ import robotImage from '../../assets/img/landing/image 31.png';
 import robot from '../../assets/img/landing/robot.png';
 import specialistImage from '../../assets/img/landing/Specialist with Iphone X mask.png';
 import chatbotImage from '../../assets/img/landing/chatbot.png';
-import Footer from 'components/landing/Footer';
-
+import MainLayout from 'layouts/landing/MainLayout';
+ 
 export default function DoctorBot() {
   return (
-    <>
-      <div>
-        <Navbar />
-        <section>
-          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
-            <div>
-              <div className='flex items-end gap-x-2'>
-                <img src={robot} alt="" className='w-14 mb-3' />
-                <h1 className="text-4xl md:text-5xl font-extrabold text-green-700 mb-6">
-                  Doctor Bot
-                </h1>
-              </div>
-              <p className="text-lg text-black mb-8">
-                Easily book appointments and get instant health guidance with
-                our smart mobile app — featuring a built-in symptom checker and
-                AI-powered chatbot for fast, reliable support
-              </p>
+    <MainLayout>
+      <Helmet>
+        <title>Doctor Bot - AI-Powered Healthcare Assistant</title>
+        <meta name="description" content="Experience smart healthcare with Doctor Bot. Book appointments, get instant health guidance, and connect with specialists through our AI-powered platform." />
+      </Helmet>
+      <section>
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+          <div>
+            <div className='flex items-end gap-x-2'>
+              <img src={robot} alt="" className='w-14 mb-3' />
+              <h1 className="text-4xl md:text-5xl font-extrabold text-green-700 mb-6">
+                Doctor Bot
+              </h1>
             </div>
-            <img
-              src={bookImage}
-              alt="Doctor Bot Chat UI"
-              className="w-[250px] max-w-[350px] mx-auto"
-            />
+            <p className="text-lg text-black mb-8">
+              Easily book appointments and get instant health guidance with
+              our smart mobile app — featuring a built-in symptom checker and
+              AI-powered chatbot for fast, reliable support
+            </p>
           </div>
-        </section>
-      </div>
+          <img
+            src={bookImage}
+            alt="Doctor Bot Chat UI"
+            className="w-[250px] max-w-[350px] mx-auto"
+          />
+        </div>
+      </section>
       <div className="text-center bg-white py-10">
         <h2 className="text-4xl font-extrabold">How It Works!</h2>
       </div>
@@ -52,7 +53,7 @@ export default function DoctorBot() {
           <img src={robotImage} alt="" className="mx-auto mb-4" />
           <h3 className="text-lg font-extrabold mb-2">Ask The Bot</h3>
           <p className="w-80 text-base text-gray-600">
-            You can use the bot if you don’t know the speciality and it will
+            You can use the bot if you don't know the speciality and it will
             guide you.
           </p>
         </div>
@@ -97,7 +98,7 @@ export default function DoctorBot() {
           </h3>
           <p className="text-lg/8 font-medium">
             Easily schedule a consultation with your preferred doctor at your
-            convenience. Browse available dates and times based on the doctor’s
+            convenience. Browse available dates and times based on the doctor's
             schedule, select what suits you best, and confirm your appointment —
             all in just a few taps!
           </p>
@@ -126,7 +127,6 @@ export default function DoctorBot() {
           </p>
         </div>
       </div>
-      <Footer />
-    </>
+    </MainLayout>
   );
 }

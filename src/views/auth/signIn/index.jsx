@@ -62,12 +62,15 @@ const handleSubmit=async(e)=>{
         
         const data = await Api.post('/auth/login', { username, password });
         dispatch(Login(data.data))
+        console.log("🚀 ~ handleSubmit ~ data:", data)
         console.log('data.data', data.data);
         notifySuccess("Login successful")
         navigate('/admin/default');
         e.target.reset();
       }catch(e){
-        notifyError(e)
+        console.log("🚀 ~ handleSubmit ~ e:", e)
+        let message=e.response?.data?.message || e?.response?.data?.message[0] 
+        notifyError(message)
       }
 
 
@@ -203,6 +206,7 @@ const handleSubmit=async(e)=>{
                 variant="brand"
                 fontWeight="500"
                 w="100%"
+                color="white"
                 h="50"
                 type="submit"
                 mb="24px"

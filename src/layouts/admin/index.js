@@ -5,10 +5,13 @@ import Navbar from 'components/admin/navbar/NavbarAdmin.js';
 import Sidebar from 'components/admin/sidebar/Sidebar.js';
 import { SidebarContext } from 'contexts/SidebarContext';
 import React, { useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AdminRoutes from 'routes/AdminRoutes';
 import currentTheme from "../../theme/theme"
 import Footer from 'components/admin/footer/FooterAdmin';
+import NotFound from 'components/admin/NotFound';
+import { useSelector } from 'react-redux';
+import { DoctorChat } from 'components/admin/doctorChat/DoctorChat';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
@@ -16,12 +19,25 @@ export default function Dashboard(props) {
   // states and functions
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
-  const [activeRoute , setActiveRoute] = useState();
-  let currentPath =useLocation().pathname;
+  const navigate = useNavigate()
+  const [activeRoute, setActiveRoute] = useState();
+  const { user, logedIn, isAdmin } = useSelector((state) => state?.logedUserSlice)
+  console.log("🚀 ~ Dashboard ~ user:", user)
+
+  useEffect(() => {
+    if (!logedIn) {
+      navigate("/auth/signin")
+    }
+    if (!isAdmin) {
+      navigate("/admin/default")
+    }
+  }, [logedIn, isAdmin])
+
+  let currentPath = useLocation().pathname;
 
   useEffect(() => {
     setActiveRoute(getActiveRoute(AdminRoutes));
-  },[currentPath])
+  }, [currentPath])
   // functions for changing the states from components
   const getRoute = () => {
     return window.location.pathname !== '/admin/full-screen-maps';
@@ -172,6 +188,7 @@ export default function Dashboard(props) {
                       path="/"
                       element={<Navigate to="/admin/default" replace />}
                     />
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Box>
               ) : null}
@@ -181,6 +198,7 @@ export default function Dashboard(props) {
             </Box>
           </SidebarContext.Provider>
         </Box>
+        {user?.roleId === 2 && <DoctorChat />}
       </Box>
     </ChakraProvider>
   );

@@ -43,13 +43,39 @@ export default function DoctorTimeTableModel({ action, doctorTimeTable }) {
   }, [dispatch]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    const payload = values.schedule.map(({ day, startTime, endTime }) => ({
-      doctorId: Number(values.doctorId),
-      is_deleted: false,
-      day,
-      startTime,
-      endTime,
-    }));
+    // Validate that schedule array is not empty and all required fields are filled
+    if (!values.schedule.length) {
+      toast({
+        title: 'Error',
+        description: 'Please add at least one schedule entry',
+        status: 'error',
+      });
+      return;
+    }
+
+    // Validate that all schedule entries have required fields
+    const hasInvalidEntries = values.schedule.some(
+      (entry) => !entry.day || !entry.startTime || !entry.endTime
+    );
+
+    if (hasInvalidEntries) {
+      toast({
+        title: 'Error',
+        description: 'Please fill in all fields for each schedule entry',
+        status: 'error',
+      });
+      return;
+    }
+
+    const payload = {
+      timeTables: values.schedule.map(({ day, startTime, endTime }) => ({
+        doctorId: Number(values.doctorId),
+        is_deleted: false,
+        day,
+        startTime,
+        endTime,
+      }))
+    };
 
     try {
       if (action === 'Add') {
@@ -57,16 +83,20 @@ export default function DoctorTimeTableModel({ action, doctorTimeTable }) {
         toast({ title: 'Schedule added successfully!', status: 'success' });
       } else {
         await dispatch(
-          updateDoctorTimeTable({ id: doctorTimeTable?.id, data: payload[0] }), // Ensure correct ID is used
+          updateDoctorTimeTable({ id: doctorTimeTable?.id, data: payload.timeTables[0] }),
         ).unwrap();
         toast({ title: 'Schedule updated successfully!', status: 'success' });
       }
 
-      dispatch(fetchAllDoctorTimeTableData({ page: 1 })); // Refresh data after update
+      dispatch(fetchAllDoctorTimeTableData({ page: 1 }));
       onClose();
     } catch (error) {
       console.error(error);
-      toast({ title: 'Error saving schedule', status: 'error' });
+      toast({ 
+        title: 'Error saving schedule', 
+        description: error.message || 'Please try again',
+        status: 'error' 
+      });
     } finally {
       setSubmitting(false);
     }
@@ -178,9 +208,8 @@ export default function DoctorTimeTableModel({ action, doctorTimeTable }) {
                       </FormControl>
 
                       {values.schedule.length > 1 && (
-                        <div className="flex">
-                          <h5>Delete</h5>
-                          <IconButton
+                        <div className="flex mt-8">
+                           <IconButton
                             icon={<DeleteIcon />}
                             colorScheme="red"
                             onClick={() =>
