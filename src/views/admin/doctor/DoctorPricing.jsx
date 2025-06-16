@@ -63,7 +63,7 @@ const DoctorPricing = () => {
     }
   };
 
-  console.log(data?.data);
+  console.log(data);
   
 
   return (
