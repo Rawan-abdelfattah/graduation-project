@@ -1,18 +1,20 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Send, Bot } from "lucide-react";
+import { X, Send, Bot, Mic, MicOff } from "lucide-react";
 import ChatMessage from "./ChatMessages";
 
 const ChatBot = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([
     {
       id: "1",
-      text: "Hi, I'm here to guide you to the right medical specialist. How can I help you today?",
+      text: "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
       isBot: true,
       timestamp: new Date(),
     },
   ]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -22,6 +24,58 @@ const ChatBot = ({ isOpen, onClose }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const formatBotResponse = (data) => {
+    let responseText = "";
+    
+    if (!data.predictions) {
+      responseText = "I need more information about your symptoms. Could you please describe more symptoms?";
+    } else {
+      // Get all predictions
+      const predictions = data.predictions;
+      
+      // Count department occurrences
+      const departmentCounts = {};
+      predictions.forEach(pred => {
+        departmentCounts[pred.department] = (departmentCounts[pred.department] || 0) + 1;
+      });
+      
+      // Find most frequent department
+      let recommendedDepartment = predictions[0].department;
+      let maxCount = 1;
+      
+      for (const [dept, count] of Object.entries(departmentCounts)) {
+        if (count > maxCount) {
+          maxCount = count;
+          recommendedDepartment = dept;
+        }
+      }
+      
+      // If no department is repeated, use the one with highest confidence
+      if (maxCount === 1) {
+        recommendedDepartment = predictions[0].department;
+      }
+
+      // Check if the response is in Arabic
+      const isArabic = /[\u0600-\u06FF]/.test(predictions[0].disease);
+      
+      if (isArabic) {
+        responseText = "الحالات المحتملة:\n";
+        predictions.forEach((pred, index) => {
+          responseText += `${index + 1}. ${pred.disease}\n`;
+        });
+        responseText += `\nبناءً على تحليل الأعراض، نوصي بزيارة قسم: ${recommendedDepartment}`;
+      } else {
+        responseText = "Possible conditions:\n";
+        predictions.forEach((pred, index) => {
+          responseText += `${index + 1}. ${pred.disease}\n`;
+        });
+        responseText += `\nBased on symptom analysis, we recommend visiting the: ${recommendedDepartment} department`;
+      }
+    }
+    
+    return responseText;
+  };
 
   const handleSendMessage = async () => {
     if (!inputText.trim()) return;
@@ -38,13 +92,12 @@ const ChatBot = ({ isOpen, onClose }) => {
     setIsTyping(true);
 
     try {
-      // Call the backend API
-      const response = await fetch('http://localhost:8000/classify-symptoms', {
+      const formData = new FormData();
+      formData.append('symptoms', inputText);
+
+      const response = await fetch('https://chatbot.pevidea.com/classify-symptoms', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: inputText }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -53,10 +106,9 @@ const ChatBot = ({ isOpen, onClose }) => {
 
       const data = await response.json();
       
-      // Format the bot response based on the API response
       const botResponse = {
         id: (Date.now() + 1).toString(),
-        text: `Based on your symptoms, I think you might have ${data.predicted_disease} (${Math.round(data.confidence * 100)}% confidence). Would you like me to help you find a specialist for this condition?`,
+        text: formatBotResponse(data),
         isBot: true,
         timestamp: new Date(),
       };
@@ -64,10 +116,85 @@ const ChatBot = ({ isOpen, onClose }) => {
       setMessages(prev => [...prev, botResponse]);
     } catch (error) {
       console.error('Error:', error);
-      // Fallback response in case of error
       const errorResponse = {
         id: (Date.now() + 1).toString(),
         text: "I apologize, but I'm having trouble processing your symptoms right now. Please try again in a moment.",
+        isBot: true,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      const chunks = [];
+
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = async () => {
+        const audioBlob = new Blob(chunks, { type: 'audio/mp3' });
+        await handleAudioUpload(audioBlob);
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handleAudioUpload = async (audioBlob) => {
+    const userMessage = {
+      id: Date.now().toString(),
+      text: "🎤 Voice message...",
+      isBot: false,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setIsTyping(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('audio_file', audioBlob, 'recording.mp3');
+
+      const response = await fetch('https://chatbot.pevidea.com/classify-symptoms', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from server');
+      }
+
+      const data = await response.json();
+      
+      const botResponse = {
+        id: (Date.now() + 1).toString(),
+        text: formatBotResponse(data),
+        isBot: true,
+        timestamp: new Date(),
+      };
+
+      setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      console.error('Error:', error);
+      const errorResponse = {
+        id: (Date.now() + 1).toString(),
+        text: "I apologize, but I'm having trouble processing your voice message right now. Please try again in a moment.",
         isBot: true,
         timestamp: new Date(),
       };
@@ -81,6 +208,24 @@ const ChatBot = ({ isOpen, onClose }) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
+    }
+  };
+
+  const handleReset = async () => {
+    try {
+      await fetch('https://chatbot.pevidea.com/reset-conversation', {
+        method: 'POST',
+      });
+      setMessages([
+        {
+          id: "1",
+          text: "Hi, I'm here to guide you to the right medical specialist. Please describe your symptoms.",
+          isBot: true,
+          timestamp: new Date(),
+        },
+      ]);
+    } catch (error) {
+      console.error('Error resetting conversation:', error);
     }
   };
 
@@ -100,12 +245,20 @@ const ChatBot = ({ isOpen, onClose }) => {
               <p className="text-emerald-100 text-sm">Medical Assistant</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={handleReset}
+              className="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full hover:bg-opacity-30 transition-colors"
+            >
+              Reset
+            </button>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Messages */}
@@ -134,6 +287,16 @@ const ChatBot = ({ isOpen, onClose }) => {
         {/* Input */}
         <div className="p-4 bg-white border-t">
           <div className="flex items-center space-x-2">
+            <button
+              onClick={isRecording ? stopRecording : startRecording}
+              className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                isRecording 
+                  ? 'bg-red-500 hover:bg-red-600 text-white' 
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+              }`}
+            >
+              {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            </button>
             <input
               type="text"
               value={inputText}

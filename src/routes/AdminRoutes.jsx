@@ -24,6 +24,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import DoctorTabs from 'views/admin/doctor/DoctorTabs';
 import Reservations from 'views/admin/reservation/Reservations';
 import GallstonePrediction from 'views/admin/gallstonePrediction/gallstonePrediction';
+import PatientManagementApp from 'views/admin/PatientManagementApp/PatientManagementApp';
 
 
 const AdminRoutes = [
@@ -93,6 +94,14 @@ const AdminRoutes = [
     path: '/gallstone_prediction',
     icon: <Icon as={MdCalendarMonth} width="20px" height="20px" color="inherit" />,
     component: <GallstonePrediction />,
+  }
+  ,
+  {
+    name: 'patient managment',
+    layout: '/admin',
+    path: '/patient-managment',
+    icon: <Icon as={MdCalendarMonth} width="20px" height="20px" color="inherit" />,
+    component: <PatientManagementApp />,
   }
 ];
 

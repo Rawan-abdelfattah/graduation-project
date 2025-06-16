@@ -25,7 +25,7 @@ const GallstonePrediction = () => {
       const formData = new FormData();
       formData.append('pdf_file', uploadedFile);
 
-      const response = await fetch('http://localhost:8000/predict-gallstone', {
+      const response = await fetch('https://chatbot.pevidea.com/predict-gallstone', {
         method: 'POST',
         body: formData,
       });
