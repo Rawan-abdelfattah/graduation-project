@@ -27,18 +27,18 @@ const Features = () => {
         'Add and organize doctor profiles, assign them to departments, and manage their availability to streamline appointments and scheduling.',
       icon: featureImg3,
     },
-    {
-      title: 'Rooms Management',
-      description:
-        'Track and manage room availability, occupancy status, and maintenance. Simplify room assignment and make sure patients are always placed properly.',
-      icon: featureImg4,
-    },
-    {
-      title: 'Operations Management',
-      description:
-        'Schedule and manage surgical operations, assign doctors and rooms, and monitor procedure status for smooth hospital workflow.',
-      icon: featureImg5,
-    },
+    // {
+    //   title: 'Rooms Management',
+    //   description:
+    //     'Track and manage room availability, occupancy status, and maintenance. Simplify room assignment and make sure patients are always placed properly.',
+    //   icon: featureImg4,
+    // },
+    // {
+    //   title: 'Operations Management',
+    //   description:
+    //     'Schedule and manage surgical operations, assign doctors and rooms, and monitor procedure status for smooth hospital workflow.',
+    //   icon: featureImg5,
+    // },
     {
       title: 'Specializations Management',
       description:
